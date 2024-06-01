@@ -1,0 +1,33 @@
+server:
+  port: 8083
+
+spring:
+  application.name: account
+  main:
+    allow-bean-definition-overriding: true
+  flyway:
+    locations: classpath:db/migration
+    default-schema: account
+    enabled: true
+  datasource:
+    driver-class-name: 'org.postgresql.Driver'
+    url: jdbc:postgresql://localhost:5432/account
+    username: postgres
+    password: iamroot
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        ddl-auto: validate
+        default_schema: account
+        format_sql: true
+    generate-ddl: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+logging:
+  level:
+    root: info
