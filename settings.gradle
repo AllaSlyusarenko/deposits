@@ -2,3 +2,4 @@ rootProject.name = "deposits"
 include("aggregator")
 include ("customerservice")
 include 'account'
+include 'deposit'

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(exclude = "idBankAccounts")
 @Entity
 @Table(name = "bank_accounts", schema = "account")
-public class BankAccount {
+public class BankAccount { //2.1
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bank_accounts_generator")
     @SequenceGenerator(name = "bank_accounts_generator", sequenceName = "account.id_bank_accounts_sq", allocationSize = 1, initialValue = 1)

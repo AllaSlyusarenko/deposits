@@ -1,0 +1,3 @@
+INSERT INTO customer.customers(bank_account_id, phone_number)
+VALUES (1234567890123456789, '79269876543'),
+       (2345678901234567891, '79169876543');
