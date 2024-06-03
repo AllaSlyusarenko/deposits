@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 
 @Data
-@EqualsAndHashCode(exclude = "idDepositType")
+@EqualsAndHashCode(exclude = "idRequestStatus")
 @Entity
 @Table(name = "request_statuses", schema = "deposit")
 public class RequestStatus { //2.5
