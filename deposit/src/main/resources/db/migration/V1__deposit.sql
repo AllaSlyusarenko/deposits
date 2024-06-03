@@ -62,7 +62,8 @@ create table if not exists deposit.requests
                       constraint requests_pk primary key,
     customer_id       integer not null,
     request_date_time timestamp with time zone default CURRENT_TIMESTAMP not null,
-    code              varchar(4) not null
+    code              varchar(4) not null,
+    code_date_time    timestamp with time zone default CURRENT_TIMESTAMP not null
 );
 
 alter sequence deposit.id_request_sq owned by deposit.requests.id_request;

@@ -20,18 +20,16 @@ public class Request { //2.3
     private Integer customerId;
     @Column(name = "request_date_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime requestDateTime; // timestamp without time zone
+    private OffsetDateTime requestDateTime;
     //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id_deposit")
 //    private Deposit depositsId;
     @Column(name = "code")
     private String code;
-//
-//    @ManyToMany(cascade = CascadeType.ALL) //fetch = FetchType.EAGER,
-//    @JoinTable(name = "current_request_status",
-//            joinColumns = @JoinColumn(name = "request_id"),
-//            inverseJoinColumns = @JoinColumn(name = "request_status_id"))
-//    private Set<RequestStatus> roles = new HashSet<>();
+    @Column(name = "code_date_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private OffsetDateTime codeDateTime;
+
 
     public Request() {
     }
