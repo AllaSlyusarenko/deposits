@@ -19,6 +19,8 @@ public class BankAccount { //2.1
     private BigDecimal numBankAccounts;
     @Column(name = "amount", columnDefinition = "money")
     private BigDecimal amount;
+//    @Column(name = "is_active")
+//    private boolean isActive = false;
 
     public BankAccount() {
     }

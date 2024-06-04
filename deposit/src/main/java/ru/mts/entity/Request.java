@@ -5,10 +5,11 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Data
-@EqualsAndHashCode(exclude = "idDepositsTypes")
+@EqualsAndHashCode(exclude = "idRequest")
 @Entity
 @Table(name = "requests", schema = "deposit")
 public class Request { //2.3
@@ -25,10 +26,35 @@ public class Request { //2.3
 //    @JoinColumn(name = "id_deposit")
 //    private Deposit depositsId;
     @Column(name = "code")
-    private String code;
+    private String code; //изначально пусто
     @Column(name = "code_date_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime codeDateTime;
+    private OffsetDateTime codeDateTime; //изначально пусто
+    @Column(name = "is_deposit_refill")
+    private boolean isDepositRefill; //пополнение депозита
+    @Column(name = "is_reduction_of_deposit")
+    private boolean isReductionOfDeposit; //уменьшение депозита
+
+    @ManyToOne
+    @JoinColumn(name = "id_deposit_term")
+    private DepositTerm depositTerm; //срок вклада
+    @Column(name = "deposit_amount", columnDefinition = "money")
+    private BigDecimal depositAmount;
+    @ManyToOne
+    @JoinColumn(name = "id_type_percent_payment")
+    private TypesPercentPayment typesPercentPayment; //выплата процентов
+
+    @Column(name = "percent_payment_account_id", columnDefinition = "numeric(20,0) not null")
+    private BigDecimal percentPaymentAccountId; //счет для выплаты процентов
+
+    @Column(name = "deposit_refund_account_id", columnDefinition = "numeric(20,0) not null")
+    private BigDecimal depositRefundAccountId; //счет для возвращения вклада
+
+    @Column(name = "deposit_debiting_account_id", columnDefinition = "numeric(20,0) not null")
+    private BigDecimal depositDebitingAccountId; //счет для списания суммы депозит
+//    @OneToMany
+//    @JoinColumn(name = "id")
+//    private CurrentRequestStatus currentRequestStatus;
 
 
     public Request() {

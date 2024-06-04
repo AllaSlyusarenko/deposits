@@ -7,10 +7,11 @@ import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
+
 @Getter
 @Setter
 @Embeddable
-public class CurrentRequestStatusId implements java.io.Serializable{
+public class CurrentRequestStatusId implements java.io.Serializable {
     private static final long serialVersionUID = -6907175441736297329L;
     @Column(name = "request_id", nullable = false)
     private Integer requestId;
