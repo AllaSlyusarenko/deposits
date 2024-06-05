@@ -17,10 +17,10 @@ public class BankAccount { //2.1
     private Integer idBankAccounts;
     @Column(name = "num_bank_accounts", columnDefinition = "numeric(20,0) unique not null")
     private BigDecimal numBankAccounts;
-    @Column(name = "amount", columnDefinition = "money")
+    @Column(name = "amount")
     private BigDecimal amount;
-//    @Column(name = "is_active")
-//    private boolean isActive = false;
+    @Column(name = "currency")
+    private String currency = "RUR";
 
     public BankAccount() {
     }
@@ -31,6 +31,7 @@ public class BankAccount { //2.1
                 "idBankAccounts=" + idBankAccounts +
                 ", numBankAccounts=" + numBankAccounts +
                 ", amount=" + amount +
+                ", currency='" + currency + '\'' +
                 '}';
     }
 }
