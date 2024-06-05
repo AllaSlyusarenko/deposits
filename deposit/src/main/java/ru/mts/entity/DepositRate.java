@@ -2,11 +2,14 @@ package ru.mts.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = "idDepositRate")
 @Entity
 @Table(name = "deposit_rate", schema = "deposit")
@@ -23,9 +26,6 @@ public class DepositRate { //2.10
 
     @Override
     public String toString() {
-        return "DepositRate {" +
-                "idDepositRate=" + idDepositRate +
-                ", depositRate=" + depositRate +
-                '}';
+        return depositRate.toString();
     }
 }

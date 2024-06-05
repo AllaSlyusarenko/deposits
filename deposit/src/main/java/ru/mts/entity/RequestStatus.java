@@ -2,10 +2,13 @@ package ru.mts.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = "idRequestStatus")
 @Entity
 @Table(name = "request_statuses", schema = "deposit")
@@ -22,9 +25,6 @@ public class RequestStatus { //2.5
 
     @Override
     public String toString() {
-        return "RequestStatus {" +
-                "idRequestStatus=" + idRequestStatus +
-                ", requestStatusName='" + requestStatusName + '\'' +
-                '}';
+        return requestStatusName;
     }
 }

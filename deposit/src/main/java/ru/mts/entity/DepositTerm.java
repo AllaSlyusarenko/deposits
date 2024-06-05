@@ -1,11 +1,13 @@
 package ru.mts.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = "idDepositTerm")
 @Entity
 @Table(name = "deposit_term", schema = "deposit")
@@ -22,9 +24,6 @@ public class DepositTerm { //2.13
 
     @Override
     public String toString() {
-        return "DepositTerm {" +
-                "idDepositTerm=" + idDepositTerm +
-                ", depositTermName='" + depositTermName + '\'' +
-                '}';
+        return depositTermName;
     }
 }

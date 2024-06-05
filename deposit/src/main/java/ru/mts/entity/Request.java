@@ -2,14 +2,17 @@ package ru.mts.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-@Data
-@EqualsAndHashCode(exclude = "idRequest")
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"idRequest", "depositTerm","typesPercentPayment"})
 @Entity
 @Table(name = "requests", schema = "deposit")
 public class Request { //2.3
@@ -22,9 +25,6 @@ public class Request { //2.3
     @Column(name = "request_date_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime requestDateTime;
-    //    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_deposit")
-//    private Deposit depositsId;
     @Column(name = "code")
     private String code; //изначально пусто
     @Column(name = "code_date_time")
@@ -35,12 +35,13 @@ public class Request { //2.3
     @Column(name = "is_reduction_of_deposit")
     private boolean isReductionOfDeposit; //уменьшение депозита
 
-    @ManyToOne
-    @JoinColumn(name = "id_deposit_term")
-    private DepositTerm depositTerm; //срок вклада
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_request_term")
+    private RequestTerm requestTerm; //срок вклада
     @Column(name = "deposit_amount", columnDefinition = "money")
     private BigDecimal depositAmount;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_percent_payment")
     private TypesPercentPayment typesPercentPayment; //выплата процентов
 
@@ -63,5 +64,24 @@ public class Request { //2.3
     @PrePersist
     protected void onRequestDateTime() {
         requestDateTime = OffsetDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "idRequest=" + idRequest +
+                ", customerId=" + customerId +
+                ", requestDateTime=" + requestDateTime +
+                ", code='" + code + '\'' +
+                ", codeDateTime=" + codeDateTime +
+                ", isDepositRefill=" + isDepositRefill +
+                ", isReductionOfDeposit=" + isReductionOfDeposit +
+                ", depositTerm=" + requestTerm.getRequestTermName() +
+                ", depositAmount=" + depositAmount +
+                ", typesPercentPayment=" + typesPercentPayment.getTypePercentPaymentPeriod() +
+                ", percentPaymentAccountId=" + percentPaymentAccountId +
+                ", depositRefundAccountId=" + depositRefundAccountId +
+                ", depositDebitingAccountId=" + depositDebitingAccountId +
+                '}';
     }
 }
