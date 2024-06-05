@@ -1,6 +1,5 @@
 package ru.mts.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"idRequest", "depositTerm","typesPercentPayment"})
+@EqualsAndHashCode(exclude = "idRequest")
 @Entity
 @Table(name = "requests", schema = "deposit")
 public class Request { //2.3
@@ -36,8 +35,8 @@ public class Request { //2.3
     private boolean isReductionOfDeposit; //уменьшение депозита
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_request_term")
-    private RequestTerm requestTerm; //срок вклада
+    @JoinColumn(name = "id_deposit_term")
+    private DepositTerm depositTerm; //срок вклада
     @Column(name = "deposit_amount", columnDefinition = "money")
     private BigDecimal depositAmount;
 
@@ -76,7 +75,7 @@ public class Request { //2.3
                 ", codeDateTime=" + codeDateTime +
                 ", isDepositRefill=" + isDepositRefill +
                 ", isReductionOfDeposit=" + isReductionOfDeposit +
-                ", depositTerm=" + requestTerm.getRequestTermName() +
+                ", depositTerm=" + depositTerm +
                 ", depositAmount=" + depositAmount +
                 ", typesPercentPayment=" + typesPercentPayment.getTypePercentPaymentPeriod() +
                 ", percentPaymentAccountId=" + percentPaymentAccountId +

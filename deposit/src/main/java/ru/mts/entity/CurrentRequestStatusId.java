@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class CurrentRequestStatusId implements java.io.Serializable {
-    private static final long serialVersionUID = -6907175441736297329L;
+    private static final long serialVersionUID = 7887175441736297329L;
     @Column(name = "request_id", nullable = false)
     private Integer requestId;
 

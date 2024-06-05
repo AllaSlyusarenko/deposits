@@ -12,16 +12,22 @@ VALUES (1, '3 мес.'),
        (3, '1 год.');
 
 -- 2.14
-INSERT INTO deposit.request_term(id_request_term, request_term_name)
-VALUES (1, '3 мес.'),
-       (2, '6 мес.'),
-       (3, '1 год.');
+-- INSERT INTO deposit.request_term(id_request_term, request_term_name)
+-- VALUES (1, '3 мес.'),
+--        (2, '6 мес.'),
+--        (3, '1 год.');
 
 -- 2.8
 INSERT INTO deposit.types_percent_payment(id_type_percent_payment, type_percent_payment_period)
 VALUES (1, 'Ежемесячно'),
        (2, 'В конце срока'),
        (3, 'Капитализация');
+
+-- 2.15
+-- INSERT INTO deposit.request_types_percent_payment(id_type_percent_payment, type_percent_payment_period)
+-- VALUES (1, 'Ежемесячно'),
+--        (2, 'В конце срока'),
+--        (3, 'Капитализация');
 
 -- 2.12
 INSERT INTO deposit.deposit_statuses(id_deposit_status, deposit_status_name)
@@ -40,8 +46,8 @@ VALUES (1, 'Вклад открыт'),
 -- 2.10
 
 -- пример запроса 2.3
-INSERT INTO deposit.requests(customer_id, is_deposit_refill, is_reduction_of_deposit, deposit_term_id, deposit_amount,
- type_percent_payment_id, percent_payment_account_id, deposit_refund_account_id, deposit_debiting_account_id )
+INSERT INTO deposit.requests(customer_id, is_deposit_refill, is_reduction_of_deposit, id_deposit_term, deposit_amount,
+ id_type_percent_payment, percent_payment_account_id, deposit_refund_account_id, deposit_debiting_account_id )
 VALUES (1, true, true, 2, 5000, 1, 2345678901234567891,2345678901234567891,1234567890123456789);
 
 

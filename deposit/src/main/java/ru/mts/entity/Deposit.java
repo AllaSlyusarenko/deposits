@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"idDeposit", "depositsType", "depositTerm", "depositRate", "typesPercentPayment"})
+@EqualsAndHashCode(exclude = "idDeposit")
 @Entity
 @Table(name = "deposits", schema = "deposit")
 public class Deposit { //2.6
@@ -24,6 +24,10 @@ public class Deposit { //2.6
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_request")
     private Request request;
+
+//    @Column(name = "request_id")
+//    private Integer requestId;
+
     @Column(name = "customer_id")
     private Integer customerId;
     @Column(name = "is_deposit_refill")
@@ -82,7 +86,7 @@ public class Deposit { //2.6
     public String toString() {
         return "Deposit {" +
                 "idDeposit=" + idDeposit +
-                ", request=" + request.getIdRequest() +
+                ", request=" + request +
                 ", customerId=" + customerId +
                 ", isDepositRefill=" + isDepositRefill +
                 ", isReductionOfDeposit=" + isReductionOfDeposit +

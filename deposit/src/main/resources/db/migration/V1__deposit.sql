@@ -13,6 +13,19 @@ create table if not exists deposit.types_percent_payment
 
 alter sequence deposit.id_type_percent_payment_sq owned by deposit.types_percent_payment.id_type_percent_payment;
 
+-- 2.15
+
+-- CREATE SEQUENCE if not exists deposit.id_request_types_percent_payment_sq as integer START 1 INCREMENT BY 1;
+--
+-- create table if not exists deposit.request_types_percent_payment
+-- (
+--     id_type_percent_payment     integer default nextval('deposit.id_request_types_percent_payment_sq')
+--                                 constraint request_types_percent_payment_pk primary key,
+--     type_percent_payment_period varchar(13) not null
+-- );
+--
+-- alter sequence deposit.id_request_types_percent_payment_sq owned by deposit.request_types_percent_payment.id_type_percent_payment;
+
 -- 2.7
 
 CREATE SEQUENCE if not exists deposit.id_deposit_type_sq as integer START 1 INCREMENT BY 1;
@@ -66,17 +79,17 @@ create table if not exists deposit.deposit_term
 alter sequence deposit.id_deposit_term_sq owned by deposit.deposit_term.id_deposit_term;
 
 -- 2.14
-
-CREATE SEQUENCE if not exists deposit.id_request_term_sq as integer START 1 INCREMENT BY 1;
-
-create table if not exists deposit.request_term
-(
-    id_request_term   integer default nextval('deposit.id_request_term_sq')
-                      constraint request_term_pk primary key,
-    request_term_name varchar(6) not null
-);
-
-alter sequence deposit.id_request_term_sq owned by deposit.request_term.id_request_term;
+--
+-- CREATE SEQUENCE if not exists deposit.id_request_term_sq as integer START 1 INCREMENT BY 1;
+--
+-- create table if not exists deposit.request_term
+-- (
+--     id_request_term   integer default nextval('deposit.id_request_term_sq')
+--                       constraint request_term_pk primary key,
+--     request_term_name varchar(6) not null
+-- );
+--
+-- alter sequence deposit.id_request_term_sq owned by deposit.request_term.id_request_term;
 
 
 -- 2.3
@@ -93,9 +106,9 @@ create table if not exists deposit.requests
     code_date_time           timestamp with time zone,
     is_deposit_refill        boolean not null,
     is_reduction_of_deposit  boolean not null,
-    request_term_id          integer not null REFERENCES deposit.request_term (id_request_term),
+    id_deposit_term          integer not null REFERENCES deposit.deposit_term (id_deposit_term),
     deposit_amount           money default 10000 not null,
-    type_percent_payment_id  integer not null REFERENCES deposit.types_percent_payment (id_type_percent_payment),
+    id_type_percent_payment  integer not null REFERENCES deposit.types_percent_payment (id_type_percent_payment),
     percent_payment_account_id   numeric(20,0) not null,
     deposit_refund_account_id    numeric(20,0) not null,
     deposit_debiting_account_id  numeric(20,0) not null
@@ -133,17 +146,17 @@ create table if not exists deposit.deposits
 (
     id_deposit                   integer default nextval('deposit.id_deposit_sq')
                                  constraint deposits_pk primary key,
-    request_id                   integer not null REFERENCES deposit.requests (id_request),
+    id_request                   integer not null REFERENCES deposit.requests (id_request),
     customer_id                  integer not null,
     is_deposit_refill            boolean not null,
     is_reduction_of_deposit      boolean not null,
-    deposits_types_id            integer not null REFERENCES deposit.deposits_types (id_deposits_types),
+    id_deposits_types            integer not null REFERENCES deposit.deposits_types (id_deposits_types),
     start_date                   timestamp with time zone default CURRENT_TIMESTAMP not null,
-    deposit_term_id              integer not null REFERENCES deposit.deposit_term (id_deposit_term),
+    id_deposit_term              integer not null REFERENCES deposit.deposit_term (id_deposit_term),
     end_date                     timestamp with time zone not null,
     deposit_amount               money default 10000 not null,
-    deposit_rate_id              integer not null REFERENCES deposit.deposit_rate (id_deposit_rate),
-    type_percent_payment_id      integer not null REFERENCES deposit.types_percent_payment (id_type_percent_payment),
+    id_deposit_rate              integer not null REFERENCES deposit.deposit_rate (id_deposit_rate),
+    id_type_percent_payment      integer not null REFERENCES deposit.types_percent_payment (id_type_percent_payment),
     deposit_account_id           numeric(20,0) not null,
     deposit_debiting_account_id  numeric(20,0) not null,
     percent_payment_account_id   numeric(20,0) not null,
