@@ -1,5 +1,7 @@
 create schema if not exists account;
 
+-- 2.1
+
 CREATE SEQUENCE if not exists account.id_bank_accounts_sq as integer START 1 INCREMENT BY 1;
 
 create table if not exists account.bank_accounts

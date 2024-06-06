@@ -1,5 +1,7 @@
 create schema if not exists customer;
 
+-- 2.2
+
 CREATE SEQUENCE if not exists customer.id_customers_sq as integer START 1 INCREMENT BY 1;
 
 create table if not exists customer.customers

@@ -31,6 +31,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount getBankAccountById(Integer id) {
+        checkId(id);
         return bankAccountRepository.findByIdBankAccounts(id).orElseThrow(()
                 -> new NotFoundException("Банковский счет с id " + id + " не найден"));
     }
@@ -43,6 +44,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BigDecimal getBalance(Integer id) {
+        checkId(id);
         BankAccount bankAccount = getBankAccountById(id);
         return bankAccount.getAmount();
     }
@@ -50,6 +52,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     //увеличить баланс р/сч с id на сумму incAmount, вернуть увеличившийся итоговый баланс
     @Override
     public BankAccount increaseBalance(Integer id, BigDecimal incAmount) {
+        checkId(id);
         checkAmount(incAmount);
         BankAccount bankAccount = getBankAccountById(id);
         BigDecimal newAmount = bankAccount.getAmount().add(incAmount);
@@ -60,6 +63,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     //уменьшить баланс р/сч с id на сумму redAmount, проверка, вернуть уменьшившийся итоговый баланс
     @Override
     public BankAccount reduceBalance(Integer id, BigDecimal redAmount) {
+        checkId(id);
         checkAmount(redAmount);
         BankAccount bankAccount = getBankAccountById(id);
         BigDecimal balance = getBalance(id);
@@ -74,6 +78,8 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Transactional
     @Override
     public BankAccount[] transferBalance(Integer from, Integer to, BigDecimal transferAmount) {
+        checkId(from);
+        checkId(to);
         checkAmount(transferAmount);
         BankAccount bankAccountFrom = reduceBalance(from, transferAmount);
         BankAccount bankAccountTo = increaseBalance(to, transferAmount);
@@ -94,6 +100,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     private boolean checkAmount(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new ValidationException("Сумма должна быть больше нуля");
+        }
+        return true;
+    }
+
+    private boolean checkId(Integer id) {
+        if (id <= 0) {
+            throw new ValidationException("Неверный id " + id);
         }
         return true;
     }
