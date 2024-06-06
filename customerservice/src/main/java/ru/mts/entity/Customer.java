@@ -2,9 +2,11 @@ package ru.mts.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(exclude = "idCustomers")
@@ -19,6 +21,11 @@ public class Customer { //2.2
     private BigDecimal bankAccountId;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "code")
+    private String code; //изначально пусто
+    @Column(name = "code_date_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private OffsetDateTime codeDateTime; //изначально пусто
 
     public Customer() {
     }
