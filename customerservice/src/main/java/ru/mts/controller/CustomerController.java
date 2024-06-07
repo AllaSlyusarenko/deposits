@@ -10,19 +10,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mts.entity.Customer;
 import ru.mts.service.CustomerService;
+import ru.mts.service.EnterCodeServiceImpl;
 
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Slf4j
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
     private CustomerService customerService;
+    private EnterCodeServiceImpl enterCodeService;
 
     @Autowired
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, EnterCodeServiceImpl enterCodeService) {
         this.customerService = customerService;
+        this.enterCodeService = enterCodeService;
     }
 
     @GetMapping("/id/{id}")
@@ -53,5 +57,17 @@ public class CustomerController {
     public ResponseEntity<Integer> getIdByByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
         Integer id = customerService.getIdByBankAccountId(bankAccountId);
         return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @GetMapping("/code/id/{customerId}")
+    public ResponseEntity<String> getLastEnterCodeByIdCustomer(@PathVariable(value = "customerId") Integer customerId) {
+        String code = enterCodeService.getLastEnterCodeByIdCustomer(customerId);
+        return new ResponseEntity<>(code, HttpStatus.OK);
+    }
+
+    @GetMapping("/codedatetime/id/{customerId}")
+    public ResponseEntity<OffsetDateTime> getLastEnterCodeDateTimeByIdCustomer(@PathVariable(value = "customerId") Integer customerId) {
+        OffsetDateTime codeDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(customerId);
+        return new ResponseEntity<>(codeDateTime, HttpStatus.OK);
     }
 }

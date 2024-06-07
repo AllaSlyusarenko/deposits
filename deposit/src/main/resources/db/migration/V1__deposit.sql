@@ -33,7 +33,7 @@ CREATE SEQUENCE if not exists deposit.id_deposit_type_sq as integer START 1 INCR
 create table if not exists deposit.deposits_types
 (
     id_deposits_types     integer default nextval('deposit.id_deposit_type_sq')
-                        constraint deposits_types_pk primary key,
+                          constraint deposits_types_pk primary key,
     deposits_types_name   varchar(13) not null
 );
 

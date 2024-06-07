@@ -12,7 +12,7 @@ import ru.mts.service.CustomerMicroService;
 
 @Slf4j
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/ag/customer")
 public class AgCustomerController {
     private final CustomerMicroService customerMicroService;
 
