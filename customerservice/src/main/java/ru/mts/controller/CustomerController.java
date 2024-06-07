@@ -42,4 +42,16 @@ public class CustomerController {
         Customer customer = customerService.getCustomerByBankAccountId(bankAccountId);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
+
+    @GetMapping("/phone/id/{phoneNumber}")
+    public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
+        Integer id = customerService.getIdByPhoneNumber(phoneNumber);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @GetMapping("/bankaccount/id/{bankAccountId}")
+    public ResponseEntity<Integer> getIdByByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
+        Integer id = customerService.getIdByBankAccountId(bankAccountId);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
 }

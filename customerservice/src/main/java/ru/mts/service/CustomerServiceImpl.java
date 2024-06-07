@@ -18,6 +18,7 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    //вернуть клиента по id
     @Override
     public Customer getCustomerById(Integer id) {
         checkId(id);
@@ -25,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
                 -> new NotFoundException("Клиент " + id + " не найден"));
     }
 
+    //вернуть клиента по номеру телефона
     @Override
     public Customer getCustomerByPhoneNumber(String phoneNumber) {
         checkPhoneNumber(phoneNumber);
@@ -32,6 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
                 -> new NotFoundException("Клиент с номером телефона " + phoneNumber + " не найден"));
     }
 
+    //вернуть клиента по номеру счета
     @Override
     public Customer getCustomerByBankAccountId(BigDecimal bankAccountId) {
         checkBankAccountId(bankAccountId);
@@ -39,6 +42,19 @@ public class CustomerServiceImpl implements CustomerService {
                 -> new NotFoundException("Клиент с номером счета " + bankAccountId + " не найден"));
     }
 
+    //вернуть id customer по телефону
+    @Override
+    public Integer getIdByPhoneNumber(String phoneNumber) {
+        return getCustomerByPhoneNumber(phoneNumber).getIdCustomers();
+    }
+
+    //вернуть id customer по номеру счета
+    @Override
+    public Integer getIdByBankAccountId(BigDecimal bankAccountId) {
+        return getCustomerByBankAccountId(bankAccountId).getIdCustomers();
+    }
+
+    //проверка id
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
@@ -46,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
+    //проверка номера телефона
     private boolean checkPhoneNumber(String phoneNumber) {
         if (phoneNumber.isBlank() || phoneNumber.length() != 11) {
             throw new ValidationException("Неверный номер телефона " + phoneNumber);
