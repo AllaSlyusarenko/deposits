@@ -1,6 +1,5 @@
 package ru.mts.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +23,6 @@ public class Deposit { //2.6
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_request")
     private Request request;
-
-//    @Column(name = "request_id")
-//    private Integer requestId;
 
     @Column(name = "customer_id")
     private Integer customerId;

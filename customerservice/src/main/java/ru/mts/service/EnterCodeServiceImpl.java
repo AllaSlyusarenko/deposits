@@ -19,14 +19,22 @@ public class EnterCodeServiceImpl {
 
     public String getLastEnterCodeByIdCustomer(Integer customerId) {
         checkId(customerId);
-        EnterCode enterCode = enterCodeRepository.findFirstByCustomer_IdCustomersOrderByIdEnterCodeDesc(customerId);
+        EnterCode enterCode = enterCodeRepository.findFirstByIdCustomerOrderByIdEnterCodeDesc(customerId);
         return enterCode.getCode();
     }
 
     public OffsetDateTime getLastEnterCodeDateTimeByIdCustomer(Integer customerId) {
         checkId(customerId);
-        EnterCode enterCode = enterCodeRepository.findFirstByCustomer_IdCustomersOrderByIdEnterCodeDesc(customerId);
+        EnterCode enterCode = enterCodeRepository.findFirstByIdCustomerOrderByIdEnterCodeDesc(customerId);
         return enterCode.getCodeDateTime();
+    }
+
+    public EnterCode saveEnterCode(Integer customerId) {
+        EnterCode enterCodeIn = new EnterCode();
+        int code = Math.toIntExact(Math.round(Math.random() * 9998));
+        enterCodeIn.setCode(String.valueOf(code));
+        enterCodeIn.setIdCustomer(customerId);
+        return enterCodeRepository.save(enterCodeIn);
     }
 
     //проверка id

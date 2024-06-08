@@ -22,9 +22,9 @@ create table if not exists customer.enter_code
 (
     id_enter_code   integer default nextval('customer.id_enter_code_sq')
                     constraint enter_code_pk primary key,
-    id_customers    integer not null REFERENCES customer.customers (id_customers),
-    code            varchar(4) not null,
-    code_date_time  timestamp with time zone default CURRENT_TIMESTAMP not null
+    id_customer     integer,
+    code            varchar(4),
+    code_date_time  timestamp with time zone default CURRENT_TIMESTAMP
 );
 
-alter sequence customer.id_enter_code_sq owned by customer.enter_code.id_customers;
+alter sequence customer.id_enter_code_sq owned by customer.enter_code.id_customer;

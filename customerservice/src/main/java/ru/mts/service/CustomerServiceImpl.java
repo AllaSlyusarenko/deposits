@@ -1,21 +1,28 @@
 package ru.mts.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.dto.EnterCodeIn;
 import ru.mts.entity.Customer;
+import ru.mts.entity.EnterCode;
 import ru.mts.exception.NotFoundException;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.CustomerRepository;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
+@Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final EnterCodeServiceImpl enterCodeService;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, EnterCodeServiceImpl enterCodeService) {
         this.customerRepository = customerRepository;
+        this.enterCodeService = enterCodeService;
     }
 
     //вернуть клиента по id
@@ -52,6 +59,27 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Integer getIdByBankAccountId(BigDecimal bankAccountId) {
         return getCustomerByBankAccountId(bankAccountId).getIdCustomers();
+    }
+
+    @Override
+    public String sendEnterCode(String phoneNumber) {
+        checkPhoneNumber(phoneNumber);
+        Integer customerId = getIdByPhoneNumber(phoneNumber);
+        EnterCode enterCode = enterCodeService.saveEnterCode(customerId);
+        String message = "Пользователю на номер " + phoneNumber + " отправлено смс с кодом";
+        log.info(message);
+        log.info(enterCode.getCode());
+        return message;
+    }
+
+    @Override
+    public boolean checkEnterCode(EnterCodeIn enterCodeIn) {
+        Integer id = enterCodeIn.getIdCustomer();
+        checkId(id);
+        String lastCode = enterCodeService.getLastEnterCodeByIdCustomer(id);
+        OffsetDateTime lastDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(id);
+        return lastCode.equals(enterCodeIn.getCode()) &&
+                enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
 
     //проверка id

@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.mts.dto.EnterCodeIn;
 import ru.mts.entity.Customer;
 import ru.mts.service.CustomerService;
 import ru.mts.service.EnterCodeServiceImpl;
@@ -69,5 +67,20 @@ public class CustomerController {
     public ResponseEntity<OffsetDateTime> getLastEnterCodeDateTimeByIdCustomer(@PathVariable(value = "customerId") Integer customerId) {
         OffsetDateTime codeDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(customerId);
         return new ResponseEntity<>(codeDateTime, HttpStatus.OK);
+    }
+
+    //отправить смс по телефону
+    @GetMapping("/sendcode/{phoneNumber}")
+    public ResponseEntity<String> sendCode(@PathVariable(value = "phoneNumber") String phoneNumber) {
+        String message = customerService.sendEnterCode(phoneNumber);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    //проверить смс код по customerId
+    @GetMapping("/checkcode/{customerId}")
+    public ResponseEntity<Boolean> getTest(@PathVariable(value = "customerId") Integer customerId,
+                                           @RequestBody EnterCodeIn enterCodeIn) {
+        Boolean isOk = customerService.checkEnterCode(enterCodeIn);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 }

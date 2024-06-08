@@ -22,9 +22,10 @@ public class EnterCode implements Serializable { //2.16
     @Column(name = "code_date_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime codeDateTime;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_customers")
-    private Customer customer;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_customers")
+    @Column(name = "id_customer")
+    private Integer idCustomer;
 
     public EnterCode() {
     }
@@ -35,7 +36,7 @@ public class EnterCode implements Serializable { //2.16
                 "idEnterCode=" + idEnterCode +
                 ", code='" + code + '\'' +
                 ", codeDateTime=" + codeDateTime +
-                ", customer=" + customer.getIdCustomers() +
+                ", customer=" + idCustomer +
                 '}';
     }
 

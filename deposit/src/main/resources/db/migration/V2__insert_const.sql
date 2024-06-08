@@ -44,6 +44,22 @@ VALUES (1, 'Вклад открыт'),
        (10, 'Вклад закрыт');
 
 -- 2.10
+INSERT INTO deposit.deposit_rate(id_deposit_rate, deposit_rate)
+VALUES (1, 15),
+       (2, 14.5),
+       (3, 14),
+       (4, 14),
+       (5, 13.5),
+       (6, 13),
+       (7, 13),
+       (8, 12.5),
+       (9, 12),
+       (10, 12),
+       (11, 11.5),
+       (12, 11),
+       (13, 11),
+       (14, 10.5),
+       (15, 10);
 
 -- пример запроса 2.3
 INSERT INTO deposit.requests(customer_id, is_deposit_refill, is_reduction_of_deposit, id_deposit_term, deposit_amount,
