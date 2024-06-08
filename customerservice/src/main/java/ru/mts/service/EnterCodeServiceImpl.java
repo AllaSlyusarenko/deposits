@@ -17,18 +17,19 @@ public class EnterCodeServiceImpl {
         this.enterCodeRepository = enterCodeRepository;
     }
 
+    //получить последний код по customerId
     public String getLastEnterCodeByIdCustomer(Integer customerId) {
         checkId(customerId);
         EnterCode enterCode = enterCodeRepository.findFirstByIdCustomerOrderByIdEnterCodeDesc(customerId);
         return enterCode.getCode();
     }
-
+    //получить время последнего кода по customerId
     public OffsetDateTime getLastEnterCodeDateTimeByIdCustomer(Integer customerId) {
         checkId(customerId);
         EnterCode enterCode = enterCodeRepository.findFirstByIdCustomerOrderByIdEnterCodeDesc(customerId);
         return enterCode.getCodeDateTime();
     }
-
+    //сохранить/ отправить код по customerId
     public EnterCode saveEnterCode(Integer customerId) {
         EnterCode enterCodeIn = new EnterCode();
         int code = Math.toIntExact(Math.round(Math.random() * 9998));

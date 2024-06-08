@@ -24,11 +24,11 @@ public class Request { //2.3
     @Column(name = "request_date_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime requestDateTime;
-    @Column(name = "code")
-    private String code; //изначально пусто
-    @Column(name = "code_date_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime codeDateTime; //изначально пусто
+//    @Column(name = "code")
+//    private String code; //изначально пусто
+//    @Column(name = "code_date_time")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private OffsetDateTime codeDateTime; //изначально пусто
     @Column(name = "is_deposit_refill")
     private boolean isDepositRefill; //пополнение депозита
     @Column(name = "is_reduction_of_deposit")
@@ -60,10 +60,10 @@ public class Request { //2.3
     public Request() {
     }
 
-    @PrePersist
-    protected void onRequestDateTime() {
-        requestDateTime = OffsetDateTime.now();
-    }
+//    @PrePersist
+//    protected void onRequestDateTime() {
+//        requestDateTime = OffsetDateTime.now();
+//    }
 
     @Override
     public String toString() {
@@ -71,8 +71,6 @@ public class Request { //2.3
                 "idRequest=" + idRequest +
                 ", customerId=" + customerId +
                 ", requestDateTime=" + requestDateTime +
-                ", code='" + code + '\'' +
-                ", codeDateTime=" + codeDateTime +
                 ", isDepositRefill=" + isDepositRefill +
                 ", isReductionOfDeposit=" + isReductionOfDeposit +
                 ", depositTerm=" + depositTerm +

@@ -98,6 +98,7 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
+    //проверка id банковского счета
     private boolean checkBankAccountId(BigDecimal bankAccountId) {
         if (bankAccountId.toString().isBlank() || bankAccountId.toString().length() != 20) {
             throw new ValidationException("Неверный номер счета " + bankAccountId);

@@ -44,8 +44,10 @@ public class Deposit { //2.6
     @Column(name = "end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime endDate;
-    @Column(name = "deposit_amount", columnDefinition = "money")
+    @Column(name = "deposit_amount")
     private BigDecimal depositAmount; //сумма вклада
+    @Column(name = "currency")
+    private String currency = "RUR";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_deposit_rate")
@@ -90,7 +92,7 @@ public class Deposit { //2.6
                 ", startDate=" + startDate +
                 ", depositTerm=" + depositTerm.getDepositTermName() +
                 ", endDate=" + endDate +
-                ", depositAmount=" + depositAmount +
+                ", depositAmount=" + depositAmount + currency +
                 ", depositRate=" + depositRate.getDepositRate() +
                 ", typesPercentPayment=" + typesPercentPayment.getTypePercentPaymentPeriod() +
                 ", depositAccountId=" + depositAccountId +

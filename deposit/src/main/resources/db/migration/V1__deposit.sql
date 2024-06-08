@@ -102,12 +102,13 @@ create table if not exists deposit.requests
                              constraint requests_pk primary key,
     customer_id              integer not null,
     request_date_time        timestamp with time zone default CURRENT_TIMESTAMP not null,
-    code                     varchar(4),
-    code_date_time           timestamp with time zone,
+--     code                     varchar(4),
+--     code_date_time           timestamp with time zone,
     is_deposit_refill        boolean not null,
     is_reduction_of_deposit  boolean not null,
     id_deposit_term          integer not null REFERENCES deposit.deposit_term (id_deposit_term),
-    deposit_amount           money default 10000 not null,
+    deposit_amount           numeric(20,2) default 10000 not null,
+    currency                 varchar(15) default 'RUR',
     id_type_percent_payment  integer not null REFERENCES deposit.types_percent_payment (id_type_percent_payment),
     percent_payment_account_id   numeric(20,0) not null,
     deposit_refund_account_id    numeric(20,0) not null,
@@ -176,3 +177,18 @@ create table if not exists deposit.current_deposit_status
     change_datetime     timestamp with time zone default CURRENT_TIMESTAMP,
     CONSTRAINT id_current_deposit_status_pk PRIMARY KEY (deposit_id, deposit_status_id)
 );
+
+-- 2.17
+
+CREATE SEQUENCE if not exists deposit.id_request_code_sq as integer START 1 INCREMENT BY 1;
+
+create table if not exists deposit.request_code
+(
+    id_request_code   integer default nextval('deposit.id_request_code_sq')
+                      constraint enter_code_pk primary key,
+    id_request        integer,
+    code              varchar(4),
+    code_date_time    timestamp with time zone default CURRENT_TIMESTAMP
+);
+
+alter sequence deposit.id_request_code_sq owned by deposit.request_code.id_request_code;
