@@ -72,13 +72,28 @@ public class CustomerServiceImpl implements CustomerService {
         return message;
     }
 
+//    //проверить смс код по customerId
+//    @Override
+//    public boolean checkEnterCode(EnterCodeIn enterCodeIn) {
+//        Integer id = enterCodeIn.getIdCustomer();
+//        checkId(id);
+//        String lastCode = enterCodeService.getLastEnterCodeByIdCustomer(id);
+//        OffsetDateTime lastDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(id);
+//        return lastCode.equals(enterCodeIn.getCode()) &&
+//                enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
+//    }
+
+    //проверить смс код по phoneNumber
     @Override
-    public boolean checkEnterCode(EnterCodeIn enterCodeIn) {
-        Integer id = enterCodeIn.getIdCustomer();
-        checkId(id);
+    public boolean checkEnterCodeByPhoneNumber(String code, String phoneNumber) {
+        Integer id = getIdByPhoneNumber(phoneNumber);
+        EnterCodeIn enterCodeIn = new EnterCodeIn();
+        enterCodeIn.setCode(code);
+        enterCodeIn.setCodeDateTime(OffsetDateTime.now());
+        enterCodeIn.setIdCustomer(id);
         String lastCode = enterCodeService.getLastEnterCodeByIdCustomer(id);
         OffsetDateTime lastDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(id);
-        return lastCode.equals(enterCodeIn.getCode()) &&
+        return lastCode.equals(code) &&
                 enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Стартовая страница</title>
+</head>
+<body>
+<p>Введите номер телефона</p>
+<form action="#"
+      th:action="@{/start}"
+      th:object="${phoneNumber}"
+      method="get">
+    <br>
+    <br>
+    <div>
+    <label for="phoneNumber">Номер телефона</label>
+    <input type="text" id="phoneNumber" th:field="*{phoneNumber}">
+    </div>
+    <br>
+    <br>
+    <form th:action="@{/start}" th:method="get">
+        <input type="submit" name="action" value="Отправить код для входа">
+    </form>
+</form>
+
+</body>
+</html>

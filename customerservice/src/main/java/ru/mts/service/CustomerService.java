@@ -12,5 +12,6 @@ public interface CustomerService {
     Integer getIdByPhoneNumber(String phoneNumber);
     Integer getIdByBankAccountId(BigDecimal bankAccountId);
     String sendEnterCode(String phoneNumber);
-    boolean checkEnterCode(EnterCodeIn enterCodeIn);
+//    boolean checkEnterCode(EnterCodeIn enterCodeIn);
+    boolean checkEnterCodeByPhoneNumber(String code, String phoneNumber);
 }

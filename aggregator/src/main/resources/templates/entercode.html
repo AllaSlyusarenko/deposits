@@ -2,9 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Код для входа в аккаунт</title>
 </head>
 <body>
-
+<p>Введите код для входа</p>
+<form action="#"
+      th:action="@{/entercode}"
+      th:object="${enterCode}"
+      method="get">
+    <br>
+    <br>
+    <label for="code">Код из смс</label>
+    <input type="text" id="code" th:field="*{code}">
+    <br>
+    <form th:action="@{/entercode}" th:method="get">
+        <input type="submit" name="action" value="Подтвердить код">
+    </form>
+    <br>
+    <form th:action="@{/start}" th:method="get">
+        <input type="submit" name="action" value="Назад">
+    </form>
+</form>
 </body>
+
 </html>

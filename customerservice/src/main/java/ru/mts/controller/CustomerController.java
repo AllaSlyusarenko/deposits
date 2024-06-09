@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mts.dto.EnterCodeIn;
 import ru.mts.entity.Customer;
+import ru.mts.exception.NotFoundException;
 import ru.mts.service.CustomerService;
 import ru.mts.service.EnterCodeServiceImpl;
 
@@ -47,7 +48,12 @@ public class CustomerController {
 
     @GetMapping("/phone/id/{phoneNumber}")
     public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
-        Integer id = customerService.getIdByPhoneNumber(phoneNumber);
+        Integer id;
+        try {
+            id = customerService.getIdByPhoneNumber(phoneNumber);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
@@ -76,11 +82,19 @@ public class CustomerController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //проверить смс код по customerId
-    @GetMapping("/checkcode/{customerId}")
-    public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
-                                           @RequestBody EnterCodeIn enterCodeIn) {
-        Boolean isOk = customerService.checkEnterCode(enterCodeIn);
+//    //проверить смс код по customerId
+//    @GetMapping("/checkcode/{customerId}")
+//    public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
+//                                             @RequestBody EnterCodeIn enterCodeIn) {
+//        Boolean isOk = customerService.checkEnterCode(enterCodeIn);
+//        return new ResponseEntity<>(isOk, HttpStatus.OK);
+//    }
+
+    //проверить смс код по phoneNumber
+    @GetMapping("/checkcode/{code}/{phoneNumber}")
+    public ResponseEntity<Boolean> checkCodeByPhoneNumber(@PathVariable(value = "code") String code,
+                                                          @PathVariable(value = "phoneNumber") String phoneNumber) {
+        Boolean isOk = customerService.checkEnterCodeByPhoneNumber(code, phoneNumber);
         return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 }

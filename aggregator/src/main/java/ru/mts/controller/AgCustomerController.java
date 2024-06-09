@@ -21,10 +21,10 @@ public class AgCustomerController {
         this.customerMicroService = customerMicroService;
     }
 
-    @GetMapping("/phone/id/{phoneNumber}")
-    public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
-        Integer id = customerMicroService.getCustomerIdByPhoneNumber(phoneNumber);
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }
+//    @GetMapping("/phone/id/{phoneNumber}")
+//    public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
+//        Integer id = customerMicroService.getCustomerIdByPhoneNumber(phoneNumber);
+//        return new ResponseEntity<>(id, HttpStatus.OK);
+//    }
 
 }

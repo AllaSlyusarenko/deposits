@@ -15,10 +15,12 @@ import java.util.List;
 @Service
 public class DepositMicroService {
     private final RestTemplate restTemplate;
+    private final CustomerMicroService customerMicroService;
 
     @Autowired
-    public DepositMicroService(RestTemplate restTemplate) {
+    public DepositMicroService(RestTemplate restTemplate, CustomerMicroService customerMicroService) {
         this.restTemplate = restTemplate;
+        this.customerMicroService = customerMicroService;
     }
 
     //получить все depositTerm
@@ -50,5 +52,10 @@ public class DepositMicroService {
             throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + typesPercentPayments.getBody());
         }
     }
+
+    //отправить заявку на сохранение
+
+
+
 
 }
