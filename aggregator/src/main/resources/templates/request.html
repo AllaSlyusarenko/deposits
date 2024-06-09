@@ -47,6 +47,17 @@
         </select>
     </div>
     <br>
+    <div class="form-group">
+        <label>Cчет для выплаты процентов</label>
+        <select th:field="*{percentPaymentAccountId}">
+            <option th:value="''" th:text="Select"></option>
+            <option th:each="type : ${percentPaymentAccountId}"
+                    th:value="${type}"
+                    th:text="${type}">
+            </option>
+        </select>
+    </div>
+    <br>
 <!--    <form th:action="@{/rate}" th:method="get">-->
 <!--        <input type="submit" name="action" value="Показать проценты">-->
 <!--    </form>-->

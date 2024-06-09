@@ -37,6 +37,14 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    public BigDecimal getBankAccountByIdAccount(Integer id) {
+        checkId(id);
+        BankAccount bankAccount = bankAccountRepository.findByIdBankAccounts(id).orElseThrow(()
+                -> new NotFoundException("Банковский счет с id " + id + " не найден"));
+        return bankAccount.getNumBankAccounts();
+    }
+
+    @Override
     public BankAccount getBankAccountByNum(BigDecimal num) {
         return bankAccountRepository.findByNumBankAccounts(num).orElseThrow(()
                 -> new NotFoundException("Банковский счет с р/с " + num + " не найден"));

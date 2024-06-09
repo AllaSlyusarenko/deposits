@@ -10,7 +10,8 @@ create table if not exists account.bank_accounts
                       constraint bank_accounts_pk primary key,
     num_bank_accounts numeric(20,0) unique not null,
     amount            numeric(20,2) not null,
-    currency          varchar(15) default 'RUR'
+    currency          varchar(15) default 'RUR',
+    is_active         boolean not null
 );
 
 alter sequence account.id_bank_accounts_sq owned by account.bank_accounts.id_bank_accounts;

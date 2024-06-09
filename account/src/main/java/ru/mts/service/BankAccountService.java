@@ -18,4 +18,5 @@ public interface BankAccountService {
     BankAccount reduceBalance(Integer id, BigDecimal incAmount);
 
     BankAccount[] transferBalance(Integer from, Integer to, BigDecimal transferAmount);
+    BigDecimal getBankAccountByIdAccount(Integer id);
 }

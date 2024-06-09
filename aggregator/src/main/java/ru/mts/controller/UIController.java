@@ -10,6 +10,7 @@ import ru.mts.entity.*;
 import ru.mts.service.CustomerMicroService;
 import ru.mts.service.DepositMicroService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -49,14 +50,15 @@ public class UIController {
     public String entercode(Model model,
                             @RequestParam(name = "code") String code) {
         //проверка правильности кода если верно то депозит, иначе опять код
+        if (code == null || code.isEmpty()) {
+            return "errorentercode";
+        }
         if (customerMicroService.checkCodeByPhoneNumber(code)) {
             return "redirect:/deposit";
         }
-        return "redirect:/start";
+        return "errorentercode";
     }
 
-    //    start?phoneNumber=123&action=Отправить+код+для+входа
-//    entercode?action=Отправить+код+для+входа
     @GetMapping("/deposit")
     public String deposit(Model model) {
         return "deposit";
@@ -71,6 +73,11 @@ public class UIController {
         //получение типов выплат процентов
         List<TypesPercentPayment> allTypesPercentPayment = depositMicroService.getAllTypesPercentPayment();
         model.addAttribute("typesPercentPayment", allTypesPercentPayment);
+        //достать активные счета по телефону
+        List<BigDecimal> accounts = customerMicroService.listAccountsByPhoneNumber();
+        model.addAttribute("percentPaymentAccountId", accounts);
+        model.addAttribute("depositRefundAccountId", accounts);
+        model.addAttribute("depositDebitingAccountId", accounts);
         return "request";
     }
 

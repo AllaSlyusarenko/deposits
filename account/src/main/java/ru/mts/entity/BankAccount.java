@@ -21,6 +21,9 @@ public class BankAccount { //2.1
     private BigDecimal amount;
     @Column(name = "currency")
     private String currency = "RUR";
+    @Column(name = "is_active") //поле активный ли счет
+    private Boolean isActive;
+
 
     public BankAccount() {
     }

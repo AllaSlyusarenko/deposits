@@ -4,16 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.mts.dto.EnterCodeIn;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.mts.entity.Customer;
 import ru.mts.exception.NotFoundException;
 import ru.mts.service.CustomerService;
 import ru.mts.service.EnterCodeServiceImpl;
 
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,11 +42,11 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @GetMapping("/bankaccount/{bankAccountId}")
-    public ResponseEntity<Customer> getCustomerByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
-        Customer customer = customerService.getCustomerByBankAccountId(bankAccountId);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
-    }
+//    @GetMapping("/bankaccount/{bankAccountId}")
+//    public ResponseEntity<Customer> getCustomerByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
+//        Customer customer = customerService.getCustomerByBankAccountId(bankAccountId);
+//        return new ResponseEntity<>(customer, HttpStatus.OK);
+//    }
 
     @GetMapping("/phone/id/{phoneNumber}")
     public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
@@ -57,11 +59,11 @@ public class CustomerController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @GetMapping("/bankaccount/id/{bankAccountId}")
-    public ResponseEntity<Integer> getIdByByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
-        Integer id = customerService.getIdByBankAccountId(bankAccountId);
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }
+//    @GetMapping("/bankaccount/id/{bankAccountId}")
+//    public ResponseEntity<Integer> getIdByByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
+//        Integer id = customerService.getIdByBankAccountId(bankAccountId);
+//        return new ResponseEntity<>(id, HttpStatus.OK);
+//    }
 
     @GetMapping("/code/id/{customerId}")
     public ResponseEntity<String> getLastEnterCodeByIdCustomer(@PathVariable(value = "customerId") Integer customerId) {
@@ -96,5 +98,12 @@ public class CustomerController {
                                                           @PathVariable(value = "phoneNumber") String phoneNumber) {
         Boolean isOk = customerService.checkEnterCodeByPhoneNumber(code, phoneNumber);
         return new ResponseEntity<>(isOk, HttpStatus.OK);
+    }
+
+    //получить id активных банковских счетов по phoneNumber
+    @GetMapping("/accounts/{phoneNumber}")
+    public ResponseEntity<Integer[]> getaAccountsByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
+        Integer[] ids = customerService.getAccountsByPhoneNumber(phoneNumber).toArray(Integer[]::new);
+        return new ResponseEntity<>(ids, HttpStatus.OK);
     }
 }

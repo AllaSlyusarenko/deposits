@@ -5,6 +5,10 @@
     <title>ErrorEnterCode</title>
 </head>
 <body>
+<p>Неверный код, повторите попытку</p>
 
+<form th:action="@{/start}" th:method="get">
+    <input type="submit" name="action" value="Вернуться">
+</form>
 </body>
 </html>

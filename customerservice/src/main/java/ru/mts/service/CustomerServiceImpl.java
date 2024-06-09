@@ -12,17 +12,20 @@ import ru.mts.repository.CustomerRepository;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final EnterCodeServiceImpl enterCodeService;
+    private final BankAccountCustomerService bankAccountCustomerService;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, EnterCodeServiceImpl enterCodeService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, EnterCodeServiceImpl enterCodeService, BankAccountCustomerService bankAccountCustomerService) {
         this.customerRepository = customerRepository;
         this.enterCodeService = enterCodeService;
+        this.bankAccountCustomerService = bankAccountCustomerService;
     }
 
     //вернуть клиента по id
@@ -41,24 +44,10 @@ public class CustomerServiceImpl implements CustomerService {
                 -> new NotFoundException("Клиент с номером телефона " + phoneNumber + " не найден"));
     }
 
-    //вернуть клиента по номеру счета
-    @Override
-    public Customer getCustomerByBankAccountId(BigDecimal bankAccountId) {
-        checkBankAccountId(bankAccountId);
-        return customerRepository.findByBankAccountId(bankAccountId).orElseThrow(()
-                -> new NotFoundException("Клиент с номером счета " + bankAccountId + " не найден"));
-    }
-
     //вернуть id customer по телефону
     @Override
     public Integer getIdByPhoneNumber(String phoneNumber) {
         return getCustomerByPhoneNumber(phoneNumber).getIdCustomers();
-    }
-
-    //вернуть id customer по номеру счета
-    @Override
-    public Integer getIdByBankAccountId(BigDecimal bankAccountId) {
-        return getCustomerByBankAccountId(bankAccountId).getIdCustomers();
     }
 
     @Override
@@ -95,6 +84,13 @@ public class CustomerServiceImpl implements CustomerService {
         OffsetDateTime lastDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(id);
         return lastCode.equals(code) &&
                 enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
+    }
+
+    //получить id активных банковских счетов по phoneNumber
+    @Override
+    public List<Integer> getAccountsByPhoneNumber(String phoneNumber) {
+        Integer idCustomer = getIdByPhoneNumber(phoneNumber);
+        return bankAccountCustomerService.findAllByCustomerId(idCustomer);
     }
 
     //проверка id

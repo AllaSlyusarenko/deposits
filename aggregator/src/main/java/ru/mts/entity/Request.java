@@ -10,10 +10,10 @@ import java.time.OffsetDateTime;
 @Data
 public class Request {
 
-    private Integer customerId; //не будет показано
+//    private Integer customerId; //не будет показано
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime requestDateTime;//не будет показано
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private OffsetDateTime requestDateTime;//не будет показано
 
     private boolean isDepositRefill; //пополнение депозита - true/false
     private boolean isReductionOfDeposit; //уменьшение депозита - true/false
@@ -28,8 +28,8 @@ public class Request {
     public Request() {
     }
 
-    @PrePersist
-    protected void onRequestDateTime() {
-        requestDateTime = OffsetDateTime.now();
-    }
+//    @PrePersist
+//    protected void onRequestDateTime() {
+//        requestDateTime = OffsetDateTime.now();
+//    }
 }

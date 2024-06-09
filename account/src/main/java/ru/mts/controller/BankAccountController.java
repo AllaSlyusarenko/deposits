@@ -30,9 +30,15 @@ public class BankAccountController {
         return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
     }
 
+//    @GetMapping("/id/{id}")
+//    public ResponseEntity<BankAccount> getBankAccountById(@PathVariable(value = "id") @Positive Integer id) {
+//        BankAccount bankAccount = bankAccountService.getBankAccountById(id);
+//        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
+//    }
+
     @GetMapping("/id/{id}")
-    public ResponseEntity<BankAccount> getBankAccountById(@PathVariable(value = "id") @Positive Integer id) {
-        BankAccount bankAccount = bankAccountService.getBankAccountById(id);
+    public ResponseEntity<BigDecimal> getBankAccountByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
+        BigDecimal bankAccount = bankAccountService.getBankAccountByIdAccount(id);
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
 

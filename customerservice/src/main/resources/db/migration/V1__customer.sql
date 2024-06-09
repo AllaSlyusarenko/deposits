@@ -8,7 +8,6 @@ create table if not exists customer.customers
 (
     id_customers    integer default nextval('customer.id_customers_sq')
                     constraint customers_pk primary key,
-    bank_account_id numeric(20,0) not null,
     phone_number    varchar(11) unique not null
 );
 
@@ -28,3 +27,17 @@ create table if not exists customer.enter_code
 );
 
 alter sequence customer.id_enter_code_sq owned by customer.enter_code.id_customer;
+
+-- 2.18
+
+CREATE SEQUENCE if not exists customer.id_bank_account_customer_sq as integer START 1 INCREMENT BY 1;
+
+create table if not exists customer.bank_account_customer
+(
+    id_bank_account_customer   integer default nextval('customer.id_bank_account_customer_sq')
+                               constraint bank_account_customer_pk primary key,
+    customer_id                integer not null,
+    bank_account_id            integer not null
+);
+
+alter sequence customer.id_bank_account_customer_sq owned by customer.bank_account_customer.id_bank_account_customer;
