@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Request</title>
+</head>
+<form action="#"
+      th:action="@{/request}"
+      th:object="${request}"
+      method="get">
+    <p>Подбор условий вклада</p>
+
+    <select id="isDepositRefill" name="С пополнением депозита" class="form-select" aria-label="select">
+        <option value="1">с пополнением</option>
+        <option value="0">без пополнения</option>
+    </select>
+
+    <select id="isReductionOfDeposit" name="Со снятием с депозита" class="form-select" aria-label="select">
+        <option value="1">со снятием</option>
+        <option value="0">без снятия</option>
+    </select>
+    <br>
+    <br>
+    <div class="form-group">
+        <label>Срок вклада</label>
+        <select th:field="*{depositTerm.depositTermName}">
+            <option th:value="''" th:text="Select"></option>
+            <option th:each="term : ${depositTerm}"
+                    th:value="${term.depositTermName}"
+                    th:text="${term.depositTermName}">
+            </option>
+        </select>
+    </div>
+    <br>
+    <label for="depositAmount">Стоимость</label>
+    <input type="text" id="depositAmount" th:field="*{depositAmount}">
+    <br>
+    <br>
+    <div class="form-group">
+        <label>Тип выплаты процентов</label>
+        <select th:field="*{typesPercentPayment.typePercentPaymentPeriod}">
+            <option th:value="''" th:text="Select"></option>
+            <option th:each="type : ${typesPercentPayment}"
+                    th:value="${type.typePercentPaymentPeriod}"
+                    th:text="${type.typePercentPaymentPeriod}">
+            </option>
+        </select>
+    </div>
+    <br>
+</form>
+<br>
+<form th:action="@{/rate}" th:method="get">
+    <input type="submit" name="action" value="Показать проценты">
+</form>
+<br>
+<form th:action="@{/requestcode}" th:method="get">
+    <input type="submit" name="action" value="Принять условия">
+</form>
+<br>
+<form th:action="@{/deposit}" th:method="get">
+    <input type="submit" name="action" value="Назад">
+</form>
+
+
+</html>

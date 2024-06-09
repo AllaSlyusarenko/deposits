@@ -18,13 +18,13 @@ public class RequestCodeServiceImpl {
     }
 
     //получить последний код по idRequest
-    public String getLastRequestCodeByIdCustomer(Integer idRequest) {
+    public String getLastRequestCodeByIdRequestCode(Integer idRequest) {
         checkId(idRequest);
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCode();
     }
     //получить время последнего кода по idRequest
-    public OffsetDateTime getLastRequestCodeDateTimeByIdCustomer(Integer idRequest) {
+    public OffsetDateTime getLastRequestCodeDateTimeByIdRequestCode(Integer idRequest) {
         checkId(idRequest);
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCodeDateTime();

@@ -78,7 +78,7 @@ public class CustomerController {
 
     //проверить смс код по customerId
     @GetMapping("/checkcode/{customerId}")
-    public ResponseEntity<Boolean> getTest(@PathVariable(value = "customerId") Integer customerId,
+    public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
                                            @RequestBody EnterCodeIn enterCodeIn) {
         Boolean isOk = customerService.checkEnterCode(enterCodeIn);
         return new ResponseEntity<>(isOk, HttpStatus.OK);

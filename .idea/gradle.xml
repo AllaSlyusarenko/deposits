@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/account" />
             <option value="$PROJECT_DIR$/aggregator" />
             <option value="$PROJECT_DIR$/customerservice" />
+            <option value="$PROJECT_DIR$/deposit" />
           </set>
         </option>
       </GradleProjectSettings>

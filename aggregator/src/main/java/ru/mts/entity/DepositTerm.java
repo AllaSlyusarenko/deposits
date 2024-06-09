@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DepositTerm {
-    private Integer id;
+    private Integer idDepositTerm;
     private String depositTermName;
 
     public DepositTerm() {

@@ -3,10 +3,13 @@ package ru.mts.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.dto.RequestCodeIn;
 import ru.mts.dto.RequestDtoIn;
 import ru.mts.entity.*;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.*;
+
+import java.time.OffsetDateTime;
 
 @Slf4j
 @Service
@@ -68,6 +71,23 @@ public class RequestServiceImpl {
         log.info(message);
         log.info(requestCode.getCode());
         return message;
+    }
+
+    public boolean checkEnterCode(Integer requestId, RequestCodeIn requestCodeIn) {
+//        Integer id = enterCodeIn.getIdCustomer();
+//        checkId(id);
+        String lastCode = requestCodeService.getLastRequestCodeByIdRequestCode(requestId);
+        OffsetDateTime lastDateTime = requestCodeService.getLastRequestCodeDateTimeByIdRequestCode(requestId);
+        return lastCode.equals(requestCodeIn.getCode()) &&
+                requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
+    }
+
+    //проверка id
+    private boolean checkId(Integer id) {
+        if (id <= 0) {
+            throw new ValidationException("Неверный id " + id);
+        }
+        return true;
     }
 
     //проверка номера телефона
