@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @Table(name = "current_deposit_status", schema = "deposit")
 public class CurrentDepositStatus { //2.11
     @EmbeddedId
-    private CurrentDepositStatusId id;
+    private CurrentDepositStatusId id = new CurrentDepositStatusId();
 
     @MapsId("depositId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

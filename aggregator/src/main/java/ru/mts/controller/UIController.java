@@ -92,7 +92,7 @@ public class UIController {
     public String saveRequest(Model model, RequestIn requestin) {
 
         //проверить заполнены ли все поля и правильность их заполнения(да/нет), сумма>=10000
-        if (!depositMicroService.checkRequestIn(requestin)){
+        if (!depositMicroService.checkRequestIn(requestin)) {
             return "requesterror";
 
         }
@@ -100,13 +100,30 @@ public class UIController {
         //отправить на сохранение
         Integer idRequest = depositMicroService.saveRequest(request);
         //отправить смс для подтверждения
+        depositMicroService.sendRequestCode(idRequest);
         return "redirect:/requestcode";
     }
 
     @GetMapping("/requestcode")
     public String requestcode(Model model) {
+        model.addAttribute("requestcode", new RequestCode());
         return "requestcode";
     }
+
+    @GetMapping(value = "/requestcode", params = "action=Подтвердить код")
+    public String requestcode(Model model,
+                              @RequestParam(name = "code") String code) {
+        //проверка правильности кода если верно то депозит, иначе опять код
+        if (code == null || code.isEmpty()) {
+            return "errorrequestcode";
+        }
+        //проверить - отправить код на проверку
+        //при проверке - если да, то поменять статус заявки на подтверждена idRequest
+        return "errorrequestcode";
+    }
+
+
+    //подтвердить пароль
 
     @GetMapping("/rate")
     public String depositrate(Model model) {

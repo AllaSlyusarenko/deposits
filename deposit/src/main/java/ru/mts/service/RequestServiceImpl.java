@@ -60,7 +60,7 @@ public class RequestServiceImpl {
         statusIn.setIdRequest(createdRequest);
         RequestStatus requestStatus = requestStatusRepository.findById(1);
         statusIn.setIdRequestStatus(requestStatus);
-        CurrentRequestStatus status = currentRequestStatusRepository.save(statusIn);
+        currentRequestStatusRepository.save(statusIn);
         //отправить код по телефону - customerId
         return createdRequest.getIdRequest();
     }

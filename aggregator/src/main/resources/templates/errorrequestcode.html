@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ошибка подтверждения заявки</title>
+</head>
+<body>
+<p>Неверный код, повторите попытку</p>
+
+<form th:action="@{/request}" th:method="get">
+    <input type="submit" name="action" value="Вернуться">
+</form>
+</body>
+</html>

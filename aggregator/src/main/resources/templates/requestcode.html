@@ -6,6 +6,23 @@
 </head>
 <body>
 <p>Подтверждение заявки</p>
+<p>Введите код для подтверждения заявки</p>
+<form action="#"
+      th:action="@{/requestcode}"
+      th:object="${requestcode}"
+      method="get">
+    <br>
 
+    <label for="code">Код из смс</label>
+    <input type="text" id="code" th:field="*{code}">
+    <br>
+    <form th:action="@{/requestcode}" th:method="get">
+        <input type="submit" name="action" value="Подтвердить код">
+    </form>
+    <br>
+    <form th:action="@{/request}" th:method="get">
+        <input type="submit" name="action" value="Назад">
+    </form>
+</form>
 </body>
 </html>

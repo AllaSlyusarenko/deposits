@@ -121,12 +121,12 @@ public class DepositMicroService {
     }
 
     //отправить смс для подтверждения
-    public String sendRequestCode(Integer idRequest) {
+    public void sendRequestCode(Integer idRequest) {
         ResponseEntity<String> code =
                 restTemplate.getForEntity("http://localhost:8082/request/sendcode/" + idRequest + "/" + CustomerMicroService.getPhoneNumber(),
                         String.class);
         if (code.getStatusCode().is2xxSuccessful()) {
-            return code.getBody();
+            code.getBody();
         } else {
             throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + code.getBody());
         }
