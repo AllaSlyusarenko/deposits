@@ -105,20 +105,24 @@ public class UIController {
     }
 
     @GetMapping("/requestcode")
-    public String requestcode(Model model) {
+    public String requestCode(Model model) {
         model.addAttribute("requestcode", new RequestCode());
         return "requestcode";
     }
 
     @GetMapping(value = "/requestcode", params = "action=Подтвердить код")
-    public String requestcode(Model model,
-                              @RequestParam(name = "code") String code) {
+    public String checkRequestCode(Model model,
+                                   @RequestParam(name = "code") String code) {
         //проверка правильности кода если верно то депозит, иначе опять код
         if (code == null || code.isEmpty()) {
             return "errorrequestcode";
         }
         //проверить - отправить код на проверку
+        if (depositMicroService.checkRequestCode(code)) {
+          code
+        }
         //при проверке - если да, то поменять статус заявки на подтверждена idRequest
+        //и сразу на одобрение суммы в account
         return "errorrequestcode";
     }
 

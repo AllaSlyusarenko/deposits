@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.mts.dto.RequestCodeIn;
 import ru.mts.dto.RequestInDto;
 import ru.mts.entity.*;
+import ru.mts.exception.NotFoundException;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.*;
 
@@ -83,6 +84,35 @@ public class RequestServiceImpl {
         return lastCode.equals(requestCodeIn.getCode()) &&
                 requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
+
+    public boolean checkRequestCode(Integer customerId, String code) {
+//        Integer id = enterCodeIn.getIdCustomer();
+//        checkId(id);
+        //по customerId найти id последней заявки
+        Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
+                .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+        Integer requestId = request.getIdRequest();
+        RequestCodeIn requestCodeIn = new RequestCodeIn();
+        requestCodeIn.setCode(code);
+        requestCodeIn.setCodeDateTime(OffsetDateTime.now());
+        requestCodeIn.setIdRequest(requestId);
+
+        String lastCode = requestCodeService.getLastRequestCodeByIdRequest(requestId);
+        OffsetDateTime lastDateTime = requestCodeService.getLastRequestCodeDateTimeByIdRequestCode(requestId);
+        if (lastCode.equals(requestCodeIn.getCode()) &&
+                requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1))) {
+            //присвоить статус - Заявка подтверждена
+            CurrentRequestStatus statusIn = new CurrentRequestStatus();
+            statusIn.setIdRequest(request);
+            RequestStatus requestStatus = requestStatusRepository.findById(2);
+            statusIn.setIdRequestStatus(requestStatus);
+            currentRequestStatusRepository.save(statusIn);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     //проверка id
     private boolean checkId(Integer id) {

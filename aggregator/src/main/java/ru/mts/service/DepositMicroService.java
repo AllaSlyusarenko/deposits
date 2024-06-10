@@ -121,14 +121,26 @@ public class DepositMicroService {
     }
 
     //отправить смс для подтверждения
-    public void sendRequestCode(Integer idRequest) {
-        ResponseEntity<String> code =
-                restTemplate.getForEntity("http://localhost:8082/request/sendcode/" + idRequest + "/" + CustomerMicroService.getPhoneNumber(),
-                        String.class);
+    public Boolean sendRequestCode(Integer idRequest) {
+        ResponseEntity<Boolean> code =
+                restTemplate.getForEntity("http://localhost:8082/request/checkcode",
+                        Boolean.class);
         if (code.getStatusCode().is2xxSuccessful()) {
-            code.getBody();
+            return code.getBody();
         } else {
             throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + code.getBody());
+        }
+    }
+
+    //проверка правильности смс кода для Request
+    public Boolean checkRequestCode(String code) {
+        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
+        ResponseEntity<Boolean> isOk =
+                restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + idCustomer, Boolean.class);
+        if (isOk.getStatusCode().is2xxSuccessful()) {
+            return isOk.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + code);
         }
     }
 

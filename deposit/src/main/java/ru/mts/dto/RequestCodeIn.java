@@ -16,8 +16,8 @@ public class RequestCodeIn {
     public RequestCodeIn() {
     }
 
-    @PrePersist
-    protected void onCreate() {
-        codeDateTime = OffsetDateTime.now();
-    }
+//    @PrePersist
+//    protected void onCreate() {
+//        codeDateTime = OffsetDateTime.now();
+//    }
 }

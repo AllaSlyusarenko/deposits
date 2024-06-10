@@ -46,11 +46,11 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //проверить смс код по requestid
-    @GetMapping("/checkcode/{requestId}")
-    public ResponseEntity<Boolean> checkCode(@PathVariable(value = "requestId") Integer requestId,
-                                             @RequestBody RequestCodeIn requestCodeIn) {
-        Boolean isOk = requestService.checkEnterCode(requestId, requestCodeIn);
+    //проверить смс код по customerId - последняя заявка
+    @GetMapping("/checkcode/{code}/{customerId}")
+    public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
+                                             @PathVariable(value = "code") String code) {
+        Boolean isOk = requestService.checkRequestCode(customerId, code);
         return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 
