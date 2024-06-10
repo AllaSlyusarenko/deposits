@@ -4,11 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mts.dto.RequestCodeIn;
-import ru.mts.dto.RequestDtoIn;
+import ru.mts.dto.RequestInDto;
 import ru.mts.entity.*;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.*;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Slf4j
@@ -33,23 +34,24 @@ public class RequestServiceImpl {
 
 
     //создать заявку
-    public Request createRequest(Integer customerId, RequestDtoIn requestDtoIn) {
+    public Request createRequest(Integer customerId, RequestInDto requestDtoIn) {
+        //найти все составляющие id
         Request request = new Request();
         request.setCustomerId(customerId);
-        request.setRequestDateTime(requestDtoIn.getRequestDateTime());
+//        request.setRequestDateTime(OffsetDateTime.now());
         request.setDepositRefill(requestDtoIn.isDepositRefill());
         request.setReductionOfDeposit(requestDtoIn.isReductionOfDeposit());
         request.setDepositAmount(requestDtoIn.getDepositAmount());
-        request.setPercentPaymentAccountId(requestDtoIn.getPercentPaymentAccountId());
-        request.setDepositRefundAccountId(requestDtoIn.getDepositRefundAccountId());
-        request.setDepositDebitingAccountId(requestDtoIn.getDepositDebitingAccountId());
+        request.setPercentPaymentAccountId(new BigDecimal(requestDtoIn.getPercentPaymentAccountId().getNumBankAccounts()));
+        request.setDepositRefundAccountId(new BigDecimal(requestDtoIn.getDepositRefundAccountId().getNumBankAccounts()));
+        request.setDepositDebitingAccountId(new BigDecimal(requestDtoIn.getDepositDebitingAccountId().getNumBankAccounts()));
 
         //DepositTerm
-        DepositTerm depositTerm = depositTermRepository.findDepositTermByDepositTermName(requestDtoIn.getDepositTerm());
+        DepositTerm depositTerm = depositTermRepository.findDepositTermByDepositTermName(requestDtoIn.getDepositTerm().getDepositTermName());
         request.setDepositTerm(depositTerm);
         //TypesPercentPayment
         TypesPercentPayment typesPercentPayment =
-                typesPercentPaymentRepository.findTypesPercentPaymentByTypePercentPaymentPeriod(requestDtoIn.getTypesPercentPayment());
+                typesPercentPaymentRepository.findTypesPercentPaymentByTypePercentPaymentPeriod(requestDtoIn.getTypesPercentPayment().getTypePercentPaymentPeriod());
         request.setTypesPercentPayment(typesPercentPayment);
         Request createdRequest = requestRepository.save(request);
 

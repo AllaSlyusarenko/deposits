@@ -6,19 +6,16 @@
 </head>
 <form action="#"
       th:action="@{/request}"
-      th:object="${request}"
+      th:object="${requestin}"
       method="post">
     <p>Подбор условий вклада</p>
-
-    <select id="isDepositRefill" name="С пополнением депозита" class="form-select" aria-label="select">
-        <option value="1">с пополнением</option>
-        <option value="0">без пополнения</option>
-    </select>
-
-    <select id="isReductionOfDeposit" name="Со снятием с депозита" class="form-select" aria-label="select">
-        <option value="1">со снятием</option>
-        <option value="0">без снятия</option>
-    </select>
+    <br>
+    <br>
+    <label for="isDepositRefill">С пополнением вклада (да/нет)</label>
+    <input type="text" id="isDepositRefill" th:field="*{isDepositRefill}">
+    <br>
+    <label for="isReductionOfDeposit">Со снятием с вклада (да/нет)</label>
+    <input type="text" id="isReductionOfDeposit" th:field="*{isReductionOfDeposit}">
     <br>
     <br>
     <div class="form-group">
@@ -81,9 +78,10 @@
         </select>
     </div>
     <br>
-<!--    <form th:action="@{/rate}" th:method="get">-->
-<!--        <input type="submit" name="action" value="Показать проценты">-->
-<!--    </form>-->
+    <br>
+    <!--    <form th:action="@{/rate}" th:method="get">-->
+    <!--        <input type="submit" name="action" value="Показать проценты">-->
+    <!--    </form>-->
     <input type="submit" name="action" value="Показать проценты">
     <input type="submit" name="action" value="Принять условия">
     <input type="submit" name="action" value="Назад">

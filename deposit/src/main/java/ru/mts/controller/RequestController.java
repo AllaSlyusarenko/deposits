@@ -6,10 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mts.dto.RequestCodeIn;
-import ru.mts.dto.RequestDtoIn;
+import ru.mts.dto.RequestInDto;
 import ru.mts.entity.Request;
 import ru.mts.service.RequestCodeServiceImpl;
 import ru.mts.service.RequestServiceImpl;
+
+import java.rmi.UnexpectedException;
 
 @Slf4j
 @RestController
@@ -26,10 +28,16 @@ public class RequestController {
 
     //customerId, создать заявку   - возможно возвращать только id request
     @GetMapping("/{customerId}/save")
-    public ResponseEntity<Request> sendCode(@PathVariable(value = "customerId") Integer customerId,
-                                            @RequestBody RequestDtoIn requestDtoIn) {
-        Request request = requestService.createRequest(customerId, requestDtoIn);
-        return new ResponseEntity<>(request, HttpStatus.OK);
+    public ResponseEntity<Boolean> saveRequest(@PathVariable(value = "customerId") Integer customerId,
+                                               @RequestBody RequestInDto requestDtoIn) {
+        try {
+            requestService.createRequest(customerId, requestDtoIn);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+        //Request request = requestService.createRequest(customerId, requestDtoIn);
+//        return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
     //отправить код на телефон для заявки
@@ -47,5 +55,12 @@ public class RequestController {
         Boolean isOk = requestService.checkEnterCode(requestId, requestCodeIn);
         return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
+
+//    @PostMapping("/save/{phoneNumber}")
+//    public ResponseEntity<Boolean> saveRequest(@PathVariable(value = "phoneNumber") Integer phoneNumber,
+//                                               @RequestBody RequestInDto requestDtoIn) {
+//        Boolean isOk = requestService.saveRequest()
+//
+//    }
 
 }

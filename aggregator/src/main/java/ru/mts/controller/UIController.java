@@ -11,6 +11,7 @@ import ru.mts.service.CustomerMicroService;
 import ru.mts.service.DepositMicroService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -66,7 +67,7 @@ public class UIController {
 
     @GetMapping("/request")
     public String request(Model model) {
-        model.addAttribute("request", new Request());
+        model.addAttribute("requestin", new RequestIn());
         //получение сроков депозита
         List<DepositTerm> allDepositTerm = depositMicroService.getAllDepositTerm();
         model.addAttribute("depositTerm", allDepositTerm);
@@ -78,7 +79,6 @@ public class UIController {
         model.addAttribute("depositDebitingAccountId", accounts);
         model.addAttribute("percentPaymentAccountId", accounts);
         model.addAttribute("depositRefundAccountId", accounts);
-
         return "request";
     }
 
@@ -88,10 +88,17 @@ public class UIController {
     }
 
     @PostMapping(value = "/request", params = "action=Принять условия")
-    public String saveRequest(Model model, Request request) {
-    //отправить на сохранение
-//        depositMicroService.saveRequest(request);
-        System.out.println("Привет");
+    public String saveRequest(Model model, RequestIn requestin) {
+
+        //проверить заполнены ли все поля и правильность их заполнения(да/нет), сумма>=10000
+        if (!depositMicroService.checkRequestIn(requestin)){
+            return "requesterror";
+
+        }
+        //если нет, то страница ошибки - необходимо заполнить все поля - возврат на выбо условий
+        //конвертировать RequestIn -> Request, посмотреть что принимает deposit
+        //отправить на сохранение
+        depositMicroService.saveRequest(requestin);
         return "redirect:/requestcode";
     }
 

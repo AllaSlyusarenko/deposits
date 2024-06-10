@@ -60,10 +60,10 @@ public class Request { //2.3
     public Request() {
     }
 
-//    @PrePersist
-//    protected void onRequestDateTime() {
-//        requestDateTime = OffsetDateTime.now();
-//    }
+    @PrePersist
+    protected void onRequestDateTime() {
+        requestDateTime = OffsetDateTime.now();
+    }
 
     @Override
     public String toString() {

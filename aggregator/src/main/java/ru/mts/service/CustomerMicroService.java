@@ -1,5 +1,6 @@
 package ru.mts.service;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,6 +21,7 @@ import java.util.Objects;
 public class CustomerMicroService {
     private final RestTemplate restTemplate;
     @Setter
+    @Getter
     private static String phoneNumber; //79161234567
 
     @Autowired

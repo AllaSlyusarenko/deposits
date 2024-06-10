@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ошибка при заполнении заявки</title>
+
+    <p>Проверьте заполнены ли все поля</p>
+    <p>Поля "С пополнением вклада" и "Со снятием с вклада" должны быть строго "да" или "нет"</p>
+    <p>Минимальная сумма вклада - 10 000 рублей</p>
+
+    <form th:action="@{/request}" th:method="get">
+        <input type="submit" name="action" value="Вернуться">
+    </form>
+</head>
+<body>
+
+</body>
+</html>
