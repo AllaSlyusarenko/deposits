@@ -48,12 +48,35 @@
     </div>
     <br>
     <div class="form-group">
-        <label>Cчет для выплаты процентов</label>
-        <select th:field="*{percentPaymentAccountId}">
+        <label>Cчет для списания суммы вклада</label>
+        <select th:field="*{depositDebitingAccountId.numBankAccounts}">
             <option th:value="''" th:text="Select"></option>
-            <option th:each="type : ${percentPaymentAccountId}"
-                    th:value="${type}"
-                    th:text="${type}">
+            <option th:each="acc : ${depositDebitingAccountId}"
+                    th:value="${acc.numBankAccounts}"
+                    th:text="${acc.numBankAccounts}">
+            </option>
+        </select>
+    </div>
+    <br>
+    <br>
+    <div class="form-group">
+        <label>Cчет для выплаты процентов</label>
+        <select th:field="*{percentPaymentAccountId.numBankAccounts}">
+            <option th:value="''" th:text="Select"></option>
+            <option th:each="acc : ${percentPaymentAccountId}"
+                    th:value="${acc.numBankAccounts}"
+                    th:text="${acc.numBankAccounts}">
+            </option>
+        </select>
+    </div>
+    <br>
+    <div class="form-group">
+        <label>Счет для возврата вклада</label>
+        <select th:field="*{depositRefundAccountId.numBankAccounts}">
+            <option th:value="''" th:text="Select"></option>
+            <option th:each="acc : ${depositRefundAccountId}"
+                    th:value="${acc.numBankAccounts}"
+                    th:text="${acc.numBankAccounts}">
             </option>
         </select>
     </div>

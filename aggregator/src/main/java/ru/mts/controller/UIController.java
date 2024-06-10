@@ -74,10 +74,11 @@ public class UIController {
         List<TypesPercentPayment> allTypesPercentPayment = depositMicroService.getAllTypesPercentPayment();
         model.addAttribute("typesPercentPayment", allTypesPercentPayment);
         //достать активные счета по телефону
-        List<BigDecimal> accounts = customerMicroService.listAccountsByPhoneNumber();
+        List<BankAccount> accounts = customerMicroService.listAccountsByPhoneNumber();
+        model.addAttribute("depositDebitingAccountId", accounts);
         model.addAttribute("percentPaymentAccountId", accounts);
         model.addAttribute("depositRefundAccountId", accounts);
-        model.addAttribute("depositDebitingAccountId", accounts);
+
         return "request";
     }
 
@@ -86,12 +87,13 @@ public class UIController {
         return "redirect:/deposit";
     }
 
-//    @PostMapping(value = "/request", params = "action=Принять условия")
-//    public String saveRequest(Model model, Request request) {
-//    //отправить на сохранение
+    @PostMapping(value = "/request", params = "action=Принять условия")
+    public String saveRequest(Model model, Request request) {
+    //отправить на сохранение
 //        depositMicroService.saveRequest(request);
-//        return "redirect:/requestcode";
-//    }
+        System.out.println("Привет");
+        return "redirect:/requestcode";
+    }
 
 
 //    public String requestAction(Model model, @ModelAttribute("request") Request request) {

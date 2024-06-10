@@ -1,5 +1,6 @@
 package ru.mts.service;
 
+import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
 
 import java.math.BigDecimal;
@@ -19,4 +20,5 @@ public interface BankAccountService {
 
     BankAccount[] transferBalance(Integer from, Integer to, BigDecimal transferAmount);
     BigDecimal getBankAccountByIdAccount(Integer id);
+    BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id);
 }

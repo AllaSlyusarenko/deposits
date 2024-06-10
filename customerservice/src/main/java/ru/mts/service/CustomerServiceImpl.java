@@ -86,7 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
                 enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
 
-    //получить id активных банковских счетов по phoneNumber
+    //получить id банковских счетов по phoneNumber
     @Override
     public List<Integer> getAccountsByPhoneNumber(String phoneNumber) {
         Integer idCustomer = getIdByPhoneNumber(phoneNumber);

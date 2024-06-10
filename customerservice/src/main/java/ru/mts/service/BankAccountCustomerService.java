@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.mts.entity.BankAccountCustomer;
 import ru.mts.repository.BankAccountCustomerRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

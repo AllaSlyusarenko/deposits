@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
 import ru.mts.service.BankAccountService;
 
@@ -36,11 +37,23 @@ public class BankAccountController {
 //        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
 //    }
 
+    //получить по id - активные счета и их номер счета
     @GetMapping("/id/{id}")
     public ResponseEntity<BigDecimal> getBankAccountByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
+        //try catch
         BigDecimal bankAccount = bankAccountService.getBankAccountByIdAccount(id);
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
+
+    //    отдавать урезанную дто : номер и String счет, isActive
+    //получить по id - активные счета и их номер счета
+    @GetMapping("/id/dto/{id}")
+    public ResponseEntity<BankAccountOutDto> getBankAccountOutDtoByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
+        //try catch
+        BankAccountOutDto bankAccount = bankAccountService.getBankAccountOutDtoByIdAccount(id);
+        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
+    }
+
 
     @GetMapping("/num/{num}")
     public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") @Positive BigDecimal num) {

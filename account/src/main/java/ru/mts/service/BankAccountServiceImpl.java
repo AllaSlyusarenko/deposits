@@ -2,8 +2,10 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
 import ru.mts.exception.ValidationException;
+import ru.mts.mapper.BankAccountMapper;
 import ru.mts.repository.BankAccountRepository;
 import ru.mts.exception.NotFoundException;
 
@@ -36,13 +38,29 @@ public class BankAccountServiceImpl implements BankAccountService {
                 -> new NotFoundException("Банковский счет с id " + id + " не найден"));
     }
 
+    //получить по idAccount - активные счета и их номер счета
     @Override
     public BigDecimal getBankAccountByIdAccount(Integer id) {
         checkId(id);
         BankAccount bankAccount = bankAccountRepository.findByIdBankAccounts(id).orElseThrow(()
                 -> new NotFoundException("Банковский счет с id " + id + " не найден"));
-        return bankAccount.getNumBankAccounts();
+        if (bankAccount.getIsActive().equals(true)) {
+            return bankAccount.getNumBankAccounts();
+        } else {
+            throw new NotFoundException("Банковский счет с id " + id + " не активен");
+        }
     }
+
+    //    отдавать урезанную дто : номер и String счет, isActive
+    //получить по id - активные счета и их номер счета
+    @Override
+    public BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id) {
+        checkId(id);
+        BankAccount bankAccount = bankAccountRepository.findByIdBankAccounts(id).orElseThrow(()
+                -> new NotFoundException("Банковский счет с id " + id + " не найден"));
+        return BankAccountMapper.bankAccountToDto(bankAccount);
+    }
+
 
     @Override
     public BankAccount getBankAccountByNum(BigDecimal num) {

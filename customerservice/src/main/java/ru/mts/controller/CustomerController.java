@@ -100,10 +100,10 @@ public class CustomerController {
         return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 
-    //получить id активных банковских счетов по phoneNumber
+    //получить id всех банковских счетов по phoneNumber
     @GetMapping("/accounts/{phoneNumber}")
-    public ResponseEntity<Integer[]> getaAccountsByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
-        Integer[] ids = customerService.getAccountsByPhoneNumber(phoneNumber).toArray(Integer[]::new);
+    public ResponseEntity<List<Integer>> getAccountsByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
+        List<Integer> ids = customerService.getAccountsByPhoneNumber(phoneNumber);
         return new ResponseEntity<>(ids, HttpStatus.OK);
     }
 }

@@ -30,11 +30,12 @@ public class BankAccount { //2.1
 
     @Override
     public String toString() {
-        return "BankAccount {" +
+        return "BankAccount{" +
                 "idBankAccounts=" + idBankAccounts +
                 ", numBankAccounts=" + numBankAccounts +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
+                ", isActive=" + isActive +
                 '}';
     }
 }

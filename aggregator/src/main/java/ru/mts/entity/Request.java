@@ -21,9 +21,10 @@ public class Request {
     private BigDecimal depositAmount;
     private TypesPercentPayment typesPercentPayment; //выплата процентов
 
-    private BigDecimal percentPaymentAccountId; //счет для выплаты процентов
-    private BigDecimal depositRefundAccountId; //счет для возвращения вклада
-    private BigDecimal depositDebitingAccountId; //счет для списания суммы депозит
+    private BankAccount depositDebitingAccountId; //счет для списания суммы депозит
+    private BankAccount percentPaymentAccountId; //счет для выплаты процентов
+    private BankAccount depositRefundAccountId; //счет для возвращения вклада
+
 
     public Request() {
     }

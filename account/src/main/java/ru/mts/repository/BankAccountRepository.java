@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface BankAccountRepository extends JpaRepository<BankAccount, Integer> {
     Optional<BankAccount> findByNumBankAccounts(BigDecimal accountNumber);
 
-    Optional<BankAccount> findByIdBankAccounts(Integer idBankAccount);
+    Optional<BankAccount> findByIdBankAccountsAndIsActive(Integer idBankAccount, Boolean isActive);
 
+    Optional<BankAccount> findByIdBankAccounts(Integer id);
 }
