@@ -107,16 +107,28 @@ public class DepositMicroService {
     }
 
     //отправить заявку на сохранение
-    public Boolean saveRequest(RequestIn request) {
+    public Integer saveRequest(Request request) {
         Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
-        ResponseEntity<Boolean> isSave =
-                restTemplate.postForEntity("/request/" + idCustomer + "/save",
+        ResponseEntity<Integer> idRequest =
+                restTemplate.postForEntity("http://localhost:8082/request/" + idCustomer + "/save",
                         request,
-                        Boolean.class);
-        if (isSave.getStatusCode().is2xxSuccessful()) {
-            return isSave.getBody();
+                        Integer.class);
+        if (idRequest.getStatusCode().is2xxSuccessful()) {
+            return idRequest.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + isSave.getBody());
+            throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + idRequest.getBody());
+        }
+    }
+
+    //отправить смс для подтверждения
+    public String sendRequestCode(Integer idRequest) {
+        ResponseEntity<String> code =
+                restTemplate.getForEntity("http://localhost:8082/request/sendcode/" + idRequest + "/" + CustomerMicroService.getPhoneNumber(),
+                        String.class);
+        if (code.getStatusCode().is2xxSuccessful()) {
+            return code.getBody();
+        } else {
+            throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + code.getBody());
         }
     }
 

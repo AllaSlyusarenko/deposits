@@ -27,17 +27,15 @@ public class RequestController {
     }
 
     //customerId, создать заявку   - возможно возвращать только id request
-    @GetMapping("/{customerId}/save")
-    public ResponseEntity<Boolean> saveRequest(@PathVariable(value = "customerId") Integer customerId,
+    @PostMapping("/{customerId}/save")
+    public ResponseEntity<Integer> saveRequest(@PathVariable(value = "customerId") Integer customerId,
                                                @RequestBody RequestInDto requestDtoIn) {
         try {
-            requestService.createRequest(customerId, requestDtoIn);
-            return new ResponseEntity<>(true, HttpStatus.OK);
+            Integer idRequest = requestService.createRequest(customerId, requestDtoIn);
+            return new ResponseEntity<>(idRequest, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        //Request request = requestService.createRequest(customerId, requestDtoIn);
-//        return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
     //отправить код на телефон для заявки

@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @Table(name = "current_request_status", schema = "deposit")
 public class CurrentRequestStatus { //2.4
     @EmbeddedId
-    private CurrentRequestStatusId id;
+    private CurrentRequestStatusId id = new CurrentRequestStatusId();
 
     @MapsId("requestId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -31,6 +31,9 @@ public class CurrentRequestStatus { //2.4
     @Column(name = "change_datetime")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime changeDateTime;
+
+    public CurrentRequestStatus() {
+    }
 
     @PrePersist
     protected void onCreate() {

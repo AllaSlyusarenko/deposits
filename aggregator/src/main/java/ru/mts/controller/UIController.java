@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mts.entity.*;
+import ru.mts.mapper.RequestMapper;
 import ru.mts.service.CustomerMicroService;
 import ru.mts.service.DepositMicroService;
 
@@ -95,16 +96,12 @@ public class UIController {
             return "requesterror";
 
         }
-        //если нет, то страница ошибки - необходимо заполнить все поля - возврат на выбо условий
-        //конвертировать RequestIn -> Request, посмотреть что принимает deposit
+        Request request = RequestMapper.requestDtoToRequest(requestin);
         //отправить на сохранение
-        depositMicroService.saveRequest(requestin);
+        Integer idRequest = depositMicroService.saveRequest(request);
+        //отправить смс для подтверждения
         return "redirect:/requestcode";
     }
-
-
-//    public String requestAction(Model model, @ModelAttribute("request") Request request) {
-//    }
 
     @GetMapping("/requestcode")
     public String requestcode(Model model) {

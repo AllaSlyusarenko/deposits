@@ -14,13 +14,13 @@ public class Request {
 
     private boolean isDepositRefill; //пополнение депозита - true/false
     private boolean isReductionOfDeposit; //уменьшение депозита - true/false
-    private DepositTerm depositTerm; //срок вклада - выбор из списка
+    private String depositTerm; //срок вклада - выбор из списка
     private BigDecimal depositAmount;
-    private TypesPercentPayment typesPercentPayment; //выплата процентов
+    private String typesPercentPayment; //выплата процентов
 
-    private BankAccount depositDebitingAccountId; //счет для списания суммы депозит
-    private BankAccount percentPaymentAccountId; //счет для выплаты процентов
-    private BankAccount depositRefundAccountId; //счет для возвращения вклада
+    private String depositDebitingAccountId; //счет для списания суммы депозит
+    private String percentPaymentAccountId; //счет для выплаты процентов
+    private String depositRefundAccountId; //счет для возвращения вклада
 
 
     public Request() {

@@ -34,7 +34,7 @@ public class RequestServiceImpl {
 
 
     //создать заявку
-    public Request createRequest(Integer customerId, RequestInDto requestDtoIn) {
+    public Integer createRequest(Integer customerId, RequestInDto requestDtoIn) {
         //найти все составляющие id
         Request request = new Request();
         request.setCustomerId(customerId);
@@ -42,16 +42,16 @@ public class RequestServiceImpl {
         request.setDepositRefill(requestDtoIn.isDepositRefill());
         request.setReductionOfDeposit(requestDtoIn.isReductionOfDeposit());
         request.setDepositAmount(requestDtoIn.getDepositAmount());
-        request.setPercentPaymentAccountId(new BigDecimal(requestDtoIn.getPercentPaymentAccountId().getNumBankAccounts()));
-        request.setDepositRefundAccountId(new BigDecimal(requestDtoIn.getDepositRefundAccountId().getNumBankAccounts()));
-        request.setDepositDebitingAccountId(new BigDecimal(requestDtoIn.getDepositDebitingAccountId().getNumBankAccounts()));
+        request.setPercentPaymentAccountId(new BigDecimal(requestDtoIn.getPercentPaymentAccountId()));
+        request.setDepositRefundAccountId(new BigDecimal(requestDtoIn.getDepositRefundAccountId()));
+        request.setDepositDebitingAccountId(new BigDecimal(requestDtoIn.getDepositDebitingAccountId()));
 
         //DepositTerm
-        DepositTerm depositTerm = depositTermRepository.findDepositTermByDepositTermName(requestDtoIn.getDepositTerm().getDepositTermName());
+        DepositTerm depositTerm = depositTermRepository.findDepositTermByDepositTermName(requestDtoIn.getDepositTerm());
         request.setDepositTerm(depositTerm);
         //TypesPercentPayment
         TypesPercentPayment typesPercentPayment =
-                typesPercentPaymentRepository.findTypesPercentPaymentByTypePercentPaymentPeriod(requestDtoIn.getTypesPercentPayment().getTypePercentPaymentPeriod());
+                typesPercentPaymentRepository.findTypesPercentPaymentByTypePercentPaymentPeriod(requestDtoIn.getTypesPercentPayment());
         request.setTypesPercentPayment(typesPercentPayment);
         Request createdRequest = requestRepository.save(request);
 
@@ -62,7 +62,7 @@ public class RequestServiceImpl {
         statusIn.setIdRequestStatus(requestStatus);
         CurrentRequestStatus status = currentRequestStatusRepository.save(statusIn);
         //отправить код по телефону - customerId
-        return createdRequest;
+        return createdRequest.getIdRequest();
     }
 
     //отправить смс с кодом
