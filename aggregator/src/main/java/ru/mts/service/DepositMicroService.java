@@ -136,7 +136,7 @@ public class DepositMicroService {
     public Boolean checkRequestCode(String code) {
         Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Boolean> isOk =
-                restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + idCustomer, Boolean.class);
+                restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + code + "/" + idCustomer, Boolean.class);
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {

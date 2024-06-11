@@ -50,8 +50,12 @@ public class RequestController {
     @GetMapping("/checkcode/{code}/{customerId}")
     public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
                                              @PathVariable(value = "code") String code) {
-        Boolean isOk = requestService.checkRequestCode(customerId, code);
-        return new ResponseEntity<>(isOk, HttpStatus.OK);
+        try {
+            Boolean isOk = requestService.checkRequestCode(customerId, code);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 //    @PostMapping("/save/{phoneNumber}")

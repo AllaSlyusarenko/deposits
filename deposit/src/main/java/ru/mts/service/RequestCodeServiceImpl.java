@@ -18,7 +18,7 @@ public class RequestCodeServiceImpl {
     }
 
     //получить последний код по idRequest
-    public String getLastRequestCodeByIdRequestCode(Integer idRequest) {
+    public String getLastRequestCodeByIdRequest(Integer idRequest) {
         checkId(idRequest);
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCode();

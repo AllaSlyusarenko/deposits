@@ -27,6 +27,11 @@ public class RequestCode { //2.17
     public RequestCode() {
     }
 
+    @PrePersist
+    protected void onRequestDateTime() {
+        codeDateTime = OffsetDateTime.now();
+    }
+
     @Override
     public String toString() {
         return "RequestCode {" +

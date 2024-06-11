@@ -79,12 +79,13 @@ public class RequestServiceImpl {
     public boolean checkEnterCode(Integer requestId, RequestCodeIn requestCodeIn) {
 //        Integer id = enterCodeIn.getIdCustomer();
 //        checkId(id);
-        String lastCode = requestCodeService.getLastRequestCodeByIdRequestCode(requestId);
+        String lastCode = requestCodeService.getLastRequestCodeByIdRequest(requestId);
         OffsetDateTime lastDateTime = requestCodeService.getLastRequestCodeDateTimeByIdRequestCode(requestId);
         return lastCode.equals(requestCodeIn.getCode()) &&
                 requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
 
+    //проверка смскода для подтверждения заявки
     public boolean checkRequestCode(Integer customerId, String code) {
 //        Integer id = enterCodeIn.getIdCustomer();
 //        checkId(id);
