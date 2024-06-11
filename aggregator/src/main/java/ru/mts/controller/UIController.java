@@ -135,10 +135,8 @@ public class UIController {
                 return "requestsuccess";
             }
         }
-        //при проверке - если да, то поменять статус заявки на подтверждена idRequest
-        //и сразу на одобрение суммы в account
-
         //статус - заявка отклонена
+        depositMicroService.changeStatusNotOk();
         return "errorrequestcode";
     }
 

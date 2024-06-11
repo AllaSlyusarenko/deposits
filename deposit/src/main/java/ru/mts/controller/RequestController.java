@@ -81,6 +81,17 @@ public class RequestController {
         }
     }
 
+    //для изменения статуса заявки на отклонена после проверки суммы на счету
+    @GetMapping("/changestatusnotok/{customerId}")
+    public ResponseEntity<Boolean> changeStatusNotOk(@PathVariable(value = "customerId") Integer customerId) {
+        try {
+            Boolean isOk = requestService.changeStatusNotOk(customerId);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     //ручка для получения данных из заявки для формирования вклада
 

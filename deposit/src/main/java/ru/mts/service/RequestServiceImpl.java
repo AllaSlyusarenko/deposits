@@ -137,6 +137,18 @@ public class RequestServiceImpl {
         return true;
     }
 
+    //присвоить заявке статус - Отклонена
+    public Boolean changeStatusNotOk(Integer customerId){
+        Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
+                .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+        CurrentRequestStatus statusIn = new CurrentRequestStatus();
+        statusIn.setIdRequest(request);
+        RequestStatus requestStatus = requestStatusRepository.findById(4);
+        statusIn.setIdRequestStatus(requestStatus);
+        currentRequestStatusRepository.save(statusIn);
+        return true;
+    }
+
     //проверка id
     private boolean checkId(Integer id) {
         if (id <= 0) {

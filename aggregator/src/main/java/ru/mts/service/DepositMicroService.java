@@ -164,4 +164,16 @@ public class DepositMicroService {
         }
     }
 
+    //присвоить заявке статус - Отклонена
+    public Boolean changeStatusNotOk() {
+//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
+        ResponseEntity<Boolean> data =
+                restTemplate.getForEntity("http://localhost:8082/request/changestatusnotok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
+        if (data.getStatusCode().is2xxSuccessful()) {
+            return data.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + data);
+        }
+    }
+
 }
