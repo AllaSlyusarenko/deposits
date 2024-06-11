@@ -29,7 +29,7 @@ public class RequestCodeServiceImpl {
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCodeDateTime();
     }
-    //сохранить/ отправить код по idRequest
+    //сохранить и отправить код по idRequest
     public RequestCode saveRequestCode(Integer idRequest) {
         RequestCode requestCode = new RequestCode();
         int code = Math.toIntExact(Math.round(Math.random() * 9998));

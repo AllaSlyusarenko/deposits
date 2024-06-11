@@ -24,11 +24,7 @@ public class Request { //2.3
     @Column(name = "request_date_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime requestDateTime;
-//    @Column(name = "code")
-//    private String code; //изначально пусто
-//    @Column(name = "code_date_time")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private OffsetDateTime codeDateTime; //изначально пусто
+
     @Column(name = "is_deposit_refill")
     private boolean isDepositRefill; //пополнение депозита
     @Column(name = "is_reduction_of_deposit")
@@ -52,10 +48,6 @@ public class Request { //2.3
 
     @Column(name = "deposit_debiting_account_id", columnDefinition = "numeric(20,0) not null")
     private BigDecimal depositDebitingAccountId; //счет для списания суммы депозит
-//    @OneToMany
-//    @JoinColumn(name = "id")
-//    private CurrentRequestStatus currentRequestStatus;
-
 
     public Request() {
     }

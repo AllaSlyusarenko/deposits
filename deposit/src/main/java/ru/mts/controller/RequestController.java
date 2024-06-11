@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mts.dto.RequestDataOut;
 import ru.mts.dto.RequestInDto;
-import ru.mts.dto.RequestOutDto;
-import ru.mts.entity.Request;
 import ru.mts.service.RequestCodeServiceImpl;
 import ru.mts.service.RequestServiceImpl;
 
@@ -106,10 +104,7 @@ public class RequestController {
 //    }
 
 
-
     //ручка для получения данных из заявки для формирования вклада
-
-
 
 
 //    @PostMapping("/save/{phoneNumber}")

@@ -131,13 +131,17 @@ public class UIController {
                 BigDecimal id = data.getDepositDebitingAccountId();
                 BigDecimal amount = data.getDepositAmount();
 
+                //счет вклада
                 BankAccount bankAccount = accountMicroService.createDepositAccount(data.getDepositDebitingAccountId(), data.getDepositAmount());
                 customerMicroService.addDepositAccountByIdAccount(bankAccount.getIdBankAccounts());
+
+                //id заявки
                 Integer idRequest = data.getId();
 
                 //запрос на создание вклада из заявки по idUsera
-                //последняя заявка - idRequest  - это основа для вклада
-                depositMicroService.createDepositByIdRequest(idRequest); //вернуть dto вклада из него вывести значения в страницу успеха
+                //заявка - idRequest  - это основа для вклада
+                //вернуть dto вклада из него вывести значения в страницу успеха
+                depositMicroService.createDepositByIdRequest(idRequest, bankAccount.getNumBankAccounts());
 
 
 

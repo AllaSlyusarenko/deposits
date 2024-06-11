@@ -64,7 +64,7 @@ public class RequestServiceImpl {
         RequestStatus requestStatus = requestStatusRepository.findById(1);
         statusIn.setIdRequestStatus(requestStatus);
         currentRequestStatusRepository.save(statusIn);
-        //отправить код по телефону - customerId
+
         return createdRequest.getIdRequest();
     }
 
@@ -89,8 +89,6 @@ public class RequestServiceImpl {
 
     //проверка смскода для подтверждения заявки
     public boolean checkRequestCode(Integer customerId, String code) {
-//        Integer id = enterCodeIn.getIdCustomer();
-//        checkId(id);
         //по customerId найти id последней заявки
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
@@ -126,8 +124,9 @@ public class RequestServiceImpl {
         requestDataOut.setDepositDebitingAccountId(request.getDepositRefundAccountId());
         return requestDataOut;
     }
+
     //присвоить заявке статус - Одобрена
-    public Boolean changeStatusOk(Integer customerId){
+    public Boolean changeStatusOk(Integer customerId) {
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
         CurrentRequestStatus statusIn = new CurrentRequestStatus();
@@ -139,7 +138,7 @@ public class RequestServiceImpl {
     }
 
     //присвоить заявке статус - Отклонена
-    public Boolean changeStatusNotOk(Integer customerId){
+    public Boolean changeStatusNotOk(Integer customerId) {
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
         CurrentRequestStatus statusIn = new CurrentRequestStatus();
@@ -150,11 +149,9 @@ public class RequestServiceImpl {
         return true;
     }
 
-    //получить последнюю одобренную заявку
-    //сначала сделать депозит и оттуда взять ставку и вид вклада
-    //нужно для отображения удачной заявки
-
-
+    public Request getRequestById(Integer requestId) {
+        return requestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+    }
 
     //проверка id
     private boolean checkId(Integer id) {

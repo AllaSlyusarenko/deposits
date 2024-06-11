@@ -2,13 +2,19 @@ package ru.mts.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mts.dto.RequestDataOut;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.TypesPercentPayment;
+import ru.mts.service.DepositServiceImpl;
 import ru.mts.service.UtilityServiceImpl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -16,19 +22,37 @@ import java.util.List;
 @RequestMapping("/deposit")
 public class DepositController {
     private final UtilityServiceImpl utilityService;
+    private final DepositServiceImpl depositService;
 
     @Autowired
-    public DepositController(UtilityServiceImpl utilityService) {
+    public DepositController(UtilityServiceImpl utilityService, DepositServiceImpl depositService) {
         this.utilityService = utilityService;
+        this.depositService = depositService;
     }
+
+    //получает все DepositTerm
     @GetMapping("/alldepositterm")
     public List<DepositTerm> allDepositTerm() {
         return utilityService.getDepositTerms();
     }
 
+    //получает все TypesPercentPayment
     @GetMapping("/alltypespercent")
     public List<TypesPercentPayment> allTypesPercentPayments() {
         return utilityService.getTypesPercentPayments();
+    }
+
+    //создает вклад по заявке idRequest
+    @GetMapping("/createdepositbyidrequest/{idCustomer}/{idRequest}/{numBankAccounts}")
+    public ResponseEntity<Boolean> createDepositByIdRequest(@PathVariable("idCustomer") Integer idCustomer,
+                                            @PathVariable("idRequest") Integer idRequest,
+                                            @PathVariable("numBankAccounts") BigDecimal numBankAccounts) {
+        try {
+            Boolean data = depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
