@@ -14,4 +14,4 @@ VALUES (1, '1234'),
 -- 2.18
 INSERT INTO customer.bank_account_customer(id_bank_account_customer, customer_id, bank_account_id)
 VALUES (1, 1, 1),
-       (2, 2, 3);
+       (2, 2, 2);

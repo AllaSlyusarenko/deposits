@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mts.entity.Customer;
 import ru.mts.exception.NotFoundException;
+import ru.mts.service.BankAccountCustomerService;
 import ru.mts.service.CustomerService;
 import ru.mts.service.EnterCodeServiceImpl;
 
@@ -21,13 +22,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-    private CustomerService customerService;
-    private EnterCodeServiceImpl enterCodeService;
+    private final CustomerService customerService;
+    private final EnterCodeServiceImpl enterCodeService;
+    private final BankAccountCustomerService bankAccountCustomerService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, EnterCodeServiceImpl enterCodeService) {
+    public CustomerController(CustomerService customerService, EnterCodeServiceImpl enterCodeService, BankAccountCustomerService bankAccountCustomerService) {
         this.customerService = customerService;
         this.enterCodeService = enterCodeService;
+        this.bankAccountCustomerService = bankAccountCustomerService;
     }
 
     @GetMapping("/id/{id}")
@@ -105,5 +108,17 @@ public class CustomerController {
     public ResponseEntity<List<Integer>> getAccountsByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
         List<Integer> ids = customerService.getAccountsByPhoneNumber(phoneNumber);
         return new ResponseEntity<>(ids, HttpStatus.OK);
+    }
+
+    //у юзера добавить счет вклада
+    @GetMapping("/adddepositaccount/{idCustomer}/{idDepositAccount}")
+    public ResponseEntity<Void> addDepositAccountByIdAccount(@PathVariable(value = "idCustomer") Integer idCustomer,
+                                                                @PathVariable(value = "idDepositAccount") Integer idDepositAccount) {
+        try {
+            bankAccountCustomerService.addDepositAccountByIdAccount(idCustomer, idDepositAccount);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

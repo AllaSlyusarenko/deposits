@@ -10,7 +10,6 @@ import ru.mts.entity.BankAccount;
 import ru.mts.service.BankAccountService;
 
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 @Slf4j
@@ -24,12 +23,12 @@ public class BankAccountController {
         this.bankAccountService = bankAccountService;
     }
 
-    @PostMapping("/create/{amount}")
-//    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BankAccount> createBankAccount(@PathVariable(value = "amount") @PositiveOrZero BigDecimal amount) {
-        BankAccount bankAccount = bankAccountService.createBankAccount(amount);
-        return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
-    }
+//    @PostMapping("/create/{amount}")
+////    @PreAuthorize("hasRole('USER')")
+//    public ResponseEntity<BankAccount> createBankAccount(@PathVariable(value = "amount") @PositiveOrZero BigDecimal amount) {
+//        BankAccount bankAccount = bankAccountService.createBankAccount(amount);
+//        return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
+//    }
 
 //    @GetMapping("/id/{id}")
 //    public ResponseEntity<BankAccount> getBankAccountById(@PathVariable(value = "id") @Positive Integer id) {
@@ -37,7 +36,7 @@ public class BankAccountController {
 //        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
 //    }
 
-    //получить по id - активные счета и их номер счета
+    //получить по idAccount - активный банковский счет по idAccount и возвращает номер счета
     @GetMapping("/id/{id}")
     public ResponseEntity<BigDecimal> getBankAccountByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
         //try catch
@@ -45,19 +44,22 @@ public class BankAccountController {
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
 
-    //    отдавать урезанную дто : номер и String счет, isActive
+    // отдавать урезанную дто : номер и String счет, isActive
     //получить по id - активные счета и их номер счета
     @GetMapping("/id/dto/{id}")
     public ResponseEntity<BankAccountOutDto> getBankAccountOutDtoByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
-        //try catch
-        BankAccountOutDto bankAccount = bankAccountService.getBankAccountOutDtoByIdAccount(id);
-        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
+        try {
+            BankAccountOutDto bankAccount = bankAccountService.getBankAccountOutDtoByIdAccount(id);
+            return new ResponseEntity<>(bankAccount, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
     @GetMapping("/num/{num}")
     public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") @Positive BigDecimal num) {
-        BankAccount bankAccount = bankAccountService.getBankAccountByNum(num);
+        BankAccount bankAccount = bankAccountService.getBankAccountByNumBankAccounts(num);
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
 
@@ -102,14 +104,14 @@ public class BankAccountController {
         }
     }
 
-    //создать новый активный счет вклада и сразу перечислить туда сумму со счета
-    @PostMapping("/createdepaccount/{depositDebitingAccountId}/{depositAmount}")
-    public ResponseEntity<BigDecimal> createDepositAccount( //возвращает созданный номер вклада
-            @PathVariable(value = "depositDebitingAccountId") @Positive BigDecimal depositDebitingAccountId,
-            @PathVariable(value = "depositAmount") @Positive BigDecimal depositAmount) {
+    //создать новый активный счет вклада и сразу перечислить туда сумму со счета depositDebitingAccountId
+    @GetMapping("/createdepaccount/{depositDebitingAccountId}/{depositAmount}")
+    public ResponseEntity<BankAccountOutDto> createDepositAccount( //возвращает созданный номер вклада
+                                                                   @PathVariable(value = "depositDebitingAccountId") BigDecimal depositDebitingAccountId,
+                                                                   @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
         try {
-            BigDecimal isOk = bankAccountService.createDepositAccount(depositDebitingAccountId, depositAmount);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
+            BankAccountOutDto account = bankAccountService.createDepositAccount(depositDebitingAccountId, depositAmount);
+            return new ResponseEntity<>(account, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

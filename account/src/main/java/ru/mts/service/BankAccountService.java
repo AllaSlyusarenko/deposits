@@ -10,7 +10,7 @@ public interface BankAccountService {
 
     BankAccount getBankAccountById(Integer id);
 
-    BankAccount getBankAccountByNum(BigDecimal num);
+    BankAccount getBankAccountByNumBankAccounts(BigDecimal num);
 
     BigDecimal getBalance(Integer id);
 
@@ -22,5 +22,6 @@ public interface BankAccountService {
     BigDecimal getBankAccountByIdAccount(Integer id);
     BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id);
     Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
-    BigDecimal  createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
+    BankAccountOutDto  createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
+    BankAccount reduceBalanceByNumBankAccounts(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
 }

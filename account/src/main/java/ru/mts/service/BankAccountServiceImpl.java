@@ -34,17 +34,45 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccount.getAmount().subtract(depositAmount).compareTo(BigDecimal.ZERO) >= 0;
     }
 
+    //получить BankAccount по номеру р/сч
     @Override
-    public BigDecimal  createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
-        return null;
+    public BankAccount getBankAccountByNumBankAccounts(BigDecimal numBankAccounts) {
+        return bankAccountRepository.findByNumBankAccounts(numBankAccounts).orElseThrow(()
+                -> new NotFoundException("Банковский счет с р/с " + numBankAccounts + " не найден"));
     }
 
+    //уменьшить баланс р/сч с NumBankAccounts на сумму depositAmount, проверка, вернуть уменьшившийся итоговый баланс
+    @Override
+    public BankAccount reduceBalanceByNumBankAccounts(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        BankAccount bankAccount = getBankAccountByNumBankAccounts(depositDebitingAccountId);
+        BigDecimal balance = bankAccount.getAmount();
+        if (balance.subtract(depositAmount).compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException("На счете недостаточно средств, чтобы списать сумму " + depositAmount);
+        }
+        bankAccount.setAmount(balance.subtract(depositAmount));
+        return bankAccountRepository.save(bankAccount);
+    }
+
+
+    //создать банковский счет вклада с нужной суммой, эту сумму списать с основного счета
+    @Override
+    @Transactional
+    public BankAccountOutDto createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        BankAccount bankAccountDeposit = createBankAccount(depositAmount);
+        //списать сумму с основного счета
+        BankAccount bankAccountCustomer = reduceBalanceByNumBankAccounts(depositDebitingAccountId, depositAmount);
+        BankAccountOutDto bankAccountOutDto = BankAccountMapper.bankAccountToDto(bankAccountDeposit);
+        return bankAccountOutDto;
+    }
+
+    //создается вклад с передаваемой суммой
     @Override
     public BankAccount createBankAccount(BigDecimal amount) {
         checkAmount(amount);
         BankAccount bankAccountIn = new BankAccount();
         bankAccountIn.setNumBankAccounts(randomNumBankAccount());
         bankAccountIn.setAmount(amount);
+        bankAccountIn.setIsActive(true); //активный
         return bankAccountRepository.save(bankAccountIn);
     }
 
@@ -55,7 +83,22 @@ public class BankAccountServiceImpl implements BankAccountService {
                 -> new NotFoundException("Банковский счет с id " + id + " не найден"));
     }
 
-    //получить по idAccount - активные счета и их номер счета
+    //уменьшить баланс р/сч с id на сумму redAmount, проверка, вернуть уменьшившийся итоговый баланс
+    @Override
+    public BankAccount reduceBalance(Integer id, BigDecimal redAmount) {
+        checkId(id);
+        checkAmount(redAmount);
+        BankAccount bankAccount = getBankAccountById(id);
+        BigDecimal balance = getBalance(id);
+        if (balance.subtract(redAmount).compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException("На счете недостаточно средств, чтобы списать сумму " + redAmount);
+        }
+        bankAccount.setAmount(balance.subtract(redAmount));
+        return bankAccountRepository.save(bankAccount);
+    }
+
+
+    //получить по idAccount - активный банковский счет по idAccount и возвращает номер счета
     @Override
     public BigDecimal getBankAccountByIdAccount(Integer id) {
         checkId(id);
@@ -68,7 +111,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
     }
 
-    //    отдавать урезанную дто : номер и String счет, isActive
+    //отдавать урезанную дто : номер и String счет, isActive
     //получить по id - активные счета и их номер счета
     @Override
     public BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id) {
@@ -78,12 +121,6 @@ public class BankAccountServiceImpl implements BankAccountService {
         return BankAccountMapper.bankAccountToDto(bankAccount);
     }
 
-
-    @Override
-    public BankAccount getBankAccountByNum(BigDecimal num) {
-        return bankAccountRepository.findByNumBankAccounts(num).orElseThrow(()
-                -> new NotFoundException("Банковский счет с р/с " + num + " не найден"));
-    }
 
     @Override
     public BigDecimal getBalance(Integer id) {
@@ -103,19 +140,6 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountRepository.save(bankAccount);
     }
 
-    //уменьшить баланс р/сч с id на сумму redAmount, проверка, вернуть уменьшившийся итоговый баланс
-    @Override
-    public BankAccount reduceBalance(Integer id, BigDecimal redAmount) {
-        checkId(id);
-        checkAmount(redAmount);
-        BankAccount bankAccount = getBankAccountById(id);
-        BigDecimal balance = getBalance(id);
-        if (balance.subtract(redAmount).compareTo(BigDecimal.ZERO) < 0) {
-            throw new ValidationException("На счете недостаточно средств, чтобы списать сумму " + redAmount);
-        }
-        bankAccount.setAmount(balance.subtract(redAmount));
-        return bankAccountRepository.save(bankAccount);
-    }
 
     //перевести с 1 на 2 сумму transferAmount, проверка, вернуть уменьшившийся итоговый баланс
     @Transactional
@@ -129,7 +153,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         return new BankAccount[]{bankAccountFrom, bankAccountTo};
     }
 
-
+    // получить новый рандомный номер счета
     private BigDecimal randomNumBankAccount() {
         BigDecimal numBankAccount;
         do {
@@ -140,6 +164,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         return numBankAccount;
     }
 
+    //проверка суммы списание/пополнение
     private boolean checkAmount(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new ValidationException("Сумма должна быть больше нуля");

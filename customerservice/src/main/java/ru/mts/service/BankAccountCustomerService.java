@@ -22,4 +22,13 @@ public class BankAccountCustomerService {
         return customers.stream()
                 .map(BankAccountCustomer::getBankAccountId).collect(Collectors.toList());
     }
+
+    //у юзера добавить счет вклада
+    public Boolean addDepositAccountByIdAccount(Integer idCustomer, Integer idDepositAccount) {
+        BankAccountCustomer bankAccountCustomer = new BankAccountCustomer();
+        bankAccountCustomer.setCustomerId(idCustomer);
+        bankAccountCustomer.setBankAccountId(idDepositAccount);
+        BankAccountCustomer bankAccountCustomerSave = bankAccountCustomerRepository.save(bankAccountCustomer);
+        return true;
+    }
 }

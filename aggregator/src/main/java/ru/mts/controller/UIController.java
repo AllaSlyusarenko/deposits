@@ -116,17 +116,12 @@ public class UIController {
     @GetMapping(value = "/requestcode", params = "action=Подтвердить код")
     public String checkRequestCode(Model model,
                                    @RequestParam(name = "code") String code) {
-        //проверка правильности кода если верно то депозит, иначе опять код
         if (code == null || code.isEmpty()) {
             return "errorrequestcode";
         }
-        //проверить - отправить код на проверку
         if (depositMicroService.checkRequestCode(code)) {
-            //данные из заявки - счет списания, сумма
             RequestData data = depositMicroService.getRequestData();
-            //отправить запрос есть ли сумма на счету
-            if(accountMicroService.checkDataFromRequest(data.getDepositDebitingAccountId(),data.getDepositAmount())){
-                //при проверке - если да, то поменять статус заявки на одобрена idRequest
+            if (accountMicroService.checkDataFromRequest(data.getDepositDebitingAccountId(), data.getDepositAmount())) {
                 depositMicroService.changeStatusOk();
                 //получение последней заявки со статусом одобрена
                 //номер заявки
@@ -134,18 +129,16 @@ public class UIController {
                 //сумма
                 //текущая дата
                 //процентная ставка
+                BigDecimal id = data.getDepositDebitingAccountId();
+                BigDecimal amount = data.getDepositAmount();
 
-                //отправить account по данным data - data.getDepositDebitingAccountId(),data.getDepositAmount()
-                //1) открыть новый счет вклада
-                //2) с data.getDepositDebitingAccountId()
-                //3) перечислить сумму data.getDepositAmount() на новый счет вклада
-
-
-
-                //запрос на открытие вклада из заявки
-                // создание счета для вклада
-                // перечисление суммы на счет вклад и списание с основного счета
+                BankAccount bankAccount = accountMicroService.createDepositAccount(data.getDepositDebitingAccountId(), data.getDepositAmount());
                 //у юзера добавить счет вклада
+                customerMicroService.addDepositAccountByIdAccount(bankAccount.getIdBankAccounts());
+
+                //запрос на создание вклада из заявки
+
+
                 return "requestsuccess";
             }
         }

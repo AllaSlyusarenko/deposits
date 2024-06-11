@@ -9,12 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.mts.entity.BankAccount;
-import ru.mts.entity.TypesPercentPayment;
 import ru.mts.exception.UnexpectedException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CustomerMicroService {
@@ -101,6 +99,16 @@ public class CustomerMicroService {
             }
         }
         return accounts;
+    }
+
+    //у юзера добавить счет вклада
+    public void addDepositAccountByIdAccount(Integer idDepositAccount) {
+        ResponseEntity<Void> id =
+                restTemplate.getForEntity("http://localhost:8081/customer/adddepositaccount/" + idCustomer + "/" + idDepositAccount, Void.class);
+        if (!id.getStatusCode().is2xxSuccessful()) {
+            throw new UnexpectedException("Неверные данные" + idDepositAccount);
+        }
+
     }
 
 }
