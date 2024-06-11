@@ -102,4 +102,17 @@ public class BankAccountController {
         }
     }
 
+    //создать новый активный счет вклада и сразу перечислить туда сумму со счета
+    @PostMapping("/createdepaccount/{depositDebitingAccountId}/{depositAmount}")
+    public ResponseEntity<BigDecimal> createDepositAccount( //возвращает созданный номер вклада
+            @PathVariable(value = "depositDebitingAccountId") @Positive BigDecimal depositDebitingAccountId,
+            @PathVariable(value = "depositAmount") @Positive BigDecimal depositAmount) {
+        try {
+            BigDecimal isOk = bankAccountService.createDepositAccount(depositDebitingAccountId, depositAmount);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

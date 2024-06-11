@@ -95,16 +95,15 @@ public class RequestController {
     }
 
     //получить последнюю одобренную заявку по customerId
-
-    @GetMapping("/requestok/{customerId}")
-    public ResponseEntity<RequestOutDto> getRequestOk(@PathVariable(value = "customerId") Integer customerId) {
-        try {
-            RequestOutDto isOk = requestService.getRequestOk(customerId);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @GetMapping("/requestok/{customerId}")
+//    public ResponseEntity<RequestOutDto> getRequestOk(@PathVariable(value = "customerId") Integer customerId) {
+//        try {
+//            RequestOutDto isOk = requestService.getRequestOk(customerId);
+//            return new ResponseEntity<>(isOk, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
 
 

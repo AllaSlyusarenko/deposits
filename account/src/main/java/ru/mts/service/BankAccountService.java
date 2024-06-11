@@ -22,4 +22,5 @@ public interface BankAccountService {
     BigDecimal getBankAccountByIdAccount(Integer id);
     BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id);
     Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
+    BigDecimal  createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
 }

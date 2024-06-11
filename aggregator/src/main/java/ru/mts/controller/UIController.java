@@ -135,6 +135,11 @@ public class UIController {
                 //текущая дата
                 //процентная ставка
 
+                //отправить account по данным data - data.getDepositDebitingAccountId(),data.getDepositAmount()
+                //1) открыть новый счет вклада
+                //2) с data.getDepositDebitingAccountId()
+                //3) перечислить сумму data.getDepositAmount() на новый счет вклада
+
 
 
                 //запрос на открытие вклада из заявки

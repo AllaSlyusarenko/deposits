@@ -35,6 +35,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    public BigDecimal  createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        return null;
+    }
+
+    @Override
     public BankAccount createBankAccount(BigDecimal amount) {
         checkAmount(amount);
         BankAccount bankAccountIn = new BankAccount();
