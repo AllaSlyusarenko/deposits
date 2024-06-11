@@ -13,7 +13,6 @@ import ru.mts.service.CustomerMicroService;
 import ru.mts.service.DepositMicroService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -133,10 +132,12 @@ public class UIController {
                 BigDecimal amount = data.getDepositAmount();
 
                 BankAccount bankAccount = accountMicroService.createDepositAccount(data.getDepositDebitingAccountId(), data.getDepositAmount());
-                //у юзера добавить счет вклада
                 customerMicroService.addDepositAccountByIdAccount(bankAccount.getIdBankAccounts());
+                Integer idRequest = data.getId();
 
-                //запрос на создание вклада из заявки
+                //запрос на создание вклада из заявки по idUsera
+                //последняя заявка - idRequest  - это основа для вклада
+                createDepositByidRequest(idRequest)
 
 
                 return "requestsuccess";

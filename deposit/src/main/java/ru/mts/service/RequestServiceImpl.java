@@ -121,6 +121,7 @@ public class RequestServiceImpl {
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
         RequestDataOut requestDataOut = new RequestDataOut();
+        requestDataOut.setId(request.getIdRequest());
         requestDataOut.setDepositAmount(request.getDepositAmount());
         requestDataOut.setDepositDebitingAccountId(request.getDepositRefundAccountId());
         return requestDataOut;
