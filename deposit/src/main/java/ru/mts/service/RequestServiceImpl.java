@@ -3,7 +3,9 @@ package ru.mts.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.mts.dto.RequestCodeIn;
+import ru.mts.dto.RequestDataOut;
 import ru.mts.dto.RequestInDto;
 import ru.mts.entity.*;
 import ru.mts.exception.NotFoundException;
@@ -70,7 +72,7 @@ public class RequestServiceImpl {
     public String sendRequestCode(Integer idRequest, String phoneNumber) {
         checkPhoneNumber(phoneNumber);
         RequestCode requestCode = requestCodeService.saveRequestCode(idRequest);
-        String message = "Пользователю на номер " + phoneNumber + " отправлено смс с кодом";
+        String message = "пользователю на номер " + phoneNumber + " отправлено смс с кодом";
         log.info(message);
         log.info(requestCode.getCode());
         return message;
@@ -114,6 +116,26 @@ public class RequestServiceImpl {
         }
     }
 
+    //получение данных из заявки для проверки достаточности суммы в account
+    public RequestDataOut getRequestData(Integer customerId) {
+        Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
+                .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+        RequestDataOut requestDataOut = new RequestDataOut();
+        requestDataOut.setDepositAmount(request.getDepositAmount());
+        requestDataOut.setDepositDebitingAccountId(request.getDepositRefundAccountId());
+        return requestDataOut;
+    }
+    //присвоить заявке статус - Одобрена
+    public Boolean changeStatusOk(Integer customerId){
+        Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
+                .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+        CurrentRequestStatus statusIn = new CurrentRequestStatus();
+        statusIn.setIdRequest(request);
+        RequestStatus requestStatus = requestStatusRepository.findById(3);
+        statusIn.setIdRequestStatus(requestStatus);
+        currentRequestStatusRepository.save(statusIn);
+        return true;
+    }
 
     //проверка id
     private boolean checkId(Integer id) {

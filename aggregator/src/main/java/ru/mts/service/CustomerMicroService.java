@@ -12,7 +12,6 @@ import ru.mts.entity.BankAccount;
 import ru.mts.entity.TypesPercentPayment;
 import ru.mts.exception.UnexpectedException;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +22,10 @@ public class CustomerMicroService {
     @Setter
     @Getter
     private static String phoneNumber; //79161234567
+    @Setter
+    @Getter
+    private static Integer idCustomer; //1
+
 
     @Autowired
     public CustomerMicroService(RestTemplate restTemplate) {

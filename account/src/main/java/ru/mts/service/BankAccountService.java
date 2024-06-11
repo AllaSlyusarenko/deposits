@@ -21,4 +21,5 @@ public interface BankAccountService {
     BankAccount[] transferBalance(Integer from, Integer to, BigDecimal transferAmount);
     BigDecimal getBankAccountByIdAccount(Integer id);
     BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id);
+    Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
 }

@@ -2,10 +2,11 @@ package ru.mts.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class RequestIn {
+public class RequestIn implements Serializable {
     private String isDepositRefill; //пополнение депозита - true/false
     private String isReductionOfDeposit; //уменьшение депозита - true/false
     private DepositTerm depositTerm; //срок вклада - выбор из списка

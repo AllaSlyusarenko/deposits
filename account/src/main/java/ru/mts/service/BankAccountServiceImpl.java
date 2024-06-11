@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
+import ru.mts.exception.NotFoundException;
 import ru.mts.exception.ValidationException;
 import ru.mts.mapper.BankAccountMapper;
 import ru.mts.repository.BankAccountRepository;
-import ru.mts.exception.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -20,6 +20,18 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Autowired
     public BankAccountServiceImpl(BankAccountRepository bankAccountRepository) {
         this.bankAccountRepository = bankAccountRepository;
+    }
+
+    // проверить есть ли на счету необходимая сумма
+    @Override
+    public Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        BankAccount bankAccount =
+                bankAccountRepository.findByNumBankAccounts(depositDebitingAccountId).orElseThrow(() -> new NotFoundException("Bank Account Not Found"));
+        //проверить активен ли счет, у счета депозита есть момент, когда вклад закрыт и счет становится неактивен
+        if (!bankAccount.getIsActive()) {
+            return false;
+        }
+        return bankAccount.getAmount().subtract(depositAmount).compareTo(BigDecimal.ZERO) >= 0;
     }
 
     @Override

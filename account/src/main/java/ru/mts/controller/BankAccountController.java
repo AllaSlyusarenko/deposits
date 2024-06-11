@@ -89,4 +89,17 @@ public class BankAccountController {
         return new ResponseEntity<>(transfer, HttpStatus.OK);
     }
 
+    // проверить есть ли на счету необходимая сумма
+    @GetMapping("/checksum/{depositDebitingAccountId}/{depositAmount}")
+    public ResponseEntity<Boolean> checkDataFromRequestSum(
+            @PathVariable(value = "depositDebitingAccountId") @Positive BigDecimal depositDebitingAccountId,
+            @PathVariable(value = "depositAmount") @Positive BigDecimal depositAmount) {
+        try {
+            Boolean isOk = bankAccountService.checkDataFromRequestSum(depositDebitingAccountId, depositAmount);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

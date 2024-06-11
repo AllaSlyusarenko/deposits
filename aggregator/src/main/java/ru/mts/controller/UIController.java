@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mts.entity.*;
 import ru.mts.mapper.RequestMapper;
+import ru.mts.service.AccountMicroService;
 import ru.mts.service.CustomerMicroService;
 import ru.mts.service.DepositMicroService;
 
@@ -19,11 +20,13 @@ import java.util.List;
 public class UIController {
     private final DepositMicroService depositMicroService;
     private final CustomerMicroService customerMicroService;
+    private final AccountMicroService accountMicroService;
 
     @Autowired
-    public UIController(DepositMicroService depositMicroService, CustomerMicroService customerMicroService) {
+    public UIController(DepositMicroService depositMicroService, CustomerMicroService customerMicroService, AccountMicroService accountMicroService) {
         this.depositMicroService = depositMicroService;
         this.customerMicroService = customerMicroService;
+        this.accountMicroService = accountMicroService;
     }
 
     @GetMapping("/start")
@@ -39,7 +42,7 @@ public class UIController {
         model.addAttribute("enterCode", new EnterCode());
         CustomerMicroService.setPhoneNumber(phoneNumber);
         try {
-            Integer id = customerMicroService.getCustomerIdByPhoneNumber();
+            CustomerMicroService.setIdCustomer(customerMicroService.getCustomerIdByPhoneNumber());
         } catch (Exception e) {
             return "redirect:/start";
         }
@@ -106,7 +109,7 @@ public class UIController {
 
     @GetMapping("/requestcode")
     public String requestCode(Model model) {
-        model.addAttribute("requestcode", new RequestCode());
+        model.addAttribute("requestCode", new RequestCode());
         return "requestcode";
     }
 
@@ -119,10 +122,23 @@ public class UIController {
         }
         //проверить - отправить код на проверку
         if (depositMicroService.checkRequestCode(code)) {
-          code
+            //данные из заявки - счет списания, сумма
+            RequestData data = depositMicroService.getRequestData();
+            //отправить запрос есть ли сумма на счету
+            if(accountMicroService.checkDataFromRequest(data.getDepositDebitingAccountId(),data.getDepositAmount())){
+                //при проверке - если да, то поменять статус заявки на одобрена idRequest
+                depositMicroService.changeStatusOk();
+                //запрос на открытие вклада из заявки
+                // создание счета для вклада
+                // перечисление суммы на счет вклад и списание с основного счета
+                //у юзера добавить счет вклада
+                return "requestsuccess";
+            }
         }
         //при проверке - если да, то поменять статус заявки на подтверждена idRequest
         //и сразу на одобрение суммы в account
+
+        //статус - заявка отклонена
         return "errorrequestcode";
     }
 
@@ -130,7 +146,7 @@ public class UIController {
     //подтвердить пароль
 
     @GetMapping("/rate")
-    public String depositrate(Model model) {
+    public String depositRate(Model model) {
 
         //в сервисе депозитов сделать логику по выбору процента, сделать ручку
         //сюда приносить это значение

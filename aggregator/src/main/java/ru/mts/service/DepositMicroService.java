@@ -6,10 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.mts.entity.DepositTerm;
-import ru.mts.entity.Request;
-import ru.mts.entity.RequestIn;
-import ru.mts.entity.TypesPercentPayment;
+import ru.mts.entity.*;
 import ru.mts.exception.UnexpectedException;
 
 import java.math.BigDecimal;
@@ -108,35 +105,34 @@ public class DepositMicroService {
 
     //отправить заявку на сохранение
     public Integer saveRequest(Request request) {
-        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
+//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Integer> idRequest =
-                restTemplate.postForEntity("http://localhost:8082/request/" + idCustomer + "/save",
+                restTemplate.postForEntity("http://localhost:8082/request/" + CustomerMicroService.getIdCustomer() + "/save",
                         request,
                         Integer.class);
         if (idRequest.getStatusCode().is2xxSuccessful()) {
             return idRequest.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + idRequest.getBody());
+            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + idRequest.getBody());
         }
     }
 
     //отправить смс для подтверждения
-    public Boolean sendRequestCode(Integer idRequest) {
-        ResponseEntity<Boolean> code =
-                restTemplate.getForEntity("http://localhost:8082/request/checkcode",
-                        Boolean.class);
+    public void sendRequestCode(Integer idRequest) {
+        String url = "http://localhost:8082/request/sendcode/" + idRequest + "/" + CustomerMicroService.getPhoneNumber();
+        ResponseEntity<Boolean> code = restTemplate.getForEntity(url, Boolean.class);
         if (code.getStatusCode().is2xxSuccessful()) {
-            return code.getBody();
+            code.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом customer " + code.getBody());
+            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }
     }
 
     //проверка правильности смс кода для Request
     public Boolean checkRequestCode(String code) {
-        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
+//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Boolean> isOk =
-                restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + code + "/" + idCustomer, Boolean.class);
+                restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + code + "/" + CustomerMicroService.getIdCustomer(), Boolean.class);
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {
@@ -144,5 +140,28 @@ public class DepositMicroService {
         }
     }
 
+    //получить данные из request для проверки в account на наличие суммы на счету
+    public RequestData getRequestData() {
+//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
+        ResponseEntity<RequestData> data =
+                restTemplate.getForEntity("http://localhost:8082/request/requestdata/" + CustomerMicroService.getIdCustomer(), RequestData.class);
+        if (data.getStatusCode().is2xxSuccessful()) {
+            return data.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + data);
+        }
+    }
+
+    //присвоить заявке статус - Одобрена
+    public Boolean changeStatusOk() {
+//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
+        ResponseEntity<Boolean> data =
+                restTemplate.getForEntity("http://localhost:8082/request/changestatusok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
+        if (data.getStatusCode().is2xxSuccessful()) {
+            return data.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + data);
+        }
+    }
 
 }

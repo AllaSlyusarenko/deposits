@@ -2,10 +2,11 @@ package ru.mts.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class Request {
+public class Request implements Serializable {
 
 //    private Integer customerId; //не будет показано
 
