@@ -137,7 +137,8 @@ public class UIController {
 
                 //запрос на создание вклада из заявки по idUsera
                 //последняя заявка - idRequest  - это основа для вклада
-                createDepositByidRequest(idRequest)
+                depositMicroService.createDepositByIdRequest(idRequest); //вернуть dto вклада из него вывести значения в страницу успеха
+
 
 
                 return "requestsuccess";

@@ -166,7 +166,6 @@ public class DepositMicroService {
 
     //присвоить заявке статус - Отклонена
     public Boolean changeStatusNotOk() {
-//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Boolean> data =
                 restTemplate.getForEntity("http://localhost:8082/request/changestatusnotok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
         if (data.getStatusCode().is2xxSuccessful()) {
@@ -176,7 +175,16 @@ public class DepositMicroService {
         }
     }
 
-    //запрос на создание вклада из заявки по idUsera
+    //запрос на создание вклада из заявки idRequest по idCustomer
+    public Boolean createDepositByIdRequest(Integer idRequest) {
+        ResponseEntity<Boolean> data =
+                restTemplate.getForEntity("http://localhost:8082/request/createdepositbyidrequest/" + CustomerMicroService.getIdCustomer() + "/" + idRequest, Boolean.class);
+        if (data.getStatusCode().is2xxSuccessful()) {
+            return data.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + data);
+        }
+    }
 
 
 }

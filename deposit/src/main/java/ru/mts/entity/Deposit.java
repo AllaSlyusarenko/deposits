@@ -53,12 +53,6 @@ public class Deposit { //2.6
     @JoinColumn(name = "id_deposit_rate")
     private DepositRate depositRate; //процент ставка зависит от: вид депозита, срок, сумма
 
-//    @Column(name = "code")
-//    private String code; //изначально пусто
-//    @Column(name = "code_date_time")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private OffsetDateTime codeDateTime; //изначально пусто
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_percent_payment")
     private TypesPercentPayment typesPercentPayment; //выплата процентов - период
