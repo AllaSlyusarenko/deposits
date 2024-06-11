@@ -149,6 +149,12 @@ public class RequestServiceImpl {
         return true;
     }
 
+    //получить последнюю одобренную заявку
+    //сначала сделать депозит и оттуда взять ставку и вид вклада
+    //нужно для отображения удачной заявки
+
+
+
     //проверка id
     private boolean checkId(Integer id) {
         if (id <= 0) {

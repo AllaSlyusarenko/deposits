@@ -128,6 +128,15 @@ public class UIController {
             if(accountMicroService.checkDataFromRequest(data.getDepositDebitingAccountId(),data.getDepositAmount())){
                 //при проверке - если да, то поменять статус заявки на одобрена idRequest
                 depositMicroService.changeStatusOk();
+                //получение последней заявки со статусом одобрена
+                //номер заявки
+                //вид вклада
+                //сумма
+                //текущая дата
+                //процентная ставка
+
+
+
                 //запрос на открытие вклада из заявки
                 // создание счета для вклада
                 // перечисление суммы на счет вклад и списание с основного счета

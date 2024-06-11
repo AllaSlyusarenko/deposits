@@ -11,11 +11,11 @@ VALUES (1, '3 мес.'),
        (2, '6 мес.'),
        (3, '1 год.');
 
--- 2.14
--- INSERT INTO deposit.request_term(id_request_term, request_term_name)
--- VALUES (1, '3 мес.'),
---        (2, '6 мес.'),
---        (3, '1 год.');
+-- 2.7
+INSERT INTO deposit.deposits_types(id_deposits_types, deposits_types_name)
+VALUES (1, 'С пополнением и снятием'),
+       (2, 'С пополнением, но без снятия'),
+       (3, 'Без пополнения и без снятия');
 
 -- 2.8
 INSERT INTO deposit.types_percent_payment(id_type_percent_payment, type_percent_payment_period)
@@ -38,7 +38,6 @@ VALUES (1, 'Вклад открыт'),
        (5, 'Подтверждение уменьшения вклада'),
        (6, 'Уменьшение вклада подтверждено'),
        (7, 'Уменьшение одобрено'),
---        проверка суммы можно ли столько списать и остаток будет мин 10 тыс.
        (8, 'Подтверждение закрытия вклада'),
        (9, 'Закрытие вклада подтверждено'),
        (10, 'Вклад закрыт');
