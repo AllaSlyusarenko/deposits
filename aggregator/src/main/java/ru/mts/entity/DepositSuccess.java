@@ -19,10 +19,9 @@ public class DepositSuccess {
     @Override
     public String toString() {
         return "Код заявки: " + idRequest +
-                "/n Вид вклада: " + depositsType + '\'' +
-                "/n Сумма: " + depositAmount +
-                "/n Текущая дата: " + startDate +
-                "/n Процентная ставка" + depositRate +
-                '}';
+                "; Вид вклада: " + depositsType +
+                "; Сумма: " + depositAmount +
+                "; Текущая дата: " + startDate.toLocalDateTime().toLocalDate() +
+                "; Процентная ставка: " + depositRate;
     }
 }
