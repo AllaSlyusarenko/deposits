@@ -155,7 +155,7 @@ create table if not exists deposit.deposits
     start_date                   timestamp with time zone default CURRENT_TIMESTAMP not null,
     id_deposit_term              integer not null REFERENCES deposit.deposit_term (id_deposit_term),
     end_date                     timestamp with time zone not null,
-    deposit_amount               money default 10000 not null,
+    deposit_amount               numeric(20,2) default 10000 not null,
     id_deposit_rate              integer not null REFERENCES deposit.deposit_rate (id_deposit_rate),
     id_type_percent_payment      integer not null REFERENCES deposit.types_percent_payment (id_type_percent_payment),
     deposit_account_id           numeric(20,0) not null,

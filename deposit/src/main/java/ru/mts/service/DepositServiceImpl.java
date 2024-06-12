@@ -2,16 +2,21 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.dto.DepositOutShortDto;
 import ru.mts.dto.DepositOutSuccessDto;
 import ru.mts.entity.*;
 import ru.mts.exception.ValidationException;
+import ru.mts.mapper.DepositMapper;
 import ru.mts.repository.CurrentDepositStatusRepository;
 import ru.mts.repository.DepositRepository;
 import ru.mts.repository.DepositStatusRepository;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DepositServiceImpl {
@@ -185,7 +190,7 @@ public class DepositServiceImpl {
 
     //присвоить статус: 1 - Вклад открыт, 8 - Подтверждение закрытия вклада, 9 - Закрытие вклада подтверждено
     //10 - Вклад закрыт(isActive = false)
-    public void statusDepositSet(Deposit idDeposit, int idStatusDeposit){
+    public void statusDepositSet(Deposit idDeposit, int idStatusDeposit) {
         CurrentDepositStatus currentDepositStatus = new CurrentDepositStatus();
         currentDepositStatus.setIdDeposit(idDeposit);
         DepositStatus depositStatus = depositStatusRepository.findById(idStatusDeposit);
@@ -197,10 +202,21 @@ public class DepositServiceImpl {
     //метод определения даты для выплаты процентов - разные варианты помесячно, в конце срока
 
 
-//    //получить все активные депозиты по idCustomer
-//    public List<Deposit> getAllByIdCustomerActiveDeposits(Integer idCustomer) {
-//
-//    }
+    //получить все активные депозиты по idCustomer
+    public List<Deposit> getAllByIdCustomerActiveDeposits(Integer idCustomer) {
+        Comparator<BigDecimal> bigDecimalComparator = Comparator.reverseOrder();
+        List<Deposit> deposits = depositRepository.findAllByCustomerId(idCustomer);
+        List<Deposit> depositList = deposits.stream().filter(Deposit::isActive).collect(Collectors.toList());
+        depositList.sort(Comparator.comparing(Deposit::getDepositAmount,bigDecimalComparator));
+        return deposits;
+    }
+
+    //для отображения краткой информации DepositOutShortDto из метода все активные депозиты по idCustomer
+    public List<DepositOutShortDto> getAllDepositOutShortDtoActiveDeposits(Integer idCustomer) {
+        List<Deposit> deposits = getAllByIdCustomerActiveDeposits(idCustomer);
+        return DepositMapper.toDepositOutShortDtos(deposits);
+    }
+
 
     //проверка id
     private boolean checkId(Integer id) {

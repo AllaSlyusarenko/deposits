@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mts.dto.DepositOutShortDto;
 import ru.mts.dto.DepositOutSuccessDto;
 import ru.mts.dto.RequestDataOut;
+import ru.mts.entity.Deposit;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.TypesPercentPayment;
 import ru.mts.service.DepositServiceImpl;
@@ -57,4 +59,15 @@ public class DepositController {
         }
     }
 
+    //получить все активные депозиты по idCustomer, возвращает дто
+    @GetMapping("/allshortdepositsactive/{idCustomer}")
+    public ResponseEntity<List<DepositOutShortDto>> allDepositsActive(@PathVariable("idCustomer") Integer idCustomer) {
+        try {
+
+            List<DepositOutShortDto> dtos = depositService.getAllDepositOutShortDtoActiveDeposits(idCustomer);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

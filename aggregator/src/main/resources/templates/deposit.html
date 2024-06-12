@@ -7,12 +7,41 @@
 <body>
 <p>Всего средств на счету</p>
 <br>
+<!--счет + все вклады-->
 <br>
 <p>Вклады</p>
 <form th:action="@{/request}" th:method="get">
     <input type="submit" name="action" value="Открыть вклад">
 </form>
 <br>
+<table>
+    <thead>
+    <title> Вклады </title>
+    </thead>
+    <tbody>
+    <table border="5">
+        <thead>
+        <th>Вид вклада</th>
+        <th>Сумма</th>
+        <th>Конечная дата</th>
+        <th>Процентная ставка %</th>
+        <th>Посмотреть подробную информацию</th>
+        </thead>
+        <tbody>
+        <tr th:each="deposit : ${depositShorts}">
+            <th th:text="${deposit.depositsType}"></th>
+            <th th:text="${deposit.depositAmount}"></th>
+            <th th:text="${#temporals.format(deposit.endDate,'yyyy-MM-dd')}"></th>
+            <th th:text="${deposit.depositRate}">%</th>
+<!--            <th><a th:href="@{/delete/{id}(id=${animal.idAnimal})}">Посмотреть информацию</a></th>-->
+        </tr>
+        </tbody>
+    </table>
+    </tbody>
+</table>
+
+
+
 <br>
 <p>Отклоненные заявки</p>
 <br>

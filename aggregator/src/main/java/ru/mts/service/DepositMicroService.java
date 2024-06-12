@@ -176,7 +176,6 @@ public class DepositMicroService {
     }
 
     //запрос на создание вклада из заявки idRequest по idCustomer
-    //вернуть дто вклада
     public DepositSuccess createDepositByIdRequest(Integer idRequest, String numBankAccounts) {
         String url = "http://localhost:8082/deposit/createdepositbyidrequest/"
                 + CustomerMicroService.getIdCustomer() + "/" + idRequest + "/" + numBankAccounts;
@@ -188,5 +187,20 @@ public class DepositMicroService {
         }
     }
 
+    //для отображения краткой информации по вкладам по idCustomer
+    public List<DepositShort> getAllDepositShortActiveDeposits() {
+            String url = "http://localhost:8082/deposit/allshortdepositsactive/" + CustomerMicroService.getIdCustomer();
+        ResponseEntity<List<DepositShort>> dtos = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<DepositShort>>() {
+                }
+        );
+        if (dtos.getStatusCode().is2xxSuccessful()) {
+            return dtos.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + dtos);
+        }
+    }
 
 }

@@ -65,6 +65,17 @@ public class UIController {
 
     @GetMapping("/deposit")
     public String deposit(Model model) {
+        List<DepositShort> depositShorts = depositMicroService.getAllDepositShortActiveDeposits();
+        if (depositShorts.isEmpty()){
+
+        }
+
+        if (!depositShorts.isEmpty()) {
+            model.addAttribute("depositShorts", depositShorts);
+
+        }
+
+
         return "deposit";
     }
 
@@ -90,7 +101,15 @@ public class UIController {
         return "redirect:/deposit";
     }
 
-    //Показать проценты @PostMapping(value = "/request", params = "action=Показать проценты")
+    //Показать проценты
+     @PostMapping(value = "/request", params = "action=Показать проценты")
+//     @GetMapping("/rate")
+     public String depositRate(Model model, RequestIn requestin) {
+
+         //в сервисе депозитов сделать логику по выбору процента, сделать ручку
+         //сюда приносить это значение
+         return "rate";
+     }
 
     @PostMapping(value = "/request", params = "action=Принять условия")
     public String saveRequest(Model model, RequestIn requestin) {
@@ -138,25 +157,12 @@ public class UIController {
                 DepositSuccess depositSuccess = depositMicroService.createDepositByIdRequest(idRequest, bankAccount.getNumBankAccounts());
                 model.addAttribute("depositSuccess", depositSuccess);
 
-
-
                 return "requestsuccess";
             }
         }
         //статус - заявка отклонена
         depositMicroService.changeStatusNotOk();
         return "errorrequestcode";
-    }
-
-
-    //подтвердить пароль
-
-    @GetMapping("/rate")
-    public String depositRate(Model model) {
-
-        //в сервисе депозитов сделать логику по выбору процента, сделать ручку
-        //сюда приносить это значение
-        return "rate";
     }
 
     @GetMapping(value = "/logout")
