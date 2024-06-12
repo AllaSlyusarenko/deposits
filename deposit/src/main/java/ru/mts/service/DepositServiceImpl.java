@@ -2,12 +2,11 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.mts.entity.Deposit;
-import ru.mts.entity.DepositRate;
-import ru.mts.entity.DepositTerm;
-import ru.mts.entity.Request;
+import ru.mts.entity.*;
 import ru.mts.exception.ValidationException;
+import ru.mts.repository.CurrentDepositStatusRepository;
 import ru.mts.repository.DepositRepository;
+import ru.mts.repository.DepositStatusRepository;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -18,12 +17,16 @@ public class DepositServiceImpl {
     private final DepositRepository depositRepository;
     private final RequestServiceImpl requestService;
     private final UtilityServiceImpl utilityService;
+    private final DepositStatusRepository depositStatusRepository;
+    private final CurrentDepositStatusRepository currentDepositStatusRepository;
 
     @Autowired
-    public DepositServiceImpl(DepositRepository depositRepository, RequestServiceImpl requestService, UtilityServiceImpl utilityService) {
+    public DepositServiceImpl(DepositRepository depositRepository, RequestServiceImpl requestService, UtilityServiceImpl utilityService, DepositStatusRepository depositStatusRepository, CurrentDepositStatusRepository currentDepositStatusRepository) {
         this.depositRepository = depositRepository;
         this.requestService = requestService;
         this.utilityService = utilityService;
+        this.depositStatusRepository = depositStatusRepository;
+        this.currentDepositStatusRepository = currentDepositStatusRepository;
     }
 
     //создает вклад по заявке idRequest
@@ -46,8 +49,10 @@ public class DepositServiceImpl {
         deposit.setPercentPaymentAccountId(request.getPercentPaymentAccountId()); //счет для выплаты процентов
         deposit.setDepositRefundAccountId(request.getDepositRefundAccountId()); //счет для возвращения вклада
         deposit.setActive(true); //вклад активный, отображать, снимать, пополнять - от условий
-
-        return depositRepository.save(deposit);
+        Deposit depositSave = depositRepository.save(deposit);
+        //статус - 1 - Вклад открыт
+        statusDepositSet(depositSave, 1);
+        return depositSave;
     }
 
     //метод, который возвращает дто для отображения
@@ -166,6 +171,16 @@ public class DepositServiceImpl {
             }
         }
         return depositRate;
+    }
+
+    //присвоить статус: 1 - Вклад открыт, 8 - Подтверждение закрытия вклада, 9 - Закрытие вклада подтверждено
+    //10 - Вклад закрыт(isActive = false)
+    public void statusDepositSet(Deposit idDeposit, int idStatusDeposit){
+        CurrentDepositStatus currentDepositStatus = new CurrentDepositStatus();
+        currentDepositStatus.setIdDeposit(idDeposit);
+        DepositStatus depositStatus = depositStatusRepository.findById(idStatusDeposit);
+        currentDepositStatus.setIdDepositStatus(depositStatus);
+        currentDepositStatusRepository.save(currentDepositStatus);
     }
 
 

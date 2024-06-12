@@ -135,7 +135,7 @@ create table if not exists deposit.deposit_statuses
 (
     id_deposit_status   integer default nextval('deposit.id_deposit_status_sq')
                         constraint deposit_statuses_pk primary key,
-    deposit_status_name varchar(32) not null
+    deposit_status_name varchar(40) not null
 );
 
 alter sequence deposit.id_deposit_status_sq owned by deposit.deposit_statuses.id_deposit_status;
