@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Customer implements Serializable { //2.2
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
-    @SequenceGenerator(name = "customer_generator", sequenceName = "customer.id_customers_sq", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(name = "customer_generator", sequenceName = "customer.id_customers_sq", allocationSize = 1, initialValue = 4)
     private Integer idCustomers;
     @Column(name = "phone_number")
     private String phoneNumber;

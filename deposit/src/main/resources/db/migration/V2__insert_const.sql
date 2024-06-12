@@ -70,20 +70,20 @@ VALUES (1, 15),
        (23, 10),
        (24, 10);
 
--- пример запроса 2.3
-INSERT INTO deposit.requests(customer_id, is_deposit_refill, is_reduction_of_deposit,
-id_deposit_term, deposit_amount,  id_type_percent_payment, percent_payment_account_id,
- deposit_refund_account_id, deposit_debiting_account_id )
-VALUES (1, true, true, 2, 5000, 1, 2345678901234567891,2345678901234567891,1234567890123456789);
-
-
--- пример соед таблицы current_request_status
-INSERT INTO deposit.current_request_status(request_id, request_status_id)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3);
-
--- 2.17
-INSERT INTO deposit.request_code(id_request, code)
-VALUES (1, '1234'),
-       (1, '7916');
+-- -- пример запроса 2.3
+-- INSERT INTO deposit.requests(customer_id, is_deposit_refill, is_reduction_of_deposit,
+-- id_deposit_term, deposit_amount,  id_type_percent_payment, percent_payment_account_id,
+--  deposit_refund_account_id, deposit_debiting_account_id )
+-- VALUES (1, true, true, 2, 5000, 1, 2345678901234567891,2345678901234567891,1234567890123456789);
+--
+--
+-- -- пример соед таблицы current_request_status
+-- INSERT INTO deposit.current_request_status(request_id, request_status_id)
+-- VALUES (1, 1),
+--        (1, 2),
+--        (1, 3);
+--
+-- -- 2.17
+-- INSERT INTO deposit.request_code(id_request, code)
+-- VALUES (1, '1234'),
+--        (1, '7916');

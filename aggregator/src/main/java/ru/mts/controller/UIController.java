@@ -90,6 +90,8 @@ public class UIController {
         return "redirect:/deposit";
     }
 
+    //Показать проценты @PostMapping(value = "/request", params = "action=Показать проценты")
+
     @PostMapping(value = "/request", params = "action=Принять условия")
     public String saveRequest(Model model, RequestIn requestin) {
 
@@ -122,12 +124,6 @@ public class UIController {
             RequestData data = depositMicroService.getRequestData();
             if (accountMicroService.checkDataFromRequest(data.getDepositDebitingAccountId(), data.getDepositAmount())) {
                 depositMicroService.changeStatusOk();
-                //получение последней заявки со статусом одобрена
-                //номер заявки
-                //вид вклада
-                //сумма
-                //текущая дата
-                //процентная ставка
                 BigDecimal id = data.getDepositDebitingAccountId();
                 BigDecimal amount = data.getDepositAmount();
 
@@ -138,10 +134,9 @@ public class UIController {
                 //id заявки
                 Integer idRequest = data.getId();
 
-                //запрос на создание вклада из заявки по idUsera
-                //заявка - idRequest  - это основа для вклада
                 //вернуть dto вклада из него вывести значения в страницу успеха
-                depositMicroService.createDepositByIdRequest(idRequest, bankAccount.getNumBankAccounts());
+                DepositSuccess depositSuccess = depositMicroService.createDepositByIdRequest(idRequest, bankAccount.getNumBankAccounts());
+                model.addAttribute("depositSuccess", depositSuccess);
 
 
 

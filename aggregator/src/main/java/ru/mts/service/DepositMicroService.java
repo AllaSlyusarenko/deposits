@@ -177,10 +177,10 @@ public class DepositMicroService {
 
     //запрос на создание вклада из заявки idRequest по idCustomer
     //вернуть дто вклада
-    public Boolean createDepositByIdRequest(Integer idRequest, String numBankAccounts) {
+    public DepositSuccess createDepositByIdRequest(Integer idRequest, String numBankAccounts) {
         String url = "http://localhost:8082/deposit/createdepositbyidrequest/"
                 + CustomerMicroService.getIdCustomer() + "/" + idRequest + "/" + numBankAccounts;
-        ResponseEntity<Boolean> data = restTemplate.getForEntity(url, Boolean.class);
+        ResponseEntity<DepositSuccess> data = restTemplate.getForEntity(url, DepositSuccess.class);
         if (data.getStatusCode().is2xxSuccessful()) {
             return data.getBody();
         } else {

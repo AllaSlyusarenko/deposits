@@ -3,7 +3,6 @@ package ru.mts.dto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.PrePersist;
 import java.time.OffsetDateTime;
 
 @Data
@@ -16,8 +15,4 @@ public class RequestCodeIn {
     public RequestCodeIn() {
     }
 
-//    @PrePersist
-//    protected void onCreate() {
-//        codeDateTime = OffsetDateTime.now();
-//    }
 }

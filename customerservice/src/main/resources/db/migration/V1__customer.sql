@@ -2,7 +2,7 @@ create schema if not exists customer;
 
 -- 2.2
 
-CREATE SEQUENCE if not exists customer.id_customers_sq as integer START 1 INCREMENT BY 1;
+CREATE SEQUENCE if not exists customer.id_customers_sq as integer START 3 INCREMENT BY 1;
 
 create table if not exists customer.customers
 (
@@ -30,7 +30,7 @@ alter sequence customer.id_enter_code_sq owned by customer.enter_code.id_custome
 
 -- 2.18
 
-CREATE SEQUENCE if not exists customer.id_bank_account_customer_sq as integer START 1 INCREMENT BY 1;
+CREATE SEQUENCE if not exists customer.id_bank_account_customer_sq as integer START 2 INCREMENT BY 1;
 
 create table if not exists customer.bank_account_customer
 (

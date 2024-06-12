@@ -2,6 +2,7 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.dto.DepositOutSuccessDto;
 import ru.mts.entity.*;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.CurrentDepositStatusRepository;
@@ -56,7 +57,16 @@ public class DepositServiceImpl {
     }
 
     //метод, который возвращает дто для отображения
-    //вернуть дто для отображения в удачном сообщении, сделать депозит и оттуда взять ставку и вид вклада
+    public DepositOutSuccessDto depositOutSuccess(Deposit deposit) {
+        DepositOutSuccessDto depositOutSuccessDto = new DepositOutSuccessDto();
+        depositOutSuccessDto.setIdRequest(deposit.getRequest().getIdRequest());
+        depositOutSuccessDto.setDepositsType(deposit.getDepositsType().getDepositsTypesName());
+        depositOutSuccessDto.setDepositAmount(deposit.getDepositAmount());
+        depositOutSuccessDto.setStartDate(deposit.getStartDate());
+        depositOutSuccessDto.setDepositRate(deposit.getDepositRate().getDepositRate());
+        return depositOutSuccessDto;
+    }
+
 
     //метод для определения конца срока действия вклада
     public OffsetDateTime getEndDateForDeposit(OffsetDateTime requestDateTime, DepositTerm depositTerm) {

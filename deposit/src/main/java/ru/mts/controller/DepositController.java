@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mts.dto.DepositOutSuccessDto;
 import ru.mts.dto.RequestDataOut;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.TypesPercentPayment;
@@ -42,15 +43,15 @@ public class DepositController {
         return utilityService.getTypesPercentPayments();
     }
 
-    //создает вклад по заявке idRequest
+    //создает вклад по заявке idRequest и возвращает dto
     @GetMapping("/createdepositbyidrequest/{idCustomer}/{idRequest}/{numBankAccounts}")
-    public ResponseEntity<Boolean> createDepositByIdRequest(@PathVariable("idCustomer") Integer idCustomer,
-                                            @PathVariable("idRequest") Integer idRequest,
-                                            @PathVariable("numBankAccounts") BigDecimal numBankAccounts) {
+    public ResponseEntity<DepositOutSuccessDto> createDepositByIdRequest(@PathVariable("idCustomer") Integer idCustomer,
+                                                                         @PathVariable("idRequest") Integer idRequest,
+                                                                         @PathVariable("numBankAccounts") BigDecimal numBankAccounts) {
         try {
-            depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts);
-            Boolean data = true;
-            return new ResponseEntity<>(data, HttpStatus.OK);
+            DepositOutSuccessDto depositOutSuccessDto =
+                    depositService.depositOutSuccess(depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts));
+            return new ResponseEntity<>(depositOutSuccessDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

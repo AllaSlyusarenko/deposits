@@ -11,6 +11,7 @@ import ru.mts.repository.BankAccountRepository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -37,8 +38,16 @@ public class BankAccountServiceImpl implements BankAccountService {
     //получить BankAccount по номеру р/сч
     @Override
     public BankAccount getBankAccountByNumBankAccounts(BigDecimal numBankAccounts) {
-        return bankAccountRepository.findByNumBankAccounts(numBankAccounts).orElseThrow(()
-                -> new NotFoundException("Банковский счет с р/с " + numBankAccounts + " не найден"));
+        List<BankAccount> bankAccounts = bankAccountRepository.findAll();
+        BankAccount bankAccountOut = null;
+        for (BankAccount bankAccount : bankAccounts) {
+            if (numBankAccounts.equals(bankAccount.getNumBankAccounts())) {
+                bankAccountOut =  bankAccount;
+            }
+        }
+//        return bankAccountRepository.findByNumBankAccounts(numBankAccounts).orElseThrow(()
+//                -> new NotFoundException("Банковский счет с р/с " + numBankAccounts + " не найден"));
+        return bankAccountOut;
     }
 
     //уменьшить баланс р/сч с NumBankAccounts на сумму depositAmount, проверка, вернуть уменьшившийся итоговый баланс

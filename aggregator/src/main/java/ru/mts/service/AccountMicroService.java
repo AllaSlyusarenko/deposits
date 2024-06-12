@@ -35,11 +35,11 @@ public class AccountMicroService {
     //создать счет депозита
     public BankAccount createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount){
         ResponseEntity<BankAccount> isOk =
-                restTemplate.exchange("http://localhost:8083/account/createdepaccount/" + depositDebitingAccountId + "/" + depositAmount,
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<BankAccount>() {
-                        }
+                restTemplate.getForEntity("http://localhost:8083/account/createdepaccount/" + depositDebitingAccountId + "/" + depositAmount, BankAccount.class
+//                        HttpMethod.GET,
+//                        null,
+//                        new ParameterizedTypeReference<BankAccount>() {
+//                        }
                 );
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
