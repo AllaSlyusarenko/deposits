@@ -15,7 +15,8 @@ VALUES (1, '3 мес.'),
 INSERT INTO deposit.deposits_types(id_deposits_types, deposits_types_name)
 VALUES (1, 'С пополнением и снятием'),
        (2, 'С пополнением, но без снятия'),
-       (3, 'Без пополнения и без снятия');
+       (3, 'Без пополнения и без снятия'),
+       (4, 'Без пополнения и co снятием');
 
 -- 2.8
 INSERT INTO deposit.types_percent_payment(id_type_percent_payment, type_percent_payment_period)
@@ -45,20 +46,29 @@ VALUES (1, 'Вклад открыт'),
 -- 2.10
 INSERT INTO deposit.deposit_rate(id_deposit_rate, deposit_rate)
 VALUES (1, 15),
-       (2, 14.5),
-       (3, 14),
-       (4, 14),
-       (5, 13.5),
-       (6, 13),
-       (7, 13),
-       (8, 12.5),
-       (9, 12),
-       (10, 12),
-       (11, 11.5),
-       (12, 11),
-       (13, 11),
-       (14, 10.5),
-       (15, 10);
+       (2, 15),
+       (3, 15),
+       (4, 15),
+       (5, 14),
+       (6, 14),
+       (7, 14),
+       (8, 14),
+       (9, 13),
+       (10, 13),
+       (11, 13),
+       (12, 13),
+       (13, 12),
+       (14, 12),
+       (15, 12),
+       (16, 12),
+       (17, 11),
+       (18, 11),
+       (19, 11),
+       (20, 11),
+       (21, 10),
+       (22, 10),
+       (23, 10),
+       (24, 10);
 
 -- пример запроса 2.3
 INSERT INTO deposit.requests(customer_id, is_deposit_refill, is_reduction_of_deposit,

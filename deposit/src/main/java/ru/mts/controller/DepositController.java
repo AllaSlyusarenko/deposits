@@ -48,7 +48,8 @@ public class DepositController {
                                             @PathVariable("idRequest") Integer idRequest,
                                             @PathVariable("numBankAccounts") BigDecimal numBankAccounts) {
         try {
-            Boolean data = depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts);
+            depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts);
+            Boolean data = true;
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

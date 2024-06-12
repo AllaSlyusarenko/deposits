@@ -14,6 +14,7 @@ import ru.mts.repository.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -24,15 +25,17 @@ public class RequestServiceImpl {
     private final CurrentRequestStatusRepository currentRequestStatusRepository;
     private final RequestStatusRepository requestStatusRepository;
     private final RequestCodeServiceImpl requestCodeService;
+    private final UtilityServiceImpl utilityService;
 
     @Autowired
-    public RequestServiceImpl(RequestRepository requestRepository, DepositTermRepository depositTermRepository, TypesPercentPaymentRepository typesPercentPaymentRepository, CurrentRequestStatusRepository currentRequestStatusRepository, RequestStatusRepository requestStatusRepository, RequestCodeServiceImpl requestCodeService) {
+    public RequestServiceImpl(RequestRepository requestRepository, DepositTermRepository depositTermRepository, TypesPercentPaymentRepository typesPercentPaymentRepository, CurrentRequestStatusRepository currentRequestStatusRepository, RequestStatusRepository requestStatusRepository, RequestCodeServiceImpl requestCodeService, UtilityServiceImpl utilityService) {
         this.requestRepository = requestRepository;
         this.depositTermRepository = depositTermRepository;
         this.typesPercentPaymentRepository = typesPercentPaymentRepository;
         this.currentRequestStatusRepository = currentRequestStatusRepository;
         this.requestStatusRepository = requestStatusRepository;
         this.requestCodeService = requestCodeService;
+        this.utilityService = utilityService;
     }
 
 
@@ -149,8 +152,28 @@ public class RequestServiceImpl {
         return true;
     }
 
+    //найти request по id
     public Request getRequestById(Integer requestId) {
         return requestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+    }
+
+    //метод на определение DepositsType вида вклада - входные из заявки
+    public DepositsType getDepositsTypeByRequest(boolean isDepositRefill, boolean isReductionOfDeposit) {
+        List<DepositsType> depositsTypes = utilityService.getDepositsTypes();
+        DepositsType depositsType = null;
+        if (isDepositRefill && isReductionOfDeposit) {
+            depositsType = depositsTypes.get(1);
+        }
+        if (isDepositRefill && !isReductionOfDeposit) {
+            depositsType = depositsTypes.get(2);
+        }
+        if (!isDepositRefill && !isReductionOfDeposit) {
+            depositsType = depositsTypes.get(3);
+        }
+        if (!isDepositRefill && isReductionOfDeposit) {
+            depositsType = depositsTypes.get(4);
+        }
+        return depositsType;
     }
 
     //проверка id

@@ -9,3 +9,8 @@ spring:
 logging:
   level:
     root: INFO
+
+application:
+  scheduled:
+    time: 86400000
+#миллисекунд в сутках
