@@ -6,50 +6,62 @@
 </head>
 <body>
 <p>Всего средств на активных счетах</p>
-<p>  <label th:text="${totalSum}"></label></p>
+<p><label th:text="${totalSum}"></label></p>
 <!--счет + все вклады-->
 <!--<p>Всего средств </p>-->
 <!--<p>Всего средств на счету</p>-->
 <!--<p>Всего средств на вкладах</p>-->
 
-<br>
 <p>Вклады</p>
+
 <form th:action="@{/request}" th:method="get">
     <input type="submit" name="action" value="Открыть вклад">
 </form>
-<br>
-<table>
-    <thead>
-    <title> Вклады </title>
-    </thead>
-    <tbody>
-    <table border="5">
+<div th:if="${#lists.isEmpty(depositShorts)}">
+    <p>Разместите выгодно на вкладе с процентной ставкой от 10 до 15%, краткосрочные или на 1 год, </p>
+    <p>с ежемесячной выплатой или в конце срока. Все условия вы выбираете сами и на их основе будет назначена процентная
+        ставка </p>
+</div>
+
+<div th:if="${not #lists.isEmpty(depositShorts)}">
+    <br>
+    <br>
+    <table>
         <thead>
-        <th>Вид вклада</th>
-        <th>Сумма</th>
-        <th>Конечная дата</th>
-        <th>Процентная ставка %</th>
-        <th>Посмотреть подробную информацию</th>
+        <title> Вклады </title>
         </thead>
         <tbody>
-        <tr th:each="deposit : ${depositShorts}">
-            <th th:text="${deposit.depositsType}"></th>
-            <th th:text="${deposit.depositAmount}"></th>
-            <th th:text="${#temporals.format(deposit.endDate,'yyyy-MM-dd')}"></th>
-            <th th:text="${deposit.depositRate}">%</th>
-            <th><a th:href="@{/showdeposit/{id}(id=${deposit.idDeposit})}">Посмотреть информацию по вкладу</a></th>
-        </tr>
+        <table border="5">
+            <thead>
+            <th>Вид вклада</th>
+            <th>Сумма</th>
+            <th>Конечная дата</th>
+            <th>Процентная ставка %</th>
+            <th>Посмотреть подробную информацию</th>
+            </thead>
+            <tbody>
+            <tr th:each="deposit : ${depositShorts}">
+                <th th:text="${deposit.depositsType}"></th>
+                <th th:text="${deposit.depositAmount}"></th>
+                <th th:text="${#temporals.format(deposit.endDate,'yyyy-MM-dd')}"></th>
+                <th th:text="${deposit.depositRate}">%</th>
+                <th><a th:href="@{/showdeposit/{id}(id=${deposit.idDeposit})}">Посмотреть информацию по вкладу</a></th>
+            </tr>
+            </tbody>
+        </table>
         </tbody>
     </table>
-    </tbody>
-</table>
-
+</div>
 
 
 <br>
 <p>Отклоненные заявки</p>
 <br>
 <br>
+<div th:if="${#lists.isEmpty()}">
+    <p>У вас отсутствуют отклоненные заявки на размещение вклада</p>
+</div>
+
 
 <table>
     <tbody>

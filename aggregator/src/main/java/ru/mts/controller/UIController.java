@@ -66,11 +66,13 @@ public class UIController {
 
     @GetMapping("/deposit")
     public String deposit(Model model) {
+        //суммарно на активных счетах
         BigDecimal totalSum = accountMicroService.totalSumAllActiveAccounts(customerMicroService.getAllAccounts());
         model.addAttribute("totalSum", totalSum);
+        //активные вклады
         List<DepositShort> depositShorts = depositMicroService.getAllDepositShortActiveDeposits();
-//если список пустой надо указать в deposit
         model.addAttribute("depositShorts", depositShorts);
+        //отклоненные заявки
 
         return "deposit";
     }
@@ -82,6 +84,13 @@ public class UIController {
         model.addAttribute("deposit", deposit);
         return "fulldeposit";
     }
+
+    @GetMapping(value = "/deposit", params = "action=Вернуться к списку вкладов")
+    public String toDeposits(Model model) {
+        return "redirect:/deposit";
+    }
+
+
 
     @GetMapping("/request")
     public String request(Model model) {
