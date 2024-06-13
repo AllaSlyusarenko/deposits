@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.mts.entity.BankAccount;
 import ru.mts.exception.UnexpectedException;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class AccountMicroService {
         this.restTemplate = restTemplate;
         this.customerMicroService = customerMicroService;
     }
+
     //проверка есть ли необходимая сумма на счету
     public Boolean checkDataFromRequest(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
         ResponseEntity<Boolean> isOk =
@@ -32,8 +34,9 @@ public class AccountMicroService {
             throw new UnexpectedException("Неверные данные" + isOk);
         }
     }
+
     //создать счет депозита
-    public BankAccount createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount){
+    public BankAccount createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
         ResponseEntity<BankAccount> isOk =
                 restTemplate.getForEntity("http://localhost:8083/account/createdepaccount/" + depositDebitingAccountId + "/" + depositAmount, BankAccount.class
 //                        HttpMethod.GET,
@@ -46,6 +49,21 @@ public class AccountMicroService {
         } else {
             throw new UnexpectedException("Неверные данные" + isOk);
         }
+    }
+
+    //общая сумма на всех активных счетах по idCustomer
+    public BigDecimal totalSumAllActiveAccounts(List<Integer> ids) {
+        BigDecimal totalSum = BigDecimal.ZERO;
+        for (Integer id : ids) {
+            ResponseEntity<BigDecimal> sum =
+                    restTemplate.getForEntity("http://localhost:8083/account/amountbyid/" + id, BigDecimal.class);
+            if (sum.getStatusCode().is2xxSuccessful()) {
+                totalSum = totalSum.add(sum.getBody());
+            } else {
+                throw new UnexpectedException("Неверные данные" + id);
+            }
+        }
+        return totalSum;
     }
 
 

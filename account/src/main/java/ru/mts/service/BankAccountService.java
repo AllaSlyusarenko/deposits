@@ -1,5 +1,7 @@
 package ru.mts.service;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
 
@@ -24,4 +26,5 @@ public interface BankAccountService {
     Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
     BankAccountOutDto  createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
     BankAccount reduceBalanceByNumBankAccounts(BigDecimal depositDebitingAccountId, BigDecimal depositAmount);
+    BigDecimal amountByIdBankAccounts(Integer idBankAccounts);
 }

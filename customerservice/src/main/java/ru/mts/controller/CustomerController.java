@@ -113,10 +113,21 @@ public class CustomerController {
     //у юзера добавить счет вклада
     @GetMapping("/adddepositaccount/{idCustomer}/{idDepositAccount}")
     public ResponseEntity<Void> addDepositAccountByIdAccount(@PathVariable(value = "idCustomer") Integer idCustomer,
-                                                                @PathVariable(value = "idDepositAccount") Integer idDepositAccount) {
+                                                             @PathVariable(value = "idDepositAccount") Integer idDepositAccount) {
         try {
             bankAccountCustomerService.addDepositAccountByIdAccount(idCustomer, idDepositAccount);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //список всех счетов по idCustomer
+    @GetMapping("/allaccounts/{idCustomer}")
+    public ResponseEntity<List<Integer>> getAllAccounts(@PathVariable(value = "idCustomer") Integer idCustomer) {
+        try {
+            List<Integer> accounts = bankAccountCustomerService.getAllAccounts(idCustomer);
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

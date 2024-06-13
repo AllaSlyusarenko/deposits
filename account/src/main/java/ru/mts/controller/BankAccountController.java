@@ -117,4 +117,16 @@ public class BankAccountController {
         }
     }
 
+    //получить сумму на активном счете, если счет неактивный, то вернуть ноль
+    @GetMapping("/amountbyid/{idBankAccounts}")
+    public ResponseEntity<BigDecimal> amountByIdBankAccounts(@PathVariable(value = "idBankAccounts") Integer idBankAccounts) {
+        try {
+            BigDecimal amount = bankAccountService.amountByIdBankAccounts(idBankAccounts);
+            return new ResponseEntity<>(amount, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

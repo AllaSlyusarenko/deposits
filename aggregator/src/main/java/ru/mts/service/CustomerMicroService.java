@@ -111,4 +111,20 @@ public class CustomerMicroService {
 
     }
 
+    //список всех счетов по idCustomer
+    public List<Integer> getAllAccounts() {
+        ResponseEntity<List<Integer>> ids =
+                restTemplate.exchange("http://localhost:8081/customer/allaccounts/" + idCustomer,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<Integer>>() {
+                        }
+                );
+        if (ids.getStatusCode().is2xxSuccessful()) {
+            return ids.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + idCustomer);
+        }
+    }
+
 }

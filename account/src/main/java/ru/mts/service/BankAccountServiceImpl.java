@@ -12,6 +12,7 @@ import ru.mts.repository.BankAccountRepository;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -42,7 +43,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         BankAccount bankAccountOut = null;
         for (BankAccount bankAccount : bankAccounts) {
             if (numBankAccounts.equals(bankAccount.getNumBankAccounts())) {
-                bankAccountOut =  bankAccount;
+                bankAccountOut = bankAccount;
             }
         }
 //        return bankAccountRepository.findByNumBankAccounts(numBankAccounts).orElseThrow(()
@@ -60,6 +61,20 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
         bankAccount.setAmount(balance.subtract(depositAmount));
         return bankAccountRepository.save(bankAccount);
+    }
+
+    //получить сумму на активном счете, если счет неактивный, то вернуть ноль
+    @Override
+    public BigDecimal amountByIdBankAccounts(Integer idBankAccounts) {
+        BigDecimal amount;
+        try {
+            BankAccount bankAccounts = bankAccountRepository.findByIdBankAccountsAndIsActive(idBankAccounts, true).orElseThrow(()
+                    -> new NotFoundException("Банковский счет с id " + idBankAccounts + " не найден"));
+            amount = bankAccounts.getAmount();
+        } catch (NotFoundException e) {
+            amount = BigDecimal.ZERO;
+        }
+        return amount;
     }
 
 

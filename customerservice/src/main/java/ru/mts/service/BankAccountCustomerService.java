@@ -31,4 +31,11 @@ public class BankAccountCustomerService {
         BankAccountCustomer bankAccountCustomerSave = bankAccountCustomerRepository.save(bankAccountCustomer);
         return true;
     }
+
+    //список активных счетов по idCustomer
+    public List<Integer> getAllAccounts(Integer idCustomer){
+        List<BankAccountCustomer> customers = bankAccountCustomerRepository.findAllByCustomerId(idCustomer);
+        List<Integer> ids = customers.stream().map(BankAccountCustomer::getBankAccountId).collect(Collectors.toList());
+        return ids;
+    }
 }

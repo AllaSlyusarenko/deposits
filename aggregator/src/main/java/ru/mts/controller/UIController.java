@@ -66,16 +66,11 @@ public class UIController {
 
     @GetMapping("/deposit")
     public String deposit(Model model) {
-
+        BigDecimal totalSum = accountMicroService.totalSumAllActiveAccounts(customerMicroService.getAllAccounts());
+        model.addAttribute("totalSum", totalSum);
         List<DepositShort> depositShorts = depositMicroService.getAllDepositShortActiveDeposits();
-        if (depositShorts.size() == 1) {
-
-        }
-
-        if (depositShorts.size() > 1) {
-            model.addAttribute("depositShorts", depositShorts);
-
-        }
+//если список пустой надо указать в deposit
+        model.addAttribute("depositShorts", depositShorts);
 
         return "deposit";
     }
