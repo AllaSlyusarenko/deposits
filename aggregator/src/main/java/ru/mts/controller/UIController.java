@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mts.entity.*;
@@ -65,18 +66,26 @@ public class UIController {
 
     @GetMapping("/deposit")
     public String deposit(Model model) {
+
         List<DepositShort> depositShorts = depositMicroService.getAllDepositShortActiveDeposits();
-        if (depositShorts.isEmpty()){
+        if (depositShorts.size() == 1) {
 
         }
 
-        if (!depositShorts.isEmpty()) {
+        if (depositShorts.size() > 1) {
             model.addAttribute("depositShorts", depositShorts);
 
         }
 
-
         return "deposit";
+    }
+
+    @GetMapping(value = "/showdeposit/{id}")
+//    @PreAuthorize("hasRole('ADMIN')")
+    public String showFullDeposit(Model model, @PathVariable("id") Integer id) {
+        DepositFull deposit = depositMicroService.showFullDeposit(id);
+        model.addAttribute("deposit", deposit);
+        return "fulldeposit";
     }
 
     @GetMapping("/request")
@@ -102,14 +111,14 @@ public class UIController {
     }
 
     //Показать проценты
-     @PostMapping(value = "/request", params = "action=Показать проценты")
+    @PostMapping(value = "/request", params = "action=Показать проценты")
 //     @GetMapping("/rate")
-     public String depositRate(Model model, RequestIn requestin) {
+    public String depositRate(Model model, RequestIn requestin) {
 
-         //в сервисе депозитов сделать логику по выбору процента, сделать ручку
-         //сюда приносить это значение
-         return "rate";
-     }
+        //в сервисе депозитов сделать логику по выбору процента, сделать ручку
+        //сюда приносить это значение
+        return "rate";
+    }
 
     @PostMapping(value = "/request", params = "action=Принять условия")
     public String saveRequest(Model model, RequestIn requestin) {

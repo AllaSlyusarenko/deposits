@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 
 @Data
 public class DepositShort {
+    private Integer idDeposit;
     private String depositsType;
     private String depositAmount;
     private OffsetDateTime endDate;

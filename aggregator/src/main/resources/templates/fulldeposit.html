@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Полная информация по вкладу</title>
+</head>
+<body>
+<br>
+<br>
+<p>  Полная информация по вкладу</p>
+<br>
+<p>  <label th:text="${deposit}"></label></p>
+
+<form th:action="@{/deposit}" th:method="get">
+    <input type="submit" name="action" value="Вернуться к списку вкладов">
+</form>
+
+</body>
+</html>

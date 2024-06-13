@@ -189,7 +189,7 @@ public class DepositMicroService {
 
     //для отображения краткой информации по вкладам по idCustomer
     public List<DepositShort> getAllDepositShortActiveDeposits() {
-            String url = "http://localhost:8082/deposit/allshortdepositsactive/" + CustomerMicroService.getIdCustomer();
+        String url = "http://localhost:8082/deposit/allshortdepositsactive/" + CustomerMicroService.getIdCustomer();
         ResponseEntity<List<DepositShort>> dtos = restTemplate.exchange(url,
                 HttpMethod.GET,
                 null,
@@ -200,6 +200,17 @@ public class DepositMicroService {
             return dtos.getBody();
         } else {
             throw new UnexpectedException("Неверные данные" + dtos);
+        }
+    }
+
+    //для отображения полной информации по id вклада
+    public DepositFull showFullDeposit(Integer idDeposit) {
+        String url = "http://localhost:8082/deposit/showfulldeposit/" + idDeposit;
+        ResponseEntity<DepositFull> dtoFull = restTemplate.getForEntity(url, DepositFull.class);
+        if (dtoFull.getStatusCode().is2xxSuccessful()) {
+            return dtoFull.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + dtoFull);
         }
     }
 

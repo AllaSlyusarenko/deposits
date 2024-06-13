@@ -33,7 +33,7 @@
             <th th:text="${deposit.depositAmount}"></th>
             <th th:text="${#temporals.format(deposit.endDate,'yyyy-MM-dd')}"></th>
             <th th:text="${deposit.depositRate}">%</th>
-<!--            <th><a th:href="@{/delete/{id}(id=${animal.idAnimal})}">Посмотреть информацию</a></th>-->
+            <th><a th:href="@{/showdeposit/{id}(id=${deposit.idDeposit})}">Посмотреть информацию по вкладу</a></th>
         </tr>
         </tbody>
     </table>

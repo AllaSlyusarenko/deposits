@@ -2,6 +2,8 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import ru.mts.dto.DepositOutFullDto;
 import ru.mts.dto.DepositOutShortDto;
 import ru.mts.dto.DepositOutSuccessDto;
 import ru.mts.entity.*;
@@ -204,10 +206,11 @@ public class DepositServiceImpl {
 
     //получить все активные депозиты по idCustomer
     public List<Deposit> getAllByIdCustomerActiveDeposits(Integer idCustomer) {
-        Comparator<BigDecimal> bigDecimalComparator = Comparator.reverseOrder();
-        List<Deposit> deposits = depositRepository.findAllByCustomerId(idCustomer);
-        List<Deposit> depositList = deposits.stream().filter(Deposit::isActive).collect(Collectors.toList());
-        depositList.sort(Comparator.comparing(Deposit::getDepositAmount,bigDecimalComparator));
+//        Comparator<BigDecimal> bigDecimalComparator = Comparator.reverseOrder();
+//        List<Deposit> deposits = depositRepository.findAllByCustomerId(idCustomer);
+//        List<Deposit> depositList = deposits.stream().filter(Deposit::isActive).collect(Collectors.toList());
+//        depositList.sort(Comparator.comparing(Deposit::getDepositAmount, bigDecimalComparator));
+        List<Deposit> deposits = depositRepository.findAllByCustomerIdAndIsActiveOrderByDepositAmountDesc(idCustomer, true);
         return deposits;
     }
 
@@ -215,6 +218,12 @@ public class DepositServiceImpl {
     public List<DepositOutShortDto> getAllDepositOutShortDtoActiveDeposits(Integer idCustomer) {
         List<Deposit> deposits = getAllByIdCustomerActiveDeposits(idCustomer);
         return DepositMapper.toDepositOutShortDtos(deposits);
+    }
+
+    //для отображения полной информации по id вклада
+    public DepositOutFullDto showFullDeposit(Integer idDeposit) {
+        Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
+        return DepositMapper.toDepositOutFullDto(deposit);
     }
 
 
@@ -225,6 +234,4 @@ public class DepositServiceImpl {
         }
         return true;
     }
-
-
 }
