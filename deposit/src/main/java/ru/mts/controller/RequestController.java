@@ -7,8 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mts.dto.RequestDataOut;
 import ru.mts.dto.RequestInDto;
+import ru.mts.dto.RequestNotOkDto;
 import ru.mts.service.RequestCodeServiceImpl;
 import ru.mts.service.RequestServiceImpl;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -92,6 +95,30 @@ public class RequestController {
         }
     }
 
+    //получить все отклоненные заявки по customerId
+    @GetMapping("/requestnotok/{customerId}")
+    public ResponseEntity<List<RequestNotOkDto>> requestNotOk(@PathVariable(value = "customerId") Integer customerId) {
+        try {
+            List<RequestNotOkDto> requests = requestService.requestnotok(customerId);
+            return new ResponseEntity<>(requests, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //удалить заявку по id
+    @GetMapping("/deleterequest/{idRequest}")
+    public ResponseEntity<Boolean> deleteRequest(@PathVariable(value = "idRequest") Integer idRequest) {
+        try {
+            Boolean isOk = requestService.deleteRequest(idRequest);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
     //получить последнюю одобренную заявку по customerId
 //    @GetMapping("/requestok/{customerId}")
 //    public ResponseEntity<RequestOutDto> getRequestOk(@PathVariable(value = "customerId") Integer customerId) {
@@ -102,9 +129,6 @@ public class RequestController {
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //        }
 //    }
-
-
-    //ручка для получения данных из заявки для формирования вклада
 
 
 //    @PostMapping("/save/{phoneNumber}")

@@ -7,6 +7,7 @@ import ru.mts.exception.ValidationException;
 import ru.mts.repository.RequestCodeRepository;
 
 import java.time.OffsetDateTime;
+import java.util.Random;
 
 @Service
 public class RequestCodeServiceImpl {
@@ -23,16 +24,18 @@ public class RequestCodeServiceImpl {
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCode();
     }
+
     //получить время последнего кода по idRequest
     public OffsetDateTime getLastRequestCodeDateTimeByIdRequestCode(Integer idRequest) {
         checkId(idRequest);
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCodeDateTime();
     }
+
     //сохранить и отправить код по idRequest
     public RequestCode saveRequestCode(Integer idRequest) {
         RequestCode requestCode = new RequestCode();
-        int code = Math.toIntExact(Math.round(Math.random() * 9998));
+        int code = createCode();
         requestCode.setCode(String.valueOf(code));
         requestCode.setIdRequest(idRequest);
         return requestCodeRepository.save(requestCode);
@@ -44,5 +47,14 @@ public class RequestCodeServiceImpl {
             throw new ValidationException("Неверный id " + id);
         }
         return true;
+    }
+
+    //сгенерить 4-значный код
+    private int createCode() {
+        int maximum = 9999;
+        int minimum = 1000;
+        Random rn = new Random();
+        int randomNum = rn.nextInt(maximum - minimum + 1) + minimum;
+        return randomNum;
     }
 }

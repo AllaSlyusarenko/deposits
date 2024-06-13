@@ -7,6 +7,7 @@ import ru.mts.exception.ValidationException;
 import ru.mts.repository.EnterCodeRepository;
 
 import java.time.OffsetDateTime;
+import java.util.Random;
 
 @Service
 public class EnterCodeServiceImpl {
@@ -32,7 +33,7 @@ public class EnterCodeServiceImpl {
     //сохранить/ отправить код по customerId
     public EnterCode saveEnterCode(Integer customerId) {
         EnterCode enterCodeIn = new EnterCode();
-        int code = Math.toIntExact(Math.round(Math.random() * 9998));
+        int code = createCode();
         enterCodeIn.setCode(String.valueOf(code));
         enterCodeIn.setIdCustomer(customerId);
         return enterCodeRepository.save(enterCodeIn);
@@ -44,5 +45,13 @@ public class EnterCodeServiceImpl {
             throw new ValidationException("Неверный id " + id);
         }
         return true;
+    }
+    //сгенерить 4-значный код
+    private int createCode() {
+        int maximum = 9999;
+        int minimum = 1000;
+        Random rn = new Random();
+        int randomNum = rn.nextInt(maximum - minimum + 1) + minimum;
+        return randomNum;
     }
 }

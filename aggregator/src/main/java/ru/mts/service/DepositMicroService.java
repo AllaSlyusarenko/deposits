@@ -214,4 +214,34 @@ public class DepositMicroService {
         }
     }
 
+
+    //получить все отклоненные заявки по customerId
+    public List<RequestNotOk> getRequestNotOk() {
+        String url = "http://localhost:8082/request/requestnotok/" + CustomerMicroService.getIdCustomer();
+        ResponseEntity<List<RequestNotOk>> data =
+                restTemplate.exchange(url,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<RequestNotOk>>() {
+                        }
+                );
+        if (data.getStatusCode().is2xxSuccessful()) {
+            return data.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + data);
+        }
+    }
+
+    //удалить заявку по id
+    public void deleteRequest(Integer idRequest) {
+        String url = "http://localhost:8082/request/deleterequest/" + idRequest;
+        ResponseEntity<Boolean> code = restTemplate.getForEntity(url, Boolean.class);
+        if (code.getStatusCode().is2xxSuccessful()) {
+            code.getBody();
+        } else {
+            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
+        }
+    }
+
+
 }

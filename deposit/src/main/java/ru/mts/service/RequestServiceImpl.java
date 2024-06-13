@@ -7,14 +7,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.mts.dto.RequestCodeIn;
 import ru.mts.dto.RequestDataOut;
 import ru.mts.dto.RequestInDto;
+import ru.mts.dto.RequestNotOkDto;
 import ru.mts.entity.*;
 import ru.mts.exception.NotFoundException;
 import ru.mts.exception.ValidationException;
+import ru.mts.mapper.RequestMapper;
 import ru.mts.repository.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -174,6 +178,26 @@ public class RequestServiceImpl {
             depositsType = depositsTypes.get(4);
         }
         return depositsType;
+    }
+
+    //найти все заявки пользователя со статусом отклонена с сортировкой по убыванию даты
+    public List<RequestNotOkDto> requestnotok(Integer customerId) {
+        List<Request> requestsNotOk = new ArrayList<>();
+        List<Request> requests = requestRepository.findAllByCustomerIdOrderByRequestDateTimeDesc(customerId);
+        for (Request request : requests) {
+            List<CurrentRequestStatus> statuses = currentRequestStatusRepository.findAllByIdRequest(request);
+            List<Integer> idsStatus = statuses.stream().map(c -> c.getIdRequestStatus().getIdRequestStatus()).collect(Collectors.toList());
+            if (idsStatus.contains(4)) {
+                requestsNotOk.add(request);
+            }
+        }
+        return RequestMapper.toRequestNotOkDtos(requestsNotOk);
+    }
+
+
+    //удалить заявку по id
+    public Boolean deleteRequest(Integer idRequest){
+        return requestRepository.deleteByIdRequest(idRequest);
     }
 
     //проверка id

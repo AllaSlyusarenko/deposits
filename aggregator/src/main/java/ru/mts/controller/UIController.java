@@ -73,6 +73,8 @@ public class UIController {
         List<DepositShort> depositShorts = depositMicroService.getAllDepositShortActiveDeposits();
         model.addAttribute("depositShorts", depositShorts);
         //отклоненные заявки
+        List<RequestNotOk> requestNotOks = depositMicroService.getRequestNotOk();
+        model.addAttribute("requestNotOks", requestNotOks);
 
         return "deposit";
     }
@@ -87,6 +89,13 @@ public class UIController {
 
     @GetMapping(value = "/deposit", params = "action=Вернуться к списку вкладов")
     public String toDeposits(Model model) {
+        return "redirect:/deposit";
+    }
+
+    @GetMapping(value = "/deleterequest/{id}")
+    public String deleteRequest(Model model, @PathVariable("id") Integer id) {
+        depositMicroService.deleteRequest(id);
+
         return "redirect:/deposit";
     }
 
