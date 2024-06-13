@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface RequestRepository extends JpaRepository<Request, Integer> {
     Optional<Request> findFirstByCustomerIdOrderByIdRequestDesc(Integer idCustomer);
     List<Request> findAllByCustomerIdOrderByRequestDateTimeDesc(Integer idCustomer);
-    Boolean deleteByIdRequest(int idRequest);
+    void deleteByIdRequest(Integer idRequest);
 }

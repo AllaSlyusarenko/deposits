@@ -197,7 +197,13 @@ public class RequestServiceImpl {
 
     //удалить заявку по id
     public Boolean deleteRequest(Integer idRequest){
-        return requestRepository.deleteByIdRequest(idRequest);
+        Request request = requestRepository.findById(idRequest).orElseThrow(() -> new NotFoundException("Заявка не найдена"));;
+        //надо ли удалить из соединит таблицы со статусами
+//        currentRequestStatusRepository.deleteAllById_RequestId(idRequest);
+//        System.out.println("");
+        requestRepository.deleteByIdRequest(idRequest);
+        System.out.println("");
+        return true;
     }
 
     //проверка id

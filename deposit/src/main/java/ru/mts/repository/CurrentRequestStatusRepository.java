@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface CurrentRequestStatusRepository extends JpaRepository<CurrentRequestStatus, Integer> {
     List<CurrentRequestStatus> findAllByIdRequest(Request idRequest);
+    void deleteAllById_RequestId(Integer id);
+
 }

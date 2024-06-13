@@ -93,7 +93,7 @@ public class UIController {
     }
 
     @GetMapping(value = "/deleterequest/{id}")
-    public String deleteRequest(Model model, @PathVariable("id") Integer id) {
+    public String deleteRequest(@PathVariable("id") Integer id) {
         depositMicroService.deleteRequest(id);
 
         return "redirect:/deposit";

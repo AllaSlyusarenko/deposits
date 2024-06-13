@@ -62,7 +62,7 @@
     <p>У вас отсутствуют отклоненные заявки на размещение вклада</p>
 </div>
 
-<div th:if="${not #lists.isEmpty(depositShorts)}">
+<div th:if="${not #lists.isEmpty(requestNotOks)}">
     <br>
     <br>
     <table>
@@ -74,15 +74,13 @@
             <thead>
             <th>Сумма</th>
             <th>Дата оформления</th>
-            <th>Причина</th>
-            <th>Удалить</th>
+<!--            <th>Удалить</th>-->
             </thead>
             <tbody>
             <tr th:each="request : ${requestNotOks}">
                 <th th:text="${request.depositAmount}"></th>
                 <th th:text="${#temporals.format(request.createdDateTime,'yyyy-MM-dd')}"></th>
-                <th th:text="Недостаточно средств">Недостаточно средств</th>
-                <th><a th:href="@{/deleterequest/{id}(id=${request.id})}">Удалить заявку</a></th>
+<!--                <th><a th:href="@{/deleterequest/{id}(id=${request.id})}">Удалить заявку</a></th>-->
             </tr>
             </tbody>
         </table>
