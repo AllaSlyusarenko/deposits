@@ -63,5 +63,16 @@ public class AccountMicroService {
         return totalSum;
     }
 
+    //закрыть для операций счет вклада и вернуть сумму на основной счет
+    public Boolean closeDeposit(BigDecimal depositAccountId, BigDecimal depositRefundAccountId, BigDecimal depositAmount) {
+        String url = "http://localhost:8083/account/closedeposit/" + depositAccountId + "/" + depositRefundAccountId + "/" + depositAmount;
+        ResponseEntity<Boolean> isOk =
+                restTemplate.getForEntity(url, Boolean.class);
+        if (isOk.getStatusCode().is2xxSuccessful()) {
+            return isOk.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + isOk);
+        }
+    }
 
 }

@@ -77,6 +77,22 @@ public class BankAccountServiceImpl implements BankAccountService {
         return amount;
     }
 
+    //закрыть для операций счет вклада и вернуть сумму на основной счет
+    @Override
+    public Boolean closeDeposit(BigDecimal depositAccountId, BigDecimal depositRefundAccountId, BigDecimal depositAmount) {
+        //счет вклада
+        BankAccount bankAccountDeposit = getBankAccountByNumBankAccounts(depositAccountId);
+        bankAccountDeposit.setAmount(bankAccountDeposit.getAmount().subtract(depositAmount));
+        bankAccountDeposit.setIsActive(false);
+        bankAccountRepository.save(bankAccountDeposit);
+        //основной счет
+        BankAccount bankAccount  = getBankAccountByNumBankAccounts(depositRefundAccountId);
+        bankAccount.setAmount(bankAccount.getAmount().add(depositAmount));
+        bankAccountRepository.save(bankAccount);
+
+        return true;
+    }
+
 
     //создать банковский счет вклада с нужной суммой, эту сумму списать с основного счета
     @Override

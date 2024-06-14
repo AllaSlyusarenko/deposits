@@ -80,7 +80,7 @@
             <tr th:each="request : ${requestNotOks}">
                 <th th:text="${request.depositAmount}"></th>
                 <th th:text="${#temporals.format(request.createdDateTime,'yyyy-MM-dd')}"></th>
-<!--                <th><a th:href="@{/deleterequest/{id}(id=${request.id})}">Удалить заявку</a></th>-->
+                <th><a th:href="@{/deleterequest/{id}(id=${request.id})}">Удалить заявку</a></th>
             </tr>
             </tbody>
         </table>

@@ -90,9 +90,9 @@ public class CustomerMicroService {
                                 }
                         );
                 if (response.getStatusCode().is2xxSuccessful()) {
-//                    BankAccount account = new BankAccount();
-//                    account.setNumBankAccount(Objects.requireNonNull(response.getBody()).toString());
-                    accounts.add(response.getBody());
+                    if(response.getBody().getIsActive().equals(true)){
+                        accounts.add(response.getBody());
+                    }
                 } else {
                     throw new UnexpectedException("Что-то пошло не так" + phoneNumber);
                 }

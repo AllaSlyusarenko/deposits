@@ -232,12 +232,23 @@ public class DepositMicroService {
         }
     }
 
-    //удалить заявку по id
+    //удалить заявку по id - поменять её статус на 5 - Заявка удалена
     public void deleteRequest(Integer idRequest) {
         String url = "http://localhost:8082/request/deleterequest/" + idRequest;
         ResponseEntity<Boolean> code = restTemplate.getForEntity(url, Boolean.class);
         if (code.getStatusCode().is2xxSuccessful()) {
             code.getBody();
+        } else {
+            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
+        }
+    }
+
+    //закрыть вклад по id - возвращаю dto с данными для сервиса account
+    public CloseDeposit closeDeposit(Integer idDeposit) {
+        String url = "http://localhost:8082/deposit/closedeposit/" + idDeposit;
+        ResponseEntity<CloseDeposit> code = restTemplate.getForEntity(url, CloseDeposit.class);
+        if (code.getStatusCode().is2xxSuccessful()) {
+            return code.getBody();
         } else {
             throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }

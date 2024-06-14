@@ -3,6 +3,7 @@ package ru.mts.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.mts.dto.CloseDepositDto;
 import ru.mts.dto.DepositOutFullDto;
 import ru.mts.dto.DepositOutShortDto;
 import ru.mts.dto.DepositOutSuccessDto;
@@ -192,9 +193,9 @@ public class DepositServiceImpl {
 
     //присвоить статус: 1 - Вклад открыт, 8 - Подтверждение закрытия вклада, 9 - Закрытие вклада подтверждено
     //10 - Вклад закрыт(isActive = false)
-    public void statusDepositSet(Deposit idDeposit, int idStatusDeposit) {
+    public void statusDepositSet(Deposit deposit, int idStatusDeposit) {
         CurrentDepositStatus currentDepositStatus = new CurrentDepositStatus();
-        currentDepositStatus.setIdDeposit(idDeposit);
+        currentDepositStatus.setIdDeposit(deposit);
         DepositStatus depositStatus = depositStatusRepository.findById(idStatusDeposit);
         currentDepositStatus.setIdDepositStatus(depositStatus);
         currentDepositStatusRepository.save(currentDepositStatus);
@@ -224,6 +225,20 @@ public class DepositServiceImpl {
     public DepositOutFullDto showFullDeposit(Integer idDeposit) {
         Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         return DepositMapper.toDepositOutFullDto(deposit);
+    }
+
+    //закрыть вклад по id и вернуть счет вклада BigDecimal depositAccountId, сумму, куда вернуть деньги
+    public CloseDepositDto closeDeposit(Integer idDeposit){
+        Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
+        //вклад становится неактивным
+        deposit.setActive(false);
+        //статус вклада - 10 - Вклад закрыт
+        statusDepositSet(deposit, 10);
+        CloseDepositDto closeDepositDto = new CloseDepositDto();
+        closeDepositDto.setDepositAccountId(deposit.getDepositAccountId());
+        closeDepositDto.setDepositRefundAccountId(deposit.getDepositRefundAccountId());
+        closeDepositDto.setDepositAmount(deposit.getDepositAmount());
+        return closeDepositDto;
     }
 
 

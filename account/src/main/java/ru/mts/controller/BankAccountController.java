@@ -128,5 +128,16 @@ public class BankAccountController {
         }
     }
 
-
+    //счет вклада сделать неактивным, сумму перевести на основной счет
+    @GetMapping("/closedeposit/{depositAccountId}/{depositRefundAccountId}/{depositAmount}")
+    public ResponseEntity<Boolean> closeDeposit(@PathVariable(value = "depositAccountId") BigDecimal depositAccountId,
+                                                @PathVariable(value = "depositRefundAccountId") BigDecimal depositRefundAccountId,
+                                                @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
+        try {
+            Boolean isOk = bankAccountService.closeDeposit(depositAccountId, depositRefundAccountId, depositAmount);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

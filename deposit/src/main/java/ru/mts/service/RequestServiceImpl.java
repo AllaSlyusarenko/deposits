@@ -187,7 +187,7 @@ public class RequestServiceImpl {
         for (Request request : requests) {
             List<CurrentRequestStatus> statuses = currentRequestStatusRepository.findAllByIdRequest(request);
             List<Integer> idsStatus = statuses.stream().map(c -> c.getIdRequestStatus().getIdRequestStatus()).collect(Collectors.toList());
-            if (idsStatus.contains(4)) {
+            if (idsStatus.contains(4) && !idsStatus.contains(5)) {
                 requestsNotOk.add(request);
             }
         }
@@ -195,14 +195,17 @@ public class RequestServiceImpl {
     }
 
 
-    //удалить заявку по id
-    public Boolean deleteRequest(Integer idRequest){
-        Request request = requestRepository.findById(idRequest).orElseThrow(() -> new NotFoundException("Заявка не найдена"));;
-        //надо ли удалить из соединит таблицы со статусами
-//        currentRequestStatusRepository.deleteAllById_RequestId(idRequest);
-//        System.out.println("");
-        requestRepository.deleteByIdRequest(idRequest);
-        System.out.println("");
+    //удалить заявку по id, т.е. присвоить статус 5 - Заявка удалена
+    public Boolean deleteRequest(Integer idRequest) {
+        Request request = requestRepository.findById(idRequest).orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+        //не получается удаление через jparepository
+        //currentRequestStatusRepository.deleteAllById_RequestId(idRequest);
+        //requestRepository.deleteByIdRequest(idRequest);
+        CurrentRequestStatus statusIn = new CurrentRequestStatus();
+        statusIn.setIdRequest(request);
+        RequestStatus requestStatus = requestStatusRepository.findById(5);
+        statusIn.setIdRequestStatus(requestStatus);
+        currentRequestStatusRepository.save(statusIn);
         return true;
     }
 

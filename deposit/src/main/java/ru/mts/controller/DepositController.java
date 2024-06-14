@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mts.dto.DepositOutFullDto;
-import ru.mts.dto.DepositOutShortDto;
-import ru.mts.dto.DepositOutSuccessDto;
-import ru.mts.dto.RequestDataOut;
+import ru.mts.dto.*;
 import ru.mts.entity.Deposit;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.TypesPercentPayment;
@@ -77,6 +74,17 @@ public class DepositController {
         try {
             DepositOutFullDto dtos = depositService.showFullDeposit(idDeposit);
             return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //закрыть вклад по id
+    @GetMapping("/closedeposit/{idDeposit}")
+    public ResponseEntity<CloseDepositDto> closeDeposit(@PathVariable("idDeposit") Integer idDeposit) {
+        try {
+            CloseDepositDto data = depositService.closeDeposit(idDeposit);
+            return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

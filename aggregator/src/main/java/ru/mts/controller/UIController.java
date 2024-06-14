@@ -87,6 +87,16 @@ public class UIController {
         return "fulldeposit";
     }
 
+    @GetMapping(value = "/closedeposit/{id}")
+    public String closeDeposit(Model model, @PathVariable("id") Integer id) {
+        //данные из сервиса deposit для account
+        CloseDeposit closeDeposit = depositMicroService.closeDeposit(id);
+        accountMicroService.closeDeposit(
+                closeDeposit.getDepositAccountId(), closeDeposit.getDepositRefundAccountId(), closeDeposit.getDepositAmount());
+
+        return "redirect:/deposit";
+    }
+
     @GetMapping(value = "/deposit", params = "action=Вернуться к списку вкладов")
     public String toDeposits(Model model) {
         return "redirect:/deposit";
@@ -95,10 +105,8 @@ public class UIController {
     @GetMapping(value = "/deleterequest/{id}")
     public String deleteRequest(@PathVariable("id") Integer id) {
         depositMicroService.deleteRequest(id);
-
         return "redirect:/deposit";
     }
-
 
 
     @GetMapping("/request")
@@ -125,7 +133,6 @@ public class UIController {
 
     //Показать проценты
     @PostMapping(value = "/request", params = "action=Показать проценты")
-//     @GetMapping("/rate")
     public String depositRate(Model model, RequestIn requestin) {
 
         //в сервисе депозитов сделать логику по выбору процента, сделать ручку

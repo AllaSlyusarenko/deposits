@@ -3,7 +3,8 @@ INSERT INTO deposit.request_statuses(id_request_status, request_status_name)
 VALUES (1, 'Подтверждение заявки'),
        (2, 'Заявка подтверждена'),
        (3, 'Заявка одобрена'),
-       (4, 'Заявка отклонена');
+       (4, 'Заявка отклонена'),
+       (5, 'Заявка удалена');
 
 -- 2.13
 INSERT INTO deposit.deposit_term(id_deposit_term, deposit_term_name)
