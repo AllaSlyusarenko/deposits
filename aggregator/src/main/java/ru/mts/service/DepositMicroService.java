@@ -15,12 +15,10 @@ import java.util.List;
 @Service
 public class DepositMicroService {
     private final RestTemplate restTemplate;
-    private final CustomerMicroService customerMicroService;
 
     @Autowired
-    public DepositMicroService(RestTemplate restTemplate, CustomerMicroService customerMicroService) {
+    public DepositMicroService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.customerMicroService = customerMicroService;
     }
 
     //получить все depositTerm
@@ -105,7 +103,6 @@ public class DepositMicroService {
 
     //отправить заявку на сохранение
     public Integer saveRequest(Request request) {
-//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Integer> idRequest =
                 restTemplate.postForEntity("http://localhost:8082/request/" + CustomerMicroService.getIdCustomer() + "/save",
                         request,
@@ -130,7 +127,6 @@ public class DepositMicroService {
 
     //проверка правильности смс кода для Request
     public Boolean checkRequestCode(String code) {
-//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Boolean> isOk =
                 restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + code + "/" + CustomerMicroService.getIdCustomer(), Boolean.class);
         if (isOk.getStatusCode().is2xxSuccessful()) {
@@ -142,7 +138,6 @@ public class DepositMicroService {
 
     //получить данные из request для проверки в account на наличие суммы на счету
     public RequestData getRequestData() {
-//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<RequestData> data =
                 restTemplate.getForEntity("http://localhost:8082/request/requestdata/" + CustomerMicroService.getIdCustomer(), RequestData.class);
         if (data.getStatusCode().is2xxSuccessful()) {
@@ -154,7 +149,6 @@ public class DepositMicroService {
 
     //присвоить заявке статус - Одобрена
     public Boolean changeStatusOk() {
-//        Integer idCustomer = customerMicroService.getCustomerIdByPhoneNumber();
         ResponseEntity<Boolean> data =
                 restTemplate.getForEntity("http://localhost:8082/request/changestatusok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
         if (data.getStatusCode().is2xxSuccessful()) {

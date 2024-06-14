@@ -75,7 +75,6 @@ public class UIController {
         //отклоненные заявки
         List<RequestNotOk> requestNotOks = depositMicroService.getRequestNotOk();
         model.addAttribute("requestNotOks", requestNotOks);
-
         return "deposit";
     }
 
@@ -100,7 +99,6 @@ public class UIController {
             return "errordepositcode";
         }
         if (depositMicroService.checkcodeclosedeposit(id, code)) {
-            Integer idR = id;
             model.addAttribute("id", id);
             return "redirect:/closedeposit/{id}";
         }
@@ -114,7 +112,6 @@ public class UIController {
         CloseDeposit closeDeposit = depositMicroService.closeDeposit(id);
         accountMicroService.closeDeposit(
                 closeDeposit.getDepositAccountId(), closeDeposit.getDepositRefundAccountId(), closeDeposit.getDepositAmount());
-
         return "redirect:/deposit";
     }
 
@@ -163,11 +160,9 @@ public class UIController {
 
     @PostMapping(value = "/request", params = "action=Принять условия")
     public String saveRequest(Model model, RequestIn requestin) {
-
         //проверить заполнены ли все поля и правильность их заполнения(да/нет), сумма>=10000
         if (!depositMicroService.checkRequestIn(requestin)) {
             return "requesterror";
-
         }
         Request request = RequestMapper.requestDtoToRequest(requestin);
         //отправить на сохранение
@@ -216,9 +211,7 @@ public class UIController {
     }
 
     @GetMapping(value = "/logout")
-//    @PreAuthorize("hasRole('USER')")
     public String logout(Model model) {
         return "redirect:/start";
     }
-
 }

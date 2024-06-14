@@ -2,12 +2,9 @@ package ru.mts.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.mts.dto.*;
 import ru.mts.entity.*;
-import ru.mts.exception.NotFoundException;
 import ru.mts.exception.ValidationException;
 import ru.mts.mapper.DepositMapper;
 import ru.mts.repository.CurrentDepositStatusRepository;
@@ -243,38 +240,43 @@ public class DepositServiceImpl {
 
     //отправить код для подтверждения закрытия вклада
     public String sendDepositCodeClose(Integer idDeposit, String phoneNumber) {
+        Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         DepositCode depositCode = depositCodeServiceImpl.saveDepositCode(idDeposit);
         String message = "пользователю на номер " + phoneNumber + " отправлено смс с кодом";
         log.info(message);
         log.info(depositCode.getCode());
+        //статус - подтверждение закрытия
+        CurrentDepositStatus statusIn = new CurrentDepositStatus();
+        statusIn.setIdDeposit(deposit);
+        DepositStatus depositStatus = depositStatusRepository.findById(8);
+        statusIn.setIdDepositStatus(depositStatus);
+        currentDepositStatusRepository.save(statusIn);
         return message;
     }
 
     //проверка кода для подтверждения закрытия вклада
     public boolean checkCodeCloseDeposit(Integer idDeposit, String phoneNumber, String code) {
-        //по customerId найти id последней заявки
-//        Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
-//                .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
-//        Integer requestId = request.getIdRequest();
-//        RequestCodeIn requestCodeIn = new RequestCodeIn();
-//        requestCodeIn.setCode(code);
-//        requestCodeIn.setCodeDateTime(OffsetDateTime.now());
-//        requestCodeIn.setIdRequest(requestId);
-//
-//        String lastCode = requestCodeService.getLastRequestCodeByIdRequest(requestId);
-//        OffsetDateTime lastDateTime = requestCodeService.getLastRequestCodeDateTimeByIdRequestCode(requestId);
-//        if (lastCode.equals(requestCodeIn.getCode()) &&
-//                requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1))) {
-//            //присвоить статус - Заявка подтверждена
-//            CurrentRequestStatus statusIn = new CurrentRequestStatus();
-//            statusIn.setIdRequest(request);
-//            RequestStatus requestStatus = requestStatusRepository.findById(2);
-//            statusIn.setIdRequestStatus(requestStatus);
-//            currentRequestStatusRepository.save(statusIn);
-//            return true;
-//        } else {
-//            return false;
-        return true;
+        Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
+        Integer depositId = deposit.getIdDeposit();
+        DepositCloseCodeIn depositCodeIn = new DepositCloseCodeIn();
+        depositCodeIn.setCode(code);
+        depositCodeIn.setCodeDateTime(OffsetDateTime.now());
+        depositCodeIn.setIdDeposit(depositId);
+
+        String lastCode = depositCodeServiceImpl.getLastDepositCodeByIdDeposit(idDeposit);
+        OffsetDateTime lastDateTime = depositCodeServiceImpl.getLastDepositCodeDateTimeByIdDepositCode(depositId);
+        if (lastCode.equals(depositCodeIn.getCode()) &&
+                depositCodeIn.getCodeDateTime().isAfter(lastDateTime) && depositCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1))) {
+            //присвоить статус - Заявка подтверждена
+            CurrentDepositStatus statusIn = new CurrentDepositStatus();
+            statusIn.setIdDeposit(deposit);
+            DepositStatus depositStatus = depositStatusRepository.findById(9);
+            statusIn.setIdDepositStatus(depositStatus);
+            currentDepositStatusRepository.save(statusIn);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

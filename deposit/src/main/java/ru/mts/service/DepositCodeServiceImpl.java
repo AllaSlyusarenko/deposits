@@ -49,7 +49,6 @@ public class DepositCodeServiceImpl {
         return true;
     }
 
-
     //сгенерить 4-значный код
     private int createCode() {
         int maximum = 9999;

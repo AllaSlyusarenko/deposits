@@ -90,7 +90,7 @@ public class CustomerMicroService {
                                 }
                         );
                 if (response.getStatusCode().is2xxSuccessful()) {
-                    if(response.getBody().getIsActive().equals(true)){
+                    if (response.getBody().getIsActive().equals(true)) {
                         accounts.add(response.getBody());
                     }
                 } else {
@@ -126,5 +126,4 @@ public class CustomerMicroService {
             throw new UnexpectedException("Неверные данные" + idCustomer);
         }
     }
-
 }
