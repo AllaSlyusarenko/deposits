@@ -86,8 +86,6 @@ public class RequestServiceImpl {
     }
 
     public boolean checkEnterCode(Integer requestId, RequestCodeIn requestCodeIn) {
-//        Integer id = enterCodeIn.getIdCustomer();
-//        checkId(id);
         String lastCode = requestCodeService.getLastRequestCodeByIdRequest(requestId);
         OffsetDateTime lastDateTime = requestCodeService.getLastRequestCodeDateTimeByIdRequestCode(requestId);
         return lastCode.equals(requestCodeIn.getCode()) &&

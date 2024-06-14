@@ -12,6 +12,8 @@
       th:object="${depositCode}"
       method="get">
     <br>
+    <label for="id">Код продукта</label>
+    <input type="text" id="id" th:field="*{id}">
     <br>
     <label for="code">Код из смс</label>
     <input type="text" id="code" th:field="*{code}">
@@ -24,6 +26,7 @@
         <input type="submit" name="action" value="Назад">
     </form>
 </form>
+<br>
 
 </body>
 </html>

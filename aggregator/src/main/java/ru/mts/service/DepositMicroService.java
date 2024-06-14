@@ -57,14 +57,14 @@ public class DepositMicroService {
 
     public boolean checkRequestIn(RequestIn requestin) {
         boolean b = false;
-        if (!requestin.getIsDepositRefill().isBlank() && (requestin.getIsDepositRefill().equals("да")
-                || requestin.getIsDepositRefill().equals("нет"))) {
+        if (!requestin.getIsDepositRefill().isBlank() && (requestin.getIsDepositRefill().equalsIgnoreCase("да")
+                || requestin.getIsDepositRefill().equalsIgnoreCase("нет"))) {
             b = true;
         } else {
             return false;
         }
-        if (!requestin.getIsReductionOfDeposit().isBlank() && (requestin.getIsReductionOfDeposit().equals("да")
-                || requestin.getIsReductionOfDeposit().equals("нет"))) {
+        if (!requestin.getIsReductionOfDeposit().isBlank() && (requestin.getIsReductionOfDeposit().equalsIgnoreCase("да")
+                || requestin.getIsReductionOfDeposit().equalsIgnoreCase("нет"))) {
             b = true;
         } else {
             return false;
@@ -216,12 +216,24 @@ public class DepositMicroService {
 
     //код для подтверждения закрытия вклада по id вклада
     public void sendDepositCodeClose(Integer idDeposit) {
-        String url = "http://localhost:8082/deposit/codeclosedeposit/" + idDeposit;
+        String url = "http://localhost:8082/deposit/codeclosedeposit/" + CustomerMicroService.getPhoneNumber() + "/" + idDeposit;
         ResponseEntity<String> code = restTemplate.getForEntity(url, String.class);
         if (code.getStatusCode().is2xxSuccessful()) {
             code.getBody();
         } else {
             throw new UnexpectedException("Неверные данные" + idDeposit);
+        }
+    }
+
+    //проверка кода для подтверждения закрытия вклада по id вклада
+    public Boolean checkcodeclosedeposit(Integer idDeposit, String code) {
+        String url = "http://localhost:8082/deposit/checkcodeclosedeposit/"
+                + CustomerMicroService.getPhoneNumber() + "/" + idDeposit + "/" + code;
+        ResponseEntity<Boolean> isOk = restTemplate.getForEntity(url, Boolean.class);
+        if (isOk.getStatusCode().is2xxSuccessful()) {
+            return isOk.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + code);
         }
     }
 
@@ -254,7 +266,7 @@ public class DepositMicroService {
         }
     }
 
-    //закрыть вклад по id - возвращаю dto с данными для сервиса account
+    //закрыть вклад по id
     public CloseDeposit closeDeposit(Integer idDeposit) {
         String url = "http://localhost:8082/deposit/closedeposit/" + idDeposit;
         ResponseEntity<CloseDeposit> code = restTemplate.getForEntity(url, CloseDeposit.class);
@@ -264,6 +276,4 @@ public class DepositMicroService {
             throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }
     }
-
-
 }

@@ -93,16 +93,29 @@ public class DepositController {
     }
 
     //код для подтверждения закрытия вклада по id вклада
-    @GetMapping("/codeclosedeposit/{idDeposit}")
-    public ResponseEntity<String> sendDepositCodeClose(@PathVariable("idDeposit") Integer idDeposit) {
+    @GetMapping("/codeclosedeposit/{phoneNumber}/{idDeposit}")
+    public ResponseEntity<String> sendDepositCodeClose(@PathVariable("idDeposit") Integer idDeposit,
+                                                       @PathVariable("phoneNumber") String phoneNumber) {
         try {
-            String code = depositService.sendDepositCodeClose(idDeposit);
+            String code = depositService.sendDepositCodeClose(idDeposit, phoneNumber);
             return new ResponseEntity<>(code, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
+    //проверка кода для подтверждения закрытия вклада по id вклада
+    @GetMapping("/checkcodeclosedeposit/{phoneNumber}/{idDeposit}/{code}")
+    public ResponseEntity<Boolean> checkCodeCloseDeposit(@PathVariable("idDeposit") Integer idDeposit,
+                                                         @PathVariable("phoneNumber") String phoneNumber,
+                                                         @PathVariable("code") String code) {
+        try {
+            Boolean isOk = depositService.checkCodeCloseDeposit(idDeposit, phoneNumber, code);
+            return new ResponseEntity<>(isOk, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 }

@@ -8,8 +8,8 @@ import ru.mts.entity.RequestIn;
 public class RequestMapper {
     public Request requestDtoToRequest(RequestIn requestIn) {
         Request request = new Request();
-        request.setDepositRefill(requestIn.getIsDepositRefill().equals("да"));
-        request.setReductionOfDeposit(requestIn.getIsReductionOfDeposit().equals("да"));
+        request.setDepositRefill(requestIn.getIsDepositRefill().equalsIgnoreCase("да"));
+        request.setReductionOfDeposit(requestIn.getIsReductionOfDeposit().equalsIgnoreCase("да"));
         request.setDepositTerm(requestIn.getDepositTerm().getDepositTermName());
         request.setDepositAmount(requestIn.getDepositAmount());
         request.setTypesPercentPayment(requestIn.getTypesPercentPayment().getTypePercentPaymentPeriod());

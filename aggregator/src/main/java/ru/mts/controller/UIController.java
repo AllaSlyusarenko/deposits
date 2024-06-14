@@ -93,13 +93,16 @@ public class UIController {
         return "depositcodeclose";
     }
 
+
     @GetMapping(value = "/depositcodeclose", params = "action=Подтвердить код")
-    public String agreeDepositOff(Model model, @RequestParam(name = "code") String code) {
+    public String agreeDepositOff(Model model, @RequestParam(name = "id") Integer id, @RequestParam(name = "code") String code) {
         if (code == null || code.isEmpty()) {
             return "errordepositcode";
         }
-        if (depositMicroService.checkCodeByDepositId(code)) {
-            return "redirect:/deposit";
+        if (depositMicroService.checkcodeclosedeposit(id, code)) {
+            Integer idR = id;
+            model.addAttribute("id", id);
+            return "redirect:/closedeposit/{id}";
         }
         return "errordepositcode";
     }

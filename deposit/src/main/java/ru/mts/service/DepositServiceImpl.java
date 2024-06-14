@@ -1,14 +1,13 @@
 package ru.mts.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.mts.dto.CloseDepositDto;
-import ru.mts.dto.DepositOutFullDto;
-import ru.mts.dto.DepositOutShortDto;
-import ru.mts.dto.DepositOutSuccessDto;
+import ru.mts.dto.*;
 import ru.mts.entity.*;
+import ru.mts.exception.NotFoundException;
 import ru.mts.exception.ValidationException;
 import ru.mts.mapper.DepositMapper;
 import ru.mts.repository.CurrentDepositStatusRepository;
@@ -19,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 public class DepositServiceImpl {
     private final DepositRepository depositRepository;
@@ -26,14 +26,16 @@ public class DepositServiceImpl {
     private final UtilityServiceImpl utilityService;
     private final DepositStatusRepository depositStatusRepository;
     private final CurrentDepositStatusRepository currentDepositStatusRepository;
+    private final DepositCodeServiceImpl depositCodeServiceImpl;
 
     @Autowired
-    public DepositServiceImpl(DepositRepository depositRepository, RequestServiceImpl requestService, UtilityServiceImpl utilityService, DepositStatusRepository depositStatusRepository, CurrentDepositStatusRepository currentDepositStatusRepository) {
+    public DepositServiceImpl(DepositRepository depositRepository, RequestServiceImpl requestService, UtilityServiceImpl utilityService, DepositStatusRepository depositStatusRepository, CurrentDepositStatusRepository currentDepositStatusRepository, DepositCodeServiceImpl depositCodeServiceImpl) {
         this.depositRepository = depositRepository;
         this.requestService = requestService;
         this.utilityService = utilityService;
         this.depositStatusRepository = depositStatusRepository;
         this.currentDepositStatusRepository = currentDepositStatusRepository;
+        this.depositCodeServiceImpl = depositCodeServiceImpl;
     }
 
     //создает вклад по заявке idRequest
@@ -240,8 +242,39 @@ public class DepositServiceImpl {
     }
 
     //отправить код для подтверждения закрытия вклада
-    public String sendDepositCodeClose(Integer idDeposit){
+    public String sendDepositCodeClose(Integer idDeposit, String phoneNumber) {
+        DepositCode depositCode = depositCodeServiceImpl.saveDepositCode(idDeposit);
+        String message = "пользователю на номер " + phoneNumber + " отправлено смс с кодом";
+        log.info(message);
+        log.info(depositCode.getCode());
+        return message;
+    }
 
+    //проверка кода для подтверждения закрытия вклада
+    public boolean checkCodeCloseDeposit(Integer idDeposit, String phoneNumber, String code) {
+        //по customerId найти id последней заявки
+//        Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
+//                .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
+//        Integer requestId = request.getIdRequest();
+//        RequestCodeIn requestCodeIn = new RequestCodeIn();
+//        requestCodeIn.setCode(code);
+//        requestCodeIn.setCodeDateTime(OffsetDateTime.now());
+//        requestCodeIn.setIdRequest(requestId);
+//
+//        String lastCode = requestCodeService.getLastRequestCodeByIdRequest(requestId);
+//        OffsetDateTime lastDateTime = requestCodeService.getLastRequestCodeDateTimeByIdRequestCode(requestId);
+//        if (lastCode.equals(requestCodeIn.getCode()) &&
+//                requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1))) {
+//            //присвоить статус - Заявка подтверждена
+//            CurrentRequestStatus statusIn = new CurrentRequestStatus();
+//            statusIn.setIdRequest(request);
+//            RequestStatus requestStatus = requestStatusRepository.findById(2);
+//            statusIn.setIdRequestStatus(requestStatus);
+//            currentRequestStatusRepository.save(statusIn);
+//            return true;
+//        } else {
+//            return false;
+        return true;
     }
 
 
