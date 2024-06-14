@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit code close</title>
+</head>
+<body>
+
+<p>Введите код для подтверждения закрытия вклада</p>
+<form action="#"
+      th:action="@{/depositcodeclose}"
+      th:object="${depositCode}"
+      method="get">
+    <br>
+    <br>
+    <label for="code">Код из смс</label>
+    <input type="text" id="code" th:field="*{code}">
+    <br>
+    <form th:action="@{/depositcodeclose}" th:method="get">
+        <input type="submit" name="action" value="Подтвердить код">
+    </form>
+    <br>
+    <form th:action="@{/deposit}" th:method="get">
+        <input type="submit" name="action" value="Назад">
+    </form>
+</form>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.mts.dto.CloseDepositDto;
@@ -16,10 +17,7 @@ import ru.mts.repository.DepositStatusRepository;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DepositServiceImpl {
@@ -228,7 +226,7 @@ public class DepositServiceImpl {
     }
 
     //закрыть вклад по id и вернуть счет вклада BigDecimal depositAccountId, сумму, куда вернуть деньги
-    public CloseDepositDto closeDeposit(Integer idDeposit){
+    public CloseDepositDto closeDeposit(Integer idDeposit) {
         Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         //вклад становится неактивным
         deposit.setActive(false);
@@ -239,6 +237,11 @@ public class DepositServiceImpl {
         closeDepositDto.setDepositRefundAccountId(deposit.getDepositRefundAccountId());
         closeDepositDto.setDepositAmount(deposit.getDepositAmount());
         return closeDepositDto;
+    }
+
+    //отправить код для подтверждения закрытия вклада
+    public String sendDepositCodeClose(Integer idDeposit){
+
     }
 
 

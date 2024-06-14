@@ -192,3 +192,18 @@ create table if not exists deposit.request_code
 );
 
 alter sequence deposit.id_request_code_sq owned by deposit.request_code.id_request_code;
+
+-- 2.18
+
+CREATE SEQUENCE if not exists deposit.id_deposit_code_sq as integer START 1 INCREMENT BY 1;
+
+create table if not exists deposit.deposit_code
+(
+    id_deposit_code   integer default nextval('deposit.id_deposit_code_sq')
+                      constraint deposit_code_pk primary key,
+    id_deposit        integer,
+    code              varchar(4),
+    code_date_time    timestamp with time zone default CURRENT_TIMESTAMP
+);
+
+alter sequence deposit.id_deposit_code_sq owned by deposit.deposit_code.id_deposit_code;

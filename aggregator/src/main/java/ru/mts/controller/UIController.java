@@ -80,12 +80,30 @@ public class UIController {
     }
 
     @GetMapping(value = "/showdeposit/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
     public String showFullDeposit(Model model, @PathVariable("id") Integer id) {
         DepositFull deposit = depositMicroService.showFullDeposit(id);
         model.addAttribute("deposit", deposit);
         return "fulldeposit";
     }
+
+    @GetMapping(value = "/agreedepositoff/{id}", params = "action=Подтвердить закрытие вклада")
+    public String agreeDepositOff(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("depositCode", new DepositCode());
+        depositMicroService.sendDepositCodeClose(id);
+        return "depositcodeclose";
+    }
+
+    @GetMapping(value = "/depositcodeclose", params = "action=Подтвердить код")
+    public String agreeDepositOff(Model model, @RequestParam(name = "code") String code) {
+        if (code == null || code.isEmpty()) {
+            return "errordepositcode";
+        }
+        if (depositMicroService.checkCodeByDepositId(code)) {
+            return "redirect:/deposit";
+        }
+        return "errordepositcode";
+    }
+
 
     @GetMapping(value = "/closedeposit/{id}")
     public String closeDeposit(Model model, @PathVariable("id") Integer id) {

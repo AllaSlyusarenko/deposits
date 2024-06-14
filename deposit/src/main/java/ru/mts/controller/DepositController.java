@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mts.dto.*;
-import ru.mts.entity.Deposit;
+import ru.mts.dto.CloseDepositDto;
+import ru.mts.dto.DepositOutFullDto;
+import ru.mts.dto.DepositOutShortDto;
+import ru.mts.dto.DepositOutSuccessDto;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.TypesPercentPayment;
 import ru.mts.service.DepositServiceImpl;
@@ -89,5 +91,18 @@ public class DepositController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    //код для подтверждения закрытия вклада по id вклада
+    @GetMapping("/codeclosedeposit/{idDeposit}")
+    public ResponseEntity<String> sendDepositCodeClose(@PathVariable("idDeposit") Integer idDeposit) {
+        try {
+            String code = depositService.sendDepositCodeClose(idDeposit);
+            return new ResponseEntity<>(code, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 }

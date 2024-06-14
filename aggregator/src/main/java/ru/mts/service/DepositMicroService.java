@@ -214,6 +214,17 @@ public class DepositMicroService {
         }
     }
 
+    //код для подтверждения закрытия вклада по id вклада
+    public void sendDepositCodeClose(Integer idDeposit) {
+        String url = "http://localhost:8082/deposit/codeclosedeposit/" + idDeposit;
+        ResponseEntity<String> code = restTemplate.getForEntity(url, String.class);
+        if (code.getStatusCode().is2xxSuccessful()) {
+            code.getBody();
+        } else {
+            throw new UnexpectedException("Неверные данные" + idDeposit);
+        }
+    }
+
 
     //получить все отклоненные заявки по customerId
     public List<RequestNotOk> getRequestNotOk() {

@@ -7,17 +7,22 @@
 <body>
 <br>
 <br>
-<p>  Полная информация по вкладу</p>
+<p> Полная информация по вкладу</p>
 <br>
-<p>  <label th:text="${deposit}"></label></p>
+<p><label th:text="${deposit}"></label></p>
 
 <form th:action="@{/deposit}" th:method="get">
     <input type="submit" name="action" value="Вернуться к списку вкладов">
 </form>
-<!--<th><a th:href="@{/showdeposit/{id}(id=${deposit.idDeposit})}">Посмотреть информацию по вкладу</a></th>-->
-<form th:action="@{/closedeposit/{id}(id=${deposit.idDeposit})}" th:method="get">
-    <input type="submit" name="action" value="Закрыть вклад">
+<!--<form th:action="@{/closedeposit/{id}(id=${deposit.idDeposit})}" th:method="get">-->
+<!--    <input type="submit" name="action" value="Закрыть вклад">-->
+<!--</form>-->
+
+<form th:action="@{/agreedepositoff/{id}(id=${deposit.idDeposit})}" th:method="get">
+    <input type="submit" name="action" value="Подтвердить закрытие вклада">
 </form>
+
+
 
 </body>
 </html>

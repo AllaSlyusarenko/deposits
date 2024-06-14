@@ -3,8 +3,6 @@ package ru.mts.entity;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.PrePersist;
-
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
@@ -17,9 +15,4 @@ public class EnterCode implements Serializable {
 
     public EnterCode() {
     }
-//
-//    @PrePersist
-//    protected void onCreate() {
-//        codeDateTime = OffsetDateTime.now();
-//    }
 }
