@@ -57,14 +57,20 @@ public class UIController {
         }
         model.addAttribute("enterCode", new EnterCode());
         CustomerMicroService.setPhoneNumber(phoneNumber);
+        Integer id;
         try {
-            CustomerMicroService.setIdCustomer(customerMicroService.getCustomerIdByPhoneNumber());
+            id = customerMicroService.getCustomerIdByPhoneNumber();
+            CustomerMicroService.setIdCustomer(id);
         } catch (RuntimeException e) {
             return "redirect:/start";
         }
-        //отправить код
-        customerMicroService.sendCode();
-        return "entercode";
+        if (id == null) {
+            return "redirect:/start";
+        } else {
+            //отправить код
+            customerMicroService.sendCode();
+            return "entercode";
+        }
     }
 
     /**
