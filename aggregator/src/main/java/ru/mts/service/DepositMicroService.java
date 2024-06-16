@@ -25,7 +25,7 @@ public class DepositMicroService {
     /**
      * Метод - получить все depositTerm
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public List<DepositTerm> getAllDepositTerm() {
         ResponseEntity<List<DepositTerm>> depositTerms =
                 restTemplate.exchange("http://localhost:8082/deposit/alldepositterm",
@@ -44,7 +44,7 @@ public class DepositMicroService {
     /**
      * Метод - получить все TypesPercentPayment
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public List<TypesPercentPayment> getAllTypesPercentPayment() {
         ResponseEntity<List<TypesPercentPayment>> typesPercentPayments =
                 restTemplate.exchange("http://localhost:8082/deposit/alltypespercent",
@@ -63,7 +63,7 @@ public class DepositMicroService {
     /**
      * Метод - проверка заполнения всех полей заявки на вклад и суммы >= 10 000
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public boolean checkRequestIn(RequestIn requestin) {
         boolean b = false;
         if (!requestin.getIsDepositRefill().isBlank() && (requestin.getIsDepositRefill().equalsIgnoreCase("да")
@@ -115,7 +115,7 @@ public class DepositMicroService {
     /**
      * Метод - отправить на сохранение заявку на вклад
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public Integer saveRequest(Request request) {
         ResponseEntity<Integer> idRequest =
                 restTemplate.postForEntity("http://localhost:8082/request/" + CustomerMicroService.getIdCustomer() + "/save",
@@ -131,7 +131,7 @@ public class DepositMicroService {
     /**
      * Метод - отправить смс для подтверждения открытия вклада
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public void sendRequestCode(Integer idRequest) {
         String url = "http://localhost:8082/request/sendcode/" + idRequest + "/" + CustomerMicroService.getPhoneNumber();
         ResponseEntity<Boolean> code = restTemplate.getForEntity(url, Boolean.class);
@@ -145,7 +145,7 @@ public class DepositMicroService {
     /**
      * Метод - проверка правильности смс кода для Request
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public Boolean checkRequestCode(String code) {
         ResponseEntity<Boolean> isOk =
                 restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + code + "/" + CustomerMicroService.getIdCustomer(), Boolean.class);
@@ -159,7 +159,7 @@ public class DepositMicroService {
     /**
      * Метод - получить данные из request для проверки на наличие суммы на счету в account
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public RequestData getRequestData() {
         ResponseEntity<RequestData> data =
                 restTemplate.getForEntity("http://localhost:8082/request/requestdata/" + CustomerMicroService.getIdCustomer(), RequestData.class);
@@ -173,7 +173,7 @@ public class DepositMicroService {
     /**
      * Метод - присвоить заявке статус - Одобрена
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public Boolean changeStatusOk() {
         ResponseEntity<Boolean> data =
                 restTemplate.getForEntity("http://localhost:8082/request/changestatusok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
@@ -187,7 +187,7 @@ public class DepositMicroService {
     /**
      * Метод - присвоить заявке статус - Отклонена
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public Boolean changeStatusNotOk() {
         ResponseEntity<Boolean> data =
                 restTemplate.getForEntity("http://localhost:8082/request/changestatusnotok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
@@ -216,7 +216,7 @@ public class DepositMicroService {
     /**
      * Метод - для отображения краткой информации по вкладам по idCustomer
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public List<DepositShort> getAllDepositShortActiveDeposits() {
         String url = "http://localhost:8082/deposit/allshortdepositsactive/" + CustomerMicroService.getIdCustomer();
         ResponseEntity<List<DepositShort>> dtos = restTemplate.exchange(url,
@@ -235,7 +235,7 @@ public class DepositMicroService {
     /**
      * Метод - для отображения полной информации по id вклада
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public DepositFull showFullDeposit(Integer idDeposit) {
         String url = "http://localhost:8082/deposit/showfulldeposit/" + idDeposit;
         ResponseEntity<DepositFull> dtoFull = restTemplate.getForEntity(url, DepositFull.class);

@@ -126,6 +126,9 @@ public class UIController {
     @GetMapping(value = "/agreedepositoff/{id}", params = "action=Подтвердить закрытие вклада")
     public String agreeDepositOff(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("depositCode", new DepositCode());
+        if (id == null) {
+            return "errordepositcode";
+        }
         depositMicroService.sendDepositCodeClose(id);
         return "depositcodeclose";
     }
@@ -139,6 +142,7 @@ public class UIController {
         if (code == null || code.isEmpty()) {
             return "errordepositcode";
         }
+        
         if (depositMicroService.checkcodeclosedeposit(id, code)) {
             model.addAttribute("id", id);
             return "redirect:/closedeposit/{id}";
