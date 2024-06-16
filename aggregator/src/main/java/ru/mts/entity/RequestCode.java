@@ -16,9 +16,5 @@ public class RequestCode implements Serializable {
 
     public RequestCode() {
     }
-//
-//    @PrePersist
-//    protected void onCreate() {
-//        codeDateTime = OffsetDateTime.now();
-//    }
+
 }

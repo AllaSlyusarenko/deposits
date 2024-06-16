@@ -6,6 +6,9 @@ import ru.mts.entity.RequestIn;
 
 @UtilityClass
 public class RequestMapper {
+    /**
+     * Метод - для преобразования RequestIn в Request
+     */
     public Request requestDtoToRequest(RequestIn requestIn) {
         Request request = new Request();
         request.setDepositRefill(requestIn.getIsDepositRefill().equalsIgnoreCase("да"));

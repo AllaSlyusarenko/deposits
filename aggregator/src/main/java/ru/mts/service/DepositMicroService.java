@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.*;
 import ru.mts.exception.UnexpectedException;
 
@@ -21,7 +22,10 @@ public class DepositMicroService {
         this.restTemplate = restTemplate;
     }
 
-    //получить все depositTerm
+    /**
+     * Метод - получить все depositTerm
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<DepositTerm> getAllDepositTerm() {
         ResponseEntity<List<DepositTerm>> depositTerms =
                 restTemplate.exchange("http://localhost:8082/deposit/alldepositterm",
@@ -37,7 +41,10 @@ public class DepositMicroService {
         }
     }
 
-    //получить все TypesPercentPayment
+    /**
+     * Метод - получить все TypesPercentPayment
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<TypesPercentPayment> getAllTypesPercentPayment() {
         ResponseEntity<List<TypesPercentPayment>> typesPercentPayments =
                 restTemplate.exchange("http://localhost:8082/deposit/alltypespercent",
@@ -53,6 +60,10 @@ public class DepositMicroService {
         }
     }
 
+    /**
+     * Метод - проверка заполнения всех полей заявки на вклад и суммы >= 10 000
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public boolean checkRequestIn(RequestIn requestin) {
         boolean b = false;
         if (!requestin.getIsDepositRefill().isBlank() && (requestin.getIsDepositRefill().equalsIgnoreCase("да")
@@ -101,7 +112,10 @@ public class DepositMicroService {
         return b;
     }
 
-    //отправить заявку на сохранение
+    /**
+     * Метод - отправить на сохранение заявку на вклад
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Integer saveRequest(Request request) {
         ResponseEntity<Integer> idRequest =
                 restTemplate.postForEntity("http://localhost:8082/request/" + CustomerMicroService.getIdCustomer() + "/save",
@@ -114,7 +128,10 @@ public class DepositMicroService {
         }
     }
 
-    //отправить смс для подтверждения
+    /**
+     * Метод - отправить смс для подтверждения открытия вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public void sendRequestCode(Integer idRequest) {
         String url = "http://localhost:8082/request/sendcode/" + idRequest + "/" + CustomerMicroService.getPhoneNumber();
         ResponseEntity<Boolean> code = restTemplate.getForEntity(url, Boolean.class);
@@ -125,7 +142,10 @@ public class DepositMicroService {
         }
     }
 
-    //проверка правильности смс кода для Request
+    /**
+     * Метод - проверка правильности смс кода для Request
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean checkRequestCode(String code) {
         ResponseEntity<Boolean> isOk =
                 restTemplate.getForEntity("http://localhost:8082/request/checkcode/" + code + "/" + CustomerMicroService.getIdCustomer(), Boolean.class);
@@ -136,7 +156,10 @@ public class DepositMicroService {
         }
     }
 
-    //получить данные из request для проверки в account на наличие суммы на счету
+    /**
+     * Метод - получить данные из request для проверки на наличие суммы на счету в account
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public RequestData getRequestData() {
         ResponseEntity<RequestData> data =
                 restTemplate.getForEntity("http://localhost:8082/request/requestdata/" + CustomerMicroService.getIdCustomer(), RequestData.class);
@@ -147,7 +170,10 @@ public class DepositMicroService {
         }
     }
 
-    //присвоить заявке статус - Одобрена
+    /**
+     * Метод - присвоить заявке статус - Одобрена
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean changeStatusOk() {
         ResponseEntity<Boolean> data =
                 restTemplate.getForEntity("http://localhost:8082/request/changestatusok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
@@ -158,7 +184,10 @@ public class DepositMicroService {
         }
     }
 
-    //присвоить заявке статус - Отклонена
+    /**
+     * Метод - присвоить заявке статус - Отклонена
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean changeStatusNotOk() {
         ResponseEntity<Boolean> data =
                 restTemplate.getForEntity("http://localhost:8082/request/changestatusnotok/" + CustomerMicroService.getIdCustomer(), Boolean.class);
@@ -169,7 +198,10 @@ public class DepositMicroService {
         }
     }
 
-    //запрос на создание вклада из заявки idRequest по idCustomer
+    /**
+     * Метод - запрос на создание вклада из заявки idRequest по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public DepositSuccess createDepositByIdRequest(Integer idRequest, String numBankAccounts) {
         String url = "http://localhost:8082/deposit/createdepositbyidrequest/"
                 + CustomerMicroService.getIdCustomer() + "/" + idRequest + "/" + numBankAccounts;
@@ -181,7 +213,10 @@ public class DepositMicroService {
         }
     }
 
-    //для отображения краткой информации по вкладам по idCustomer
+    /**
+     * Метод - для отображения краткой информации по вкладам по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<DepositShort> getAllDepositShortActiveDeposits() {
         String url = "http://localhost:8082/deposit/allshortdepositsactive/" + CustomerMicroService.getIdCustomer();
         ResponseEntity<List<DepositShort>> dtos = restTemplate.exchange(url,
@@ -197,7 +232,10 @@ public class DepositMicroService {
         }
     }
 
-    //для отображения полной информации по id вклада
+    /**
+     * Метод - для отображения полной информации по id вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public DepositFull showFullDeposit(Integer idDeposit) {
         String url = "http://localhost:8082/deposit/showfulldeposit/" + idDeposit;
         ResponseEntity<DepositFull> dtoFull = restTemplate.getForEntity(url, DepositFull.class);
@@ -208,7 +246,10 @@ public class DepositMicroService {
         }
     }
 
-    //код для подтверждения закрытия вклада по id вклада
+    /**
+     * Метод - код для подтверждения закрытия вклада по id вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public void sendDepositCodeClose(Integer idDeposit) {
         String url = "http://localhost:8082/deposit/codeclosedeposit/" + CustomerMicroService.getPhoneNumber() + "/" + idDeposit;
         ResponseEntity<String> code = restTemplate.getForEntity(url, String.class);
@@ -219,7 +260,10 @@ public class DepositMicroService {
         }
     }
 
-    //проверка кода для подтверждения закрытия вклада по id вклада
+    /**
+     * Метод - проверка кода для подтверждения закрытия вклада по id вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean checkcodeclosedeposit(Integer idDeposit, String code) {
         String url = "http://localhost:8082/deposit/checkcodeclosedeposit/"
                 + CustomerMicroService.getPhoneNumber() + "/" + idDeposit + "/" + code;
@@ -232,7 +276,10 @@ public class DepositMicroService {
     }
 
 
-    //получить все отклоненные заявки по customerId
+    /**
+     * Метод - получить все отклоненные заявки по customerId
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<RequestNotOk> getRequestNotOk() {
         String url = "http://localhost:8082/request/requestnotok/" + CustomerMicroService.getIdCustomer();
         ResponseEntity<List<RequestNotOk>> data =
@@ -249,7 +296,10 @@ public class DepositMicroService {
         }
     }
 
-    //удалить заявку по id - поменять её статус на 5 - Заявка удалена
+    /**
+     * Метод - удалить заявку по id => поменять её статус на "5 - Заявка удалена"
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public void deleteRequest(Integer idRequest) {
         String url = "http://localhost:8082/request/deleterequest/" + idRequest;
         ResponseEntity<Boolean> code = restTemplate.getForEntity(url, Boolean.class);
@@ -260,7 +310,10 @@ public class DepositMicroService {
         }
     }
 
-    //закрыть вклад по id
+    /**
+     * Метод - закрыть вклад по id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public CloseDeposit closeDeposit(Integer idDeposit) {
         String url = "http://localhost:8082/deposit/closedeposit/" + idDeposit;
         ResponseEntity<CloseDeposit> code = restTemplate.getForEntity(url, CloseDeposit.class);

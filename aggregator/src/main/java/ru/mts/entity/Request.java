@@ -8,11 +8,6 @@ import java.math.BigDecimal;
 @Data
 public class Request implements Serializable {
 
-//    private Integer customerId; //не будет показано
-
-//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private OffsetDateTime requestDateTime;//не будет показано
-
     private boolean isDepositRefill; //пополнение депозита - true/false
     private boolean isReductionOfDeposit; //уменьшение депозита - true/false
     private String depositTerm; //срок вклада - выбор из списка
@@ -27,8 +22,4 @@ public class Request implements Serializable {
     public Request() {
     }
 
-//    @PrePersist
-//    protected void onRequestDateTime() {
-//        requestDateTime = OffsetDateTime.now();
-//    }
 }

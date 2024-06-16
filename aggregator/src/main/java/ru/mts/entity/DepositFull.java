@@ -28,8 +28,8 @@ public class DepositFull {
                 ",  Счет вклада: " + depositAccountId +
                 ",  Срок: " + depositTerm +
                 ",  Вид вклада: " + depositsType +
-                ",  Сумма: " + depositAmount +
-                ",  Ставка: " + depositRate + "%" +
+                ",  Сумма: " + depositAmount + " RUR" +
+                ",  Ставка: " + depositRate + " %" +
                 ",  Период выплат: " + typesPercentPayment +
                 ",  Счет для выплаты процентов: " + percentPaymentAccountId +
                 ",  Дата открытия: " + startDate.toLocalDateTime().toLocalDate() +

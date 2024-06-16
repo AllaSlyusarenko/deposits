@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.BankAccount;
 import ru.mts.exception.UnexpectedException;
 
@@ -30,7 +31,10 @@ public class CustomerMicroService {
         this.restTemplate = restTemplate;
     }
 
-    //вернуть id customer по телефону
+    /**
+     * Метод - получить id customer по телефону
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Integer getCustomerIdByPhoneNumber() {
         ResponseEntity<Integer> id = restTemplate.getForEntity("http://localhost:8081/customer/phone/id/" + phoneNumber, Integer.class);
         if (id.getStatusCode().is2xxSuccessful()) {
@@ -40,7 +44,10 @@ public class CustomerMicroService {
         }
     }
 
-    //отправить на сохранение нового кода в customer
+    /**
+     * Метод - отправить код по номеру телефона в customer
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public void sendCode() {
         ResponseEntity<String> code = restTemplate.getForEntity("http://localhost:8081/customer/sendcode/" + phoneNumber, String.class);
         if (code.getStatusCode().is2xxSuccessful()) {
@@ -50,7 +57,10 @@ public class CustomerMicroService {
         }
     }
 
-    //проверка правильности смс кода для входа
+    /**
+     * Метод - проверка правильности смс кода для входа в аккаунт
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean checkCodeByPhoneNumber(String code) {
         ResponseEntity<Boolean> id =
                 restTemplate.getForEntity("http://localhost:8081/customer/checkcode/" + code + "/" + phoneNumber, Boolean.class);
@@ -61,8 +71,10 @@ public class CustomerMicroService {
         }
     }
 
-    //получить id счетов из customer
-    //по id получить счета из account
+    /**
+     * Метод - получение id счетов из customer, по id получить счета из account
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<BankAccount> listAccountsByPhoneNumber() {
         //получить все id account по PhoneNumber
         ResponseEntity<List<Integer>> ids =
@@ -101,7 +113,10 @@ public class CustomerMicroService {
         return accounts;
     }
 
-    //у юзера добавить счет вклада
+    /**
+     * Метод - для добавления юзеру новый счет вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public void addDepositAccountByIdAccount(Integer idDepositAccount) {
         ResponseEntity<Void> id =
                 restTemplate.getForEntity("http://localhost:8081/customer/adddepositaccount/" + idCustomer + "/" + idDepositAccount, Void.class);
@@ -111,7 +126,10 @@ public class CustomerMicroService {
 
     }
 
-    //список всех счетов по idCustomer
+    /**
+     * Метод - для получения списка всех счетов по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<Integer> getAllAccounts() {
         ResponseEntity<List<Integer>> ids =
                 restTemplate.exchange("http://localhost:8081/customer/allaccounts/" + idCustomer,
