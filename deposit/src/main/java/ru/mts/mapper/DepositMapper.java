@@ -1,6 +1,7 @@
 package ru.mts.mapper;
 
 import lombok.experimental.UtilityClass;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.DepositOutFullDto;
 import ru.mts.dto.DepositOutShortDto;
 import ru.mts.entity.Deposit;
@@ -10,6 +11,10 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class DepositMapper {
+    /**
+     * Метод - для преобразования Deposit в DepositOutShortDto
+     */
+    @Logging(entering = true, exiting = true)
     public DepositOutShortDto toDepositOutShortDto(Deposit deposit) {
         DepositOutShortDto depositOutShortDto = new DepositOutShortDto();
         depositOutShortDto.setIdDeposit(deposit.getIdDeposit());
@@ -20,6 +25,10 @@ public class DepositMapper {
         return depositOutShortDto;
     }
 
+    /**
+     * Метод - для преобразования Deposit в DepositOutFullDto
+     */
+    @Logging(entering = true, exiting = true)
     public DepositOutFullDto toDepositOutFullDto(Deposit deposit) {
         DepositOutFullDto depositOutFullDto = new DepositOutFullDto();
         depositOutFullDto.setIdDeposit(deposit.getIdDeposit());
@@ -36,8 +45,10 @@ public class DepositMapper {
         return depositOutFullDto;
     }
 
-
-
+    /**
+     * Метод - для преобразования списка Deposit в список DepositOutShortDto
+     */
+    @Logging(entering = true, exiting = true)
     public List<DepositOutShortDto> toDepositOutShortDtos(List<Deposit> deposits) {
         return deposits.stream().map(DepositMapper::toDepositOutShortDto).collect(Collectors.toList());
     }

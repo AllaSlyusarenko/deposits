@@ -2,6 +2,7 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.DepositCode;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.DepositCodeRepository;
@@ -18,21 +19,30 @@ public class DepositCodeServiceImpl {
         this.depositCodeRepository = depositCodeRepository;
     }
 
-    //получить последний код по idDeposit
+    /**
+     * Метод - получить последний код по idDeposit
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public String getLastDepositCodeByIdDeposit(Integer idDeposit) {
         checkId(idDeposit);
         DepositCode depositCode = depositCodeRepository.findFirstByIdDepositOrderByIdDepositCodeDesc(idDeposit);
         return depositCode.getCode();
     }
 
-    //получить время последнего кода по idDeposit
+    /**
+     * Метод - получить время последнего кода по idDeposit
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public OffsetDateTime getLastDepositCodeDateTimeByIdDepositCode(Integer idDeposit) {
         checkId(idDeposit);
         DepositCode depositCode = depositCodeRepository.findFirstByIdDepositOrderByIdDepositCodeDesc(idDeposit);
         return depositCode.getCodeDateTime();
     }
 
-    //сохранить и отправить код по idDeposit
+    /**
+     * Метод - сохранить и отправить код по idDeposit
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public DepositCode saveDepositCode(Integer idDeposit) {
         DepositCode depositCode = new DepositCode();
         int code = createCode();
@@ -41,7 +51,10 @@ public class DepositCodeServiceImpl {
         return depositCodeRepository.save(depositCode);
     }
 
-    //проверка id
+    /**
+     * Метод - проверка id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
@@ -49,7 +62,10 @@ public class DepositCodeServiceImpl {
         return true;
     }
 
-    //сгенерить 4-значный код
+    /**
+     * Метод - сгенерить 4-значный код
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private int createCode() {
         int maximum = 9999;
         int minimum = 1000;

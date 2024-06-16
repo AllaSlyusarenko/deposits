@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.CloseDepositDto;
 import ru.mts.dto.DepositOutFullDto;
 import ru.mts.dto.DepositOutShortDto;
@@ -33,19 +34,28 @@ public class DepositController {
         this.depositService = depositService;
     }
 
-    //получает все DepositTerm
+    /**
+     * Метод - получает все DepositTerm
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/alldepositterm")
     public List<DepositTerm> allDepositTerm() {
         return utilityService.getDepositTerms();
     }
 
-    //получает все TypesPercentPayment
+    /**
+     * Метод - получает все TypesPercentPayment
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/alltypespercent")
     public List<TypesPercentPayment> allTypesPercentPayments() {
         return utilityService.getTypesPercentPayments();
     }
 
-    //создает вклад по заявке idRequest и возвращает dto
+    /**
+     * Метод - создает вклад по заявке idRequest и возвращает dto
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/createdepositbyidrequest/{idCustomer}/{idRequest}/{numBankAccounts}")
     public ResponseEntity<DepositOutSuccessDto> createDepositByIdRequest(@PathVariable("idCustomer") Integer idCustomer,
                                                                          @PathVariable("idRequest") Integer idRequest,
@@ -59,7 +69,10 @@ public class DepositController {
         }
     }
 
-    //получить все активные депозиты по idCustomer, возвращает дто
+    /**
+     * Метод - получить все активные депозиты по idCustomer, возвращает дто
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/allshortdepositsactive/{idCustomer}")
     public ResponseEntity<List<DepositOutShortDto>> allDepositsActive(@PathVariable("idCustomer") Integer idCustomer) {
         try {
@@ -70,7 +83,10 @@ public class DepositController {
         }
     }
 
-    //для отображения полной информации по id вклада
+    /**
+     * Метод - для отображения полной информации по id вклада
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/showfulldeposit/{idDeposit}")
     public ResponseEntity<DepositOutFullDto> showFullDeposit(@PathVariable("idDeposit") Integer idDeposit) {
         try {
@@ -81,7 +97,10 @@ public class DepositController {
         }
     }
 
-    //закрыть вклад по id
+    /**
+     * Метод - закрыть вклад по id
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/closedeposit/{idDeposit}")
     public ResponseEntity<CloseDepositDto> closeDeposit(@PathVariable("idDeposit") Integer idDeposit) {
         try {
@@ -92,7 +111,10 @@ public class DepositController {
         }
     }
 
-    //код для подтверждения закрытия вклада по id вклада
+    /**
+     * Метод - код для подтверждения закрытия вклада по id вклада
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/codeclosedeposit/{phoneNumber}/{idDeposit}")
     public ResponseEntity<String> sendDepositCodeClose(@PathVariable("idDeposit") Integer idDeposit,
                                                        @PathVariable("phoneNumber") String phoneNumber) {
@@ -104,7 +126,10 @@ public class DepositController {
         }
     }
 
-    //проверка кода для подтверждения закрытия вклада по id вклада
+    /**
+     * Метод - проверка кода для подтверждения закрытия вклада по id вклада
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/checkcodeclosedeposit/{phoneNumber}/{idDeposit}/{code}")
     public ResponseEntity<Boolean> checkCodeCloseDeposit(@PathVariable("idDeposit") Integer idDeposit,
                                                          @PathVariable("phoneNumber") String phoneNumber,

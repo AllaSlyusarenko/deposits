@@ -13,19 +13,6 @@ create table if not exists deposit.types_percent_payment
 
 alter sequence deposit.id_type_percent_payment_sq owned by deposit.types_percent_payment.id_type_percent_payment;
 
--- 2.15
-
--- CREATE SEQUENCE if not exists deposit.id_request_types_percent_payment_sq as integer START 1 INCREMENT BY 1;
---
--- create table if not exists deposit.request_types_percent_payment
--- (
---     id_type_percent_payment     integer default nextval('deposit.id_request_types_percent_payment_sq')
---                                 constraint request_types_percent_payment_pk primary key,
---     type_percent_payment_period varchar(13) not null
--- );
---
--- alter sequence deposit.id_request_types_percent_payment_sq owned by deposit.request_types_percent_payment.id_type_percent_payment;
-
 -- 2.7
 
 CREATE SEQUENCE if not exists deposit.id_deposit_type_sq as integer START 1 INCREMENT BY 1;
@@ -78,20 +65,6 @@ create table if not exists deposit.deposit_term
 
 alter sequence deposit.id_deposit_term_sq owned by deposit.deposit_term.id_deposit_term;
 
--- 2.14
---
--- CREATE SEQUENCE if not exists deposit.id_request_term_sq as integer START 1 INCREMENT BY 1;
---
--- create table if not exists deposit.request_term
--- (
---     id_request_term   integer default nextval('deposit.id_request_term_sq')
---                       constraint request_term_pk primary key,
---     request_term_name varchar(6) not null
--- );
---
--- alter sequence deposit.id_request_term_sq owned by deposit.request_term.id_request_term;
-
-
 -- 2.3
 
 CREATE SEQUENCE if not exists deposit.id_request_sq as integer START 1 INCREMENT BY 1;
@@ -102,8 +75,6 @@ create table if not exists deposit.requests
                              constraint requests_pk primary key,
     customer_id              integer not null,
     request_date_time        timestamp with time zone default CURRENT_TIMESTAMP not null,
---     code                     varchar(4),
---     code_date_time           timestamp with time zone,
     is_deposit_refill        boolean not null,
     is_reduction_of_deposit  boolean not null,
     id_deposit_term          integer not null REFERENCES deposit.deposit_term (id_deposit_term),

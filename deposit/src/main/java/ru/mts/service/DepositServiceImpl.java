@@ -3,6 +3,7 @@ package ru.mts.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.*;
 import ru.mts.entity.*;
 import ru.mts.exception.ValidationException;
@@ -35,7 +36,10 @@ public class DepositServiceImpl {
         this.depositCodeServiceImpl = depositCodeServiceImpl;
     }
 
-    //создает вклад по заявке idRequest
+    /**
+     * Метод - создает вклад по заявке idRequest и возвращает dto
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Deposit createDepositByIdRequest(Integer idCustomer, Integer idRequest, BigDecimal numBankAccounts) {
         Request request = requestService.getRequestById(idRequest);
         Deposit deposit = new Deposit();
@@ -61,7 +65,10 @@ public class DepositServiceImpl {
         return depositSave;
     }
 
-    //метод, который возвращает дто для отображения
+    /**
+     * Метод - возвращает дто для отображения при создании вклада
+     */
+    @Logging(entering = true, exiting = true)
     public DepositOutSuccessDto depositOutSuccess(Deposit deposit) {
         DepositOutSuccessDto depositOutSuccessDto = new DepositOutSuccessDto();
         depositOutSuccessDto.setIdRequest(deposit.getRequest().getIdRequest());
@@ -72,8 +79,10 @@ public class DepositServiceImpl {
         return depositOutSuccessDto;
     }
 
-
-    //метод для определения конца срока действия вклада
+    /**
+     * Метод - для определения конца срока действия вклада
+     */
+    @Logging(entering = true, exiting = true)
     public OffsetDateTime getEndDateForDeposit(OffsetDateTime requestDateTime, DepositTerm depositTerm) {
         List<DepositTerm> depositTerms = utilityService.getDepositTerms();
         OffsetDateTime endDateDeposit = null;
@@ -89,7 +98,10 @@ public class DepositServiceImpl {
         return endDateDeposit;
     }
 
-    //метод для определения процентной ставки от параметров: вид вклада, срок, сумма
+    /**
+     * Метод - для определения процентной ставки от параметров: вид вклада, срок, сумма
+     */
+    @Logging(entering = true, exiting = true)
     public DepositRate getDepositRateByParam(boolean isDepositRefill, boolean isReductionOfDeposit, DepositTerm depositTerm, BigDecimal depositAmount) {
         BigDecimal sum50 = new BigDecimal("50000");
         List<DepositRate> depositRates = utilityService.getDepositRates();
@@ -188,8 +200,11 @@ public class DepositServiceImpl {
         return depositRate;
     }
 
-    //присвоить статус: 1 - Вклад открыт, 8 - Подтверждение закрытия вклада, 9 - Закрытие вклада подтверждено
-    //10 - Вклад закрыт(isActive = false)
+    /**
+     * Метод - присвоить статус: 1 - Вклад открыт, 8 - Подтверждение закрытия вклада, 9 - Закрытие вклада подтверждено,
+     * 10 - Вклад закрыт(isActive = false)
+     */
+    @Logging(entering = true, exiting = true)
     public void statusDepositSet(Deposit deposit, int idStatusDeposit) {
         CurrentDepositStatus currentDepositStatus = new CurrentDepositStatus();
         currentDepositStatus.setIdDeposit(deposit);
@@ -198,33 +213,38 @@ public class DepositServiceImpl {
         currentDepositStatusRepository.save(currentDepositStatus);
     }
 
-
-    //метод определения даты для выплаты процентов - разные варианты помесячно, в конце срока
-
-
-    //получить все активные депозиты по idCustomer
+    /**
+     * Метод - получить все активные депозиты по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<Deposit> getAllByIdCustomerActiveDeposits(Integer idCustomer) {
-//        Comparator<BigDecimal> bigDecimalComparator = Comparator.reverseOrder();
-//        List<Deposit> deposits = depositRepository.findAllByCustomerId(idCustomer);
-//        List<Deposit> depositList = deposits.stream().filter(Deposit::isActive).collect(Collectors.toList());
-//        depositList.sort(Comparator.comparing(Deposit::getDepositAmount, bigDecimalComparator));
         List<Deposit> deposits = depositRepository.findAllByCustomerIdAndIsActiveOrderByDepositAmountDesc(idCustomer, true);
         return deposits;
     }
 
-    //для отображения краткой информации DepositOutShortDto из метода все активные депозиты по idCustomer
+    /**
+     * Метод - для отображения краткой информации DepositOutShortDto из метода все активные депозиты по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<DepositOutShortDto> getAllDepositOutShortDtoActiveDeposits(Integer idCustomer) {
         List<Deposit> deposits = getAllByIdCustomerActiveDeposits(idCustomer);
         return DepositMapper.toDepositOutShortDtos(deposits);
     }
 
-    //для отображения полной информации по id вклада
+    /**
+     * Метод - для отображения полной информации по id вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public DepositOutFullDto showFullDeposit(Integer idDeposit) {
         Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         return DepositMapper.toDepositOutFullDto(deposit);
     }
 
-    //закрыть вклад по id и вернуть счет вклада BigDecimal depositAccountId, сумму, куда вернуть деньги
+    /**
+     * Метод - для закрытия вклада по id, возвращает счет вклада BigDecimal depositAccountId, сумму вклада,
+     * счет для возвращения суммы вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public CloseDepositDto closeDeposit(Integer idDeposit) {
         Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         //вклад становится неактивным
@@ -238,7 +258,10 @@ public class DepositServiceImpl {
         return closeDepositDto;
     }
 
-    //отправить код для подтверждения закрытия вклада
+    /**
+     * Метод - отправить код для подтверждения закрытия вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public String sendDepositCodeClose(Integer idDeposit, String phoneNumber) {
         Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         DepositCode depositCode = depositCodeServiceImpl.saveDepositCode(idDeposit);
@@ -254,7 +277,10 @@ public class DepositServiceImpl {
         return message;
     }
 
-    //проверка кода для подтверждения закрытия вклада
+    /**
+     * Метод - проверка кода для подтверждения закрытия вклада
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public boolean checkCodeCloseDeposit(Integer idDeposit, String phoneNumber, String code) {
         Deposit deposit = depositRepository.findByIdDeposit(idDeposit);
         Integer depositId = deposit.getIdDeposit();
@@ -279,8 +305,10 @@ public class DepositServiceImpl {
         }
     }
 
-
-    //проверка id
+    /**
+     * Метод - проверка id
+     */
+    @Logging(entering = true, exiting = true)
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);

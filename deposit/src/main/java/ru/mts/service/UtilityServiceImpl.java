@@ -2,6 +2,7 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.DepositRate;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.DepositsType;
@@ -28,22 +29,34 @@ public class UtilityServiceImpl {
         this.depositRateRepository = depositRateRepository;
     }
 
-    //получить все DepositTerm 2.13
+    /**
+     * Метод - получить все DepositTerm таблица 2.13
+     */
+    @Logging(entering = true, exiting = true)
     public List<DepositTerm> getDepositTerms() {
         return depositTermRepository.findAll();
     }
 
-    //получить все TypesPercentPayment 2.18
+    /**
+     * Метод - получить все TypesPercentPayment таблица 2.18
+     */
+    @Logging(entering = true, exiting = true)
     public List<TypesPercentPayment> getTypesPercentPayments() {
         return typesPercentPaymentRepository.findAll();
     }
 
-    //получить все DepositsType 2.7
+    /**
+     * Метод - получить все DepositsType таблица 2.7
+     */
+    @Logging(entering = true, exiting = true)
     public List<DepositsType> getDepositsTypes() {
         return depositsTypeRepository.findAll();
     }
 
-    //получить все DepositRate 2.10
+    /**
+     * Метод - получить все DepositRate таблица 2.10
+     */
+    @Logging(entering = true, exiting = true)
     public List<DepositRate> getDepositRates() {
         return depositRateRepository.findAll();
     }

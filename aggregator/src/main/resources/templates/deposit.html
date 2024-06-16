@@ -25,7 +25,6 @@
 
 <div th:if="${not #lists.isEmpty(depositShorts)}">
     <br>
-    <br>
     <table>
         <thead>
         <title> Вклады </title>
@@ -57,13 +56,11 @@
 <br>
 <p>Отклоненные заявки</p>
 <br>
-<br>
 <div th:if="${#lists.isEmpty(requestNotOks)}">
     <p>У вас отсутствуют отклоненные заявки на размещение вклада</p>
 </div>
 
 <div th:if="${not #lists.isEmpty(requestNotOks)}">
-    <br>
     <br>
     <table>
         <thead>

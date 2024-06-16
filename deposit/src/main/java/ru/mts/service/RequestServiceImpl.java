@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.RequestCodeIn;
 import ru.mts.dto.RequestDataOut;
 import ru.mts.dto.RequestInDto;
@@ -42,13 +43,14 @@ public class RequestServiceImpl {
         this.utilityService = utilityService;
     }
 
-
-    //создать заявку
+    /**
+     * Метод - для создания заявки на вклад
+     */
+    @Logging(entering = true, exiting = true)
     public Integer createRequest(Integer customerId, RequestInDto requestDtoIn) {
         //найти все составляющие id
         Request request = new Request();
         request.setCustomerId(customerId);
-//        request.setRequestDateTime(OffsetDateTime.now());
         request.setDepositRefill(requestDtoIn.isDepositRefill());
         request.setReductionOfDeposit(requestDtoIn.isReductionOfDeposit());
         request.setDepositAmount(requestDtoIn.getDepositAmount());
@@ -75,7 +77,10 @@ public class RequestServiceImpl {
         return createdRequest.getIdRequest();
     }
 
-    //отправить смс с кодом
+    /**
+     * Метод - отправить смс с кодом заявки на вклад
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public String sendRequestCode(Integer idRequest, String phoneNumber) {
         checkPhoneNumber(phoneNumber);
         RequestCode requestCode = requestCodeService.saveRequestCode(idRequest);
@@ -92,7 +97,10 @@ public class RequestServiceImpl {
                 requestCodeIn.getCodeDateTime().isAfter(lastDateTime) && requestCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
 
-    //проверка смскода для подтверждения заявки
+    /**
+     * Метод - проверка смскода для подтверждения заявки
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public boolean checkRequestCode(Integer customerId, String code) {
         //по customerId найти id последней заявки
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
@@ -119,7 +127,10 @@ public class RequestServiceImpl {
         }
     }
 
-    //получение данных из заявки для проверки достаточности суммы в account
+    /**
+     * Метод - получение данных из заявки для проверки достаточности суммы в account
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public RequestDataOut getRequestData(Integer customerId) {
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
@@ -130,7 +141,10 @@ public class RequestServiceImpl {
         return requestDataOut;
     }
 
-    //присвоить заявке статус - Одобрена
+    /**
+     * Метод - присвоить заявке статус - Одобрена
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean changeStatusOk(Integer customerId) {
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
@@ -142,7 +156,10 @@ public class RequestServiceImpl {
         return true;
     }
 
-    //присвоить заявке статус - Отклонена
+    /**
+     * Метод - присвоить заявке статус - Отклонена
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean changeStatusNotOk(Integer customerId) {
         Request request = requestRepository.findFirstByCustomerIdOrderByIdRequestDesc(customerId)
                 .orElseThrow(() -> new NotFoundException("Заявка не найдена"));
@@ -154,12 +171,18 @@ public class RequestServiceImpl {
         return true;
     }
 
-    //найти request по id
+    /**
+     * Метод - найти request по id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Request getRequestById(Integer requestId) {
         return requestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Заявка не найдена"));
     }
 
-    //метод на определение DepositsType вида вклада - входные из заявки
+    /**
+     * Метод - для определения DepositsType вида вклада - входные из заявки
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public DepositsType getDepositsTypeByRequest(boolean isDepositRefill, boolean isReductionOfDeposit) {
         List<DepositsType> depositsTypes = utilityService.getDepositsTypes();
         DepositsType depositsType = null;
@@ -178,7 +201,10 @@ public class RequestServiceImpl {
         return depositsType;
     }
 
-    //найти все заявки пользователя со статусом отклонена с сортировкой по убыванию даты
+    /**
+     * Метод - получить все заявки пользователя со статусом отклонена с сортировкой по убыванию даты
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public List<RequestNotOkDto> requestnotok(Integer customerId) {
         List<Request> requestsNotOk = new ArrayList<>();
         List<Request> requests = requestRepository.findAllByCustomerIdOrderByRequestDateTimeDesc(customerId);
@@ -192,13 +218,12 @@ public class RequestServiceImpl {
         return RequestMapper.toRequestNotOkDtos(requestsNotOk);
     }
 
-
-    //удалить заявку по id, т.е. присвоить статус 5 - Заявка удалена
+    /**
+     * Метод - удалить заявку по id, т.е. присвоить статус 5 - Заявка удалена
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public Boolean deleteRequest(Integer idRequest) {
         Request request = requestRepository.findById(idRequest).orElseThrow(() -> new NotFoundException("Заявка не найдена"));
-        //не получается удаление через jparepository
-        //currentRequestStatusRepository.deleteAllById_RequestId(idRequest);
-        //requestRepository.deleteByIdRequest(idRequest);
         CurrentRequestStatus statusIn = new CurrentRequestStatus();
         statusIn.setIdRequest(request);
         RequestStatus requestStatus = requestStatusRepository.findById(5);
@@ -207,7 +232,10 @@ public class RequestServiceImpl {
         return true;
     }
 
-    //проверка id
+    /**
+     * Метод - проверка id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
@@ -215,7 +243,10 @@ public class RequestServiceImpl {
         return true;
     }
 
-    //проверка номера телефона
+    /**
+     * Метод - проверка номера телефона
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkPhoneNumber(String phoneNumber) {
         if (phoneNumber.isBlank() || phoneNumber.length() != 11) {
             throw new ValidationException("Неверный номер телефона " + phoneNumber);

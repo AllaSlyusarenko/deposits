@@ -2,6 +2,7 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.RequestCode;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.RequestCodeRepository;
@@ -18,21 +19,30 @@ public class RequestCodeServiceImpl {
         this.requestCodeRepository = requestCodeRepository;
     }
 
-    //получить последний код по idRequest
+    /**
+     * Метод - получить последний код по idRequest
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public String getLastRequestCodeByIdRequest(Integer idRequest) {
         checkId(idRequest);
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCode();
     }
 
-    //получить время последнего кода по idRequest
+    /**
+     * Метод - получить время последнего кода по idRequest
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public OffsetDateTime getLastRequestCodeDateTimeByIdRequestCode(Integer idRequest) {
         checkId(idRequest);
         RequestCode requestCode = requestCodeRepository.findFirstByIdRequestOrderByIdRequestCodeDesc(idRequest);
         return requestCode.getCodeDateTime();
     }
 
-    //сохранить и отправить код по idRequest
+    /**
+     * Метод - сохранить и отправить код по idRequest
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public RequestCode saveRequestCode(Integer idRequest) {
         RequestCode requestCode = new RequestCode();
         int code = createCode();
@@ -41,7 +51,10 @@ public class RequestCodeServiceImpl {
         return requestCodeRepository.save(requestCode);
     }
 
-    //проверка id
+    /**
+     * Метод - проверка id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
@@ -49,7 +62,10 @@ public class RequestCodeServiceImpl {
         return true;
     }
 
-    //сгенерить 4-значный код
+    /**
+     * Метод - сгенерить 4-значный код
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private int createCode() {
         int maximum = 9999;
         int minimum = 1000;

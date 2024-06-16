@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.RequestDataOut;
 import ru.mts.dto.RequestInDto;
 import ru.mts.dto.RequestNotOkDto;
@@ -26,7 +27,10 @@ public class RequestController {
         this.requestCodeService = requestCodeService;
     }
 
-    //customerId, создать заявку   - возможно возвращать только id request
+    /**
+     * Метод - создание заявки по customerId, возвращает id request
+     */
+    @Logging(entering = true, exiting = true)
     @PostMapping("/{customerId}/save")
     public ResponseEntity<Integer> saveRequest(@PathVariable(value = "customerId") Integer customerId,
                                                @RequestBody RequestInDto requestDtoIn) {
@@ -38,7 +42,10 @@ public class RequestController {
         }
     }
 
-    //отправить код на телефон для заявки
+    /**
+     * Метод - отправить код на телефон для заявки idRequest
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/sendcode/{idrequest}/{phoneNumber}")
     public ResponseEntity<Boolean> sendCode(@PathVariable(value = "idrequest") Integer idRequest,
                                             @PathVariable(value = "phoneNumber") String phoneNumber) {
@@ -50,7 +57,10 @@ public class RequestController {
         }
     }
 
-    //проверить смс код по customerId - последняя заявка
+    /**
+     * Метод - проверить смс код по customerId(последняя заявка)
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/checkcode/{code}/{customerId}")
     public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
                                              @PathVariable(value = "code") String code) {
@@ -62,7 +72,10 @@ public class RequestController {
         }
     }
 
-    //получение данных из заявки для проверки достаточности суммы в account
+    /**
+     * Метод - получение данных из заявки для проверки достаточности суммы в account
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/requestdata/{customerId}")
     public ResponseEntity<RequestDataOut> getRequestData(@PathVariable(value = "customerId") Integer customerId) {
         try {
@@ -73,7 +86,10 @@ public class RequestController {
         }
     }
 
-    //для изменения статуса заявки на одобрена после проверки суммы на счету
+    /**
+     * Метод - для изменения статуса заявки на одобрена после проверки суммы на счету
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/changestatusok/{customerId}")
     public ResponseEntity<Boolean> changeStatusOk(@PathVariable(value = "customerId") Integer customerId) {
         try {
@@ -84,7 +100,10 @@ public class RequestController {
         }
     }
 
-    //для изменения статуса заявки на отклонена после проверки суммы на счету
+    /**
+     * Метод - для изменения статуса заявки на отклонена после проверки суммы на счету
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/changestatusnotok/{customerId}")
     public ResponseEntity<Boolean> changeStatusNotOk(@PathVariable(value = "customerId") Integer customerId) {
         try {
@@ -95,7 +114,10 @@ public class RequestController {
         }
     }
 
-    //получить все отклоненные заявки по customerId
+    /**
+     * Метод - получить все отклоненные заявки по customerId
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/requestnotok/{customerId}")
     public ResponseEntity<List<RequestNotOkDto>> requestNotOk(@PathVariable(value = "customerId") Integer customerId) {
         try {
@@ -106,7 +128,10 @@ public class RequestController {
         }
     }
 
-    //удалить заявку по id
+    /**
+     * Метод - удалить заявку по id
+     */
+    @Logging(entering = true, exiting = true)
     @GetMapping("/deleterequest/{idRequest}")
     public ResponseEntity<Boolean> deleteRequest(@PathVariable(value = "idRequest") Integer idRequest) {
         try {
@@ -116,26 +141,4 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
-    //получить последнюю одобренную заявку по customerId
-//    @GetMapping("/requestok/{customerId}")
-//    public ResponseEntity<RequestOutDto> getRequestOk(@PathVariable(value = "customerId") Integer customerId) {
-//        try {
-//            RequestOutDto isOk = requestService.getRequestOk(customerId);
-//            return new ResponseEntity<>(isOk, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
-
-
-//    @PostMapping("/save/{phoneNumber}")
-//    public ResponseEntity<Boolean> saveRequest(@PathVariable(value = "phoneNumber") Integer phoneNumber,
-//                                               @RequestBody RequestInDto requestDtoIn) {
-//        Boolean isOk = requestService.saveRequest()
-//
-//    }
-
 }
