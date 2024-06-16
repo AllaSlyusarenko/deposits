@@ -39,8 +39,10 @@ public class CustomerMicroService {
         ResponseEntity<Integer> id = restTemplate.getForEntity("http://localhost:8081/customer/phone/id/" + phoneNumber, Integer.class);
         if (id.getStatusCode().is2xxSuccessful()) {
             return id.getBody();
-        } else {
+        } else if (id.getStatusCode().is4xxClientError()) {
             throw new UnexpectedException("Неверные данные" + phoneNumber);
+        } else {
+            throw new RuntimeException("Что-то пошло не так");
         }
     }
 

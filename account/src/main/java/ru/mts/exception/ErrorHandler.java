@@ -18,6 +18,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler({NotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleNotFoundException(final RuntimeException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Ресурс не найден: " + e.getMessage());

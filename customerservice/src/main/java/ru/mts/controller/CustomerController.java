@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mts.annotation.Logging;
 import ru.mts.entity.Customer;
-import ru.mts.exception.NotFoundException;
-import ru.mts.exception.ValidationException;
 import ru.mts.service.BankAccountCustomerService;
 import ru.mts.service.CustomerService;
 import ru.mts.service.EnterCodeServiceImpl;

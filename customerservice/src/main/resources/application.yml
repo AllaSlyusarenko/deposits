@@ -23,10 +23,10 @@ spring:
         default_schema: customer
         format_sql: true
     generate-ddl: true
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
+#  mvc:
+#    hiddenmethod:
+#      filter:
+#        enabled: true
 #    throw-exception-if-no-handler-found: true
 #    static-path-pattern: /static
 

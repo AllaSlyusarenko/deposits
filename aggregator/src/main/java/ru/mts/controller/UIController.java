@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mts.annotation.Logging;
 import ru.mts.entity.*;
+import ru.mts.exception.UnexpectedException;
 import ru.mts.mapper.RequestMapper;
 import ru.mts.service.AccountMicroService;
 import ru.mts.service.CustomerMicroService;
@@ -61,7 +62,7 @@ public class UIController {
         try {
             id = customerMicroService.getCustomerIdByPhoneNumber();
             CustomerMicroService.setIdCustomer(id);
-        } catch (RuntimeException e) {
+        } catch (UnexpectedException e) {
             return "redirect:/start";
         }
         if (id == null) {
@@ -142,7 +143,7 @@ public class UIController {
         if (code == null || code.isEmpty()) {
             return "errordepositcode";
         }
-        
+
         if (depositMicroService.checkcodeclosedeposit(id, code)) {
             model.addAttribute("id", id);
             return "redirect:/closedeposit/{id}";
