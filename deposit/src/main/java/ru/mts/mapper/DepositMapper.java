@@ -18,6 +18,7 @@ public class DepositMapper {
         depositOutShortDto.setEndDate(deposit.getEndDate());
         depositOutShortDto.setDepositRate(deposit.getDepositRate().getDepositRate());
         return depositOutShortDto;
+
     }
 
     public DepositOutFullDto toDepositOutFullDto(Deposit deposit) {
