@@ -3,6 +3,7 @@ package ru.mts.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.EnterCodeIn;
 import ru.mts.entity.BankAccountCustomer;
 import ru.mts.entity.Customer;
@@ -29,7 +30,10 @@ public class CustomerServiceImpl implements CustomerService {
         this.bankAccountCustomerService = bankAccountCustomerService;
     }
 
-    //вернуть клиента по id
+    /**
+     * Метод - найти клиента по id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public Customer getCustomerById(Integer id) {
         checkId(id);
@@ -37,7 +41,10 @@ public class CustomerServiceImpl implements CustomerService {
                 -> new NotFoundException("Клиент " + id + " не найден"));
     }
 
-    //вернуть клиента по номеру телефона
+    /**
+     * Метод - вернуть клиента по номеру телефона
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public Customer getCustomerByPhoneNumber(String phoneNumber) {
         checkPhoneNumber(phoneNumber);
@@ -45,12 +52,19 @@ public class CustomerServiceImpl implements CustomerService {
                 -> new NotFoundException("Клиент с номером телефона " + phoneNumber + " не найден"));
     }
 
-    //вернуть id customer по телефону
+    /**
+     * Метод - вернуть id customer по телефону
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public Integer getIdByPhoneNumber(String phoneNumber) {
         return getCustomerByPhoneNumber(phoneNumber).getIdCustomers();
     }
 
+    /**
+     * Метод - для отправления кода по телефону для входа в аккаунт
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public String sendEnterCode(String phoneNumber) {
         checkPhoneNumber(phoneNumber);
@@ -62,18 +76,10 @@ public class CustomerServiceImpl implements CustomerService {
         return message;
     }
 
-//    //проверить смс код по customerId
-//    @Override
-//    public boolean checkEnterCode(EnterCodeIn enterCodeIn) {
-//        Integer id = enterCodeIn.getIdCustomer();
-//        checkId(id);
-//        String lastCode = enterCodeService.getLastEnterCodeByIdCustomer(id);
-//        OffsetDateTime lastDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(id);
-//        return lastCode.equals(enterCodeIn.getCode()) &&
-//                enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
-//    }
-
-    //проверить смс код по phoneNumber
+    /**
+     * Метод - для проверки смс код по phoneNumber
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public boolean checkEnterCodeByPhoneNumber(String code, String phoneNumber) {
         Integer id = getIdByPhoneNumber(phoneNumber);
@@ -87,14 +93,19 @@ public class CustomerServiceImpl implements CustomerService {
                 enterCodeIn.getCodeDateTime().isAfter(lastDateTime) && enterCodeIn.getCodeDateTime().isBefore(lastDateTime.plusMinutes(1));
     }
 
-    //получить id банковских счетов по phoneNumber
+    /**
+     * Метод - для получения id банковских счетов по phoneNumber
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public List<Integer> getAccountsByPhoneNumber(String phoneNumber) {
         Integer idCustomer = getIdByPhoneNumber(phoneNumber);
         return bankAccountCustomerService.findAllByCustomerId(idCustomer);
     }
 
-    //проверка id
+    /**
+     * Метод - для проверки id
+     */
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
@@ -102,7 +113,10 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
-    //проверка номера телефона
+    /**
+     * Метод - для проверки номера телефона
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkPhoneNumber(String phoneNumber) {
         if (phoneNumber.isBlank() || phoneNumber.length() != 11) {
             throw new ValidationException("Неверный номер телефона " + phoneNumber);
@@ -110,7 +124,10 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
-    //проверка id банковского счета
+    /**
+     * Метод - для проверки счета банковского счета
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkBankAccountId(BigDecimal bankAccountId) {
         if (bankAccountId.toString().isBlank() || bankAccountId.toString().length() != 20) {
             throw new ValidationException("Неверный номер счета " + bankAccountId);

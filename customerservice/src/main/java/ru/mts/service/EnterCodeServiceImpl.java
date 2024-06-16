@@ -2,6 +2,7 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.EnterCode;
 import ru.mts.exception.ValidationException;
 import ru.mts.repository.EnterCodeRepository;
@@ -18,19 +19,30 @@ public class EnterCodeServiceImpl {
         this.enterCodeRepository = enterCodeRepository;
     }
 
-    //получить последний код по customerId
+    /**
+     * Метод - получения последнего кода по customerId
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public String getLastEnterCodeByIdCustomer(Integer customerId) {
         checkId(customerId);
         EnterCode enterCode = enterCodeRepository.findFirstByIdCustomerOrderByIdEnterCodeDesc(customerId);
         return enterCode.getCode();
     }
-    //получить время последнего кода по customerId
+
+    /**
+     * Метод - получения времени последнего кода по customerId
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public OffsetDateTime getLastEnterCodeDateTimeByIdCustomer(Integer customerId) {
         checkId(customerId);
         EnterCode enterCode = enterCodeRepository.findFirstByIdCustomerOrderByIdEnterCodeDesc(customerId);
         return enterCode.getCodeDateTime();
     }
-    //сохранить/ отправить код по customerId
+
+    /**
+     * Метод - сохранить/ отправить код по customerId
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     public EnterCode saveEnterCode(Integer customerId) {
         EnterCode enterCodeIn = new EnterCode();
         int code = createCode();
@@ -39,14 +51,21 @@ public class EnterCodeServiceImpl {
         return enterCodeRepository.save(enterCodeIn);
     }
 
-    //проверка id
+    /**
+     * Метод - проверка id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
         }
         return true;
     }
-    //сгенерить 4-значный код
+
+    /**
+     * Метод - сгенерить 4-значный код
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private int createCode() {
         int maximum = 9999;
         int minimum = 1000;

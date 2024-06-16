@@ -16,5 +16,4 @@ public interface CustomerService {
     boolean checkEnterCodeByPhoneNumber(String code, String phoneNumber);
 
     List<Integer> getAccountsByPhoneNumber(String phoneNumber);
-
 }

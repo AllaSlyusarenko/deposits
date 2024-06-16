@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mts.annotation.Logging;
 import ru.mts.entity.Customer;
 import ru.mts.exception.NotFoundException;
 import ru.mts.service.BankAccountCustomerService;
@@ -33,24 +34,30 @@ public class CustomerController {
         this.bankAccountCustomerService = bankAccountCustomerService;
     }
 
+    /**
+     * Метод - получить Customer по id
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/id/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable(value = "id") @Positive Integer id) {
         Customer customer = customerService.getCustomerById(id);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
+    /**
+     * Метод - получить Customer по номеру телефона
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/phone/{phoneNumber}")
     public ResponseEntity<Customer> getCustomerByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
         Customer customer = customerService.getCustomerByPhoneNumber(phoneNumber);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-//    @GetMapping("/bankaccount/{bankAccountId}")
-//    public ResponseEntity<Customer> getCustomerByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
-//        Customer customer = customerService.getCustomerByBankAccountId(bankAccountId);
-//        return new ResponseEntity<>(customer, HttpStatus.OK);
-//    }
-
+    /**
+     * Метод - получить idCustomer по номеру телефона
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/phone/id/{phoneNumber}")
     public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
         Integer id;
@@ -62,40 +69,40 @@ public class CustomerController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-//    @GetMapping("/bankaccount/id/{bankAccountId}")
-//    public ResponseEntity<Integer> getIdByByBankAccountId(@PathVariable(value = "bankAccountId") BigDecimal bankAccountId) {
-//        Integer id = customerService.getIdByBankAccountId(bankAccountId);
-//        return new ResponseEntity<>(id, HttpStatus.OK);
-//    }
-
+    /**
+     * Метод - получить последний код по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/code/id/{customerId}")
     public ResponseEntity<String> getLastEnterCodeByIdCustomer(@PathVariable(value = "customerId") Integer customerId) {
         String code = enterCodeService.getLastEnterCodeByIdCustomer(customerId);
         return new ResponseEntity<>(code, HttpStatus.OK);
     }
 
+    /**
+     * Метод - получить время последнего кода по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/codedatetime/id/{customerId}")
     public ResponseEntity<OffsetDateTime> getLastEnterCodeDateTimeByIdCustomer(@PathVariable(value = "customerId") Integer customerId) {
         OffsetDateTime codeDateTime = enterCodeService.getLastEnterCodeDateTimeByIdCustomer(customerId);
         return new ResponseEntity<>(codeDateTime, HttpStatus.OK);
     }
 
-    //отправить смс по телефону
+    /**
+     * Метод - для отправления смс по телефону
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/sendcode/{phoneNumber}")
     public ResponseEntity<String> sendCode(@PathVariable(value = "phoneNumber") String phoneNumber) {
         String message = customerService.sendEnterCode(phoneNumber);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    //проверить смс код по customerId
-//    @GetMapping("/checkcode/{customerId}")
-//    public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
-//                                             @RequestBody EnterCodeIn enterCodeIn) {
-//        Boolean isOk = customerService.checkEnterCode(enterCodeIn);
-//        return new ResponseEntity<>(isOk, HttpStatus.OK);
-//    }
-
-    //проверить смс код по phoneNumber
+    /**
+     * Метод - для проверки смс код по phoneNumber
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/checkcode/{code}/{phoneNumber}")
     public ResponseEntity<Boolean> checkCodeByPhoneNumber(@PathVariable(value = "code") String code,
                                                           @PathVariable(value = "phoneNumber") String phoneNumber) {
@@ -103,14 +110,20 @@ public class CustomerController {
         return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 
-    //получить id всех банковских счетов по phoneNumber
+    /**
+     * Метод - для получения id всех банковских счетов по phoneNumber
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/accounts/{phoneNumber}")
     public ResponseEntity<List<Integer>> getAccountsByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
         List<Integer> ids = customerService.getAccountsByPhoneNumber(phoneNumber);
         return new ResponseEntity<>(ids, HttpStatus.OK);
     }
 
-    //у юзера добавить счет вклада
+    /**
+     * Метод - для добавления по idCustomer счет вклада по idDepositAccount
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/adddepositaccount/{idCustomer}/{idDepositAccount}")
     public ResponseEntity<Void> addDepositAccountByIdAccount(@PathVariable(value = "idCustomer") Integer idCustomer,
                                                              @PathVariable(value = "idDepositAccount") Integer idDepositAccount) {
@@ -122,7 +135,10 @@ public class CustomerController {
         }
     }
 
-    //список всех счетов по idCustomer
+    /**
+     * Метод - для получения списка всех счетов по idCustomer
+     */
+    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/allaccounts/{idCustomer}")
     public ResponseEntity<List<Integer>> getAllAccounts(@PathVariable(value = "idCustomer") Integer idCustomer) {
         try {

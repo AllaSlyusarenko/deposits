@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-//    implementation project(':aggregator')
+
     implementation 'org.springframework.boot:spring-boot-starter-web:2.7.11'
     implementation 'org.postgresql:postgresql:42.3.10'
 
@@ -28,12 +28,7 @@ dependencies {
     implementation 'javax.validation:validation-api:2.0.1.Final'
     runtimeOnly 'org.flywaydb:flyway-gradle-plugin:3.0'
 
-//    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.15'
-//    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.15'
-//    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
-//    implementation 'org.springframework.boot:spring-boot-starter-aop:2.7.11'
-//    implementation 'org.apache.commons:commons-lang3:3.13.0'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:2.7.11'
 
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
