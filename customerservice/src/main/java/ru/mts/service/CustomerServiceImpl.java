@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Logging(entering = true, exiting = true, logArgs = true)
     @Override
-    public Integer getIdByPhoneNumber(String phoneNumber) {
+    public Integer getIdByPhoneNumber(String phoneNumber) throws NotFoundException {
         return getCustomerByPhoneNumber(phoneNumber).getIdCustomers();
     }
 
@@ -117,8 +117,8 @@ public class CustomerServiceImpl implements CustomerService {
      * Метод - для проверки номера телефона
      */
     @Logging(entering = true, exiting = true, logArgs = true)
-    private boolean checkPhoneNumber(String phoneNumber) {
-        if (phoneNumber.isBlank() || phoneNumber.length() != 11) {
+    public boolean checkPhoneNumber(String phoneNumber) throws ValidationException {
+        if (phoneNumber == null || phoneNumber.isBlank() || phoneNumber.length() != 11) {
             throw new ValidationException("Неверный номер телефона " + phoneNumber);
         }
         return true;

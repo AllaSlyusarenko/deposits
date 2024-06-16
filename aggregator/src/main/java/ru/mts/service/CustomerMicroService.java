@@ -34,7 +34,7 @@ public class CustomerMicroService {
     /**
      * Метод - получить id customer по телефону
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public Integer getCustomerIdByPhoneNumber() {
         ResponseEntity<Integer> id = restTemplate.getForEntity("http://localhost:8081/customer/phone/id/" + phoneNumber, Integer.class);
         if (id.getStatusCode().is2xxSuccessful()) {
@@ -47,7 +47,7 @@ public class CustomerMicroService {
     /**
      * Метод - отправить код по номеру телефона в customer
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public void sendCode() {
         ResponseEntity<String> code = restTemplate.getForEntity("http://localhost:8081/customer/sendcode/" + phoneNumber, String.class);
         if (code.getStatusCode().is2xxSuccessful()) {
@@ -74,7 +74,7 @@ public class CustomerMicroService {
     /**
      * Метод - получение id счетов из customer, по id получить счета из account
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public List<BankAccount> listAccountsByPhoneNumber() {
         //получить все id account по PhoneNumber
         ResponseEntity<List<Integer>> ids =
@@ -129,7 +129,7 @@ public class CustomerMicroService {
     /**
      * Метод - для получения списка всех счетов по idCustomer
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     public List<Integer> getAllAccounts() {
         ResponseEntity<List<Integer>> ids =
                 restTemplate.exchange("http://localhost:8081/customer/allaccounts/" + idCustomer,

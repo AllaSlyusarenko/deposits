@@ -15,6 +15,7 @@ import ru.mts.repository.DepositStatusRepository;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -269,6 +270,10 @@ public class DepositServiceImpl {
         log.info(message);
         log.info(depositCode.getCode());
         //статус - подтверждение закрытия
+        Optional<CurrentDepositStatus> depositStatusInDB =
+                currentDepositStatusRepository.findByIdDeposit_IdDepositAndIdDepositStatus_IdDepositStatus(idDeposit, 8);
+        depositStatusInDB.ifPresent(currentDepositStatusRepository::delete);
+
         CurrentDepositStatus statusIn = new CurrentDepositStatus();
         statusIn.setIdDeposit(deposit);
         DepositStatus depositStatus = depositStatusRepository.findById(8);

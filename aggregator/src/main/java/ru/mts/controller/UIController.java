@@ -36,7 +36,11 @@ public class UIController {
     @Logging(entering = true, exiting = true)
     @GetMapping("/start")
     public String start(Model model) {
-        model.addAttribute("phoneNumber", new PhoneNumber());
+        PhoneNumber phoneNumber = new PhoneNumber();
+        model.addAttribute("phoneNumber", phoneNumber);
+        if (phoneNumber.getPhoneNumber().isBlank()) {
+            return "redirect:/start";
+        }
         return "start";
     }
 
@@ -47,11 +51,15 @@ public class UIController {
     @GetMapping(value = "/start", params = "action=Отправить код для входа")
     public String entercodeparam(Model model,
                                  @RequestParam(name = "phoneNumber") String phoneNumber) {
+
+        if (phoneNumber.isBlank()) {
+            return "redirect:/start";
+        }
         model.addAttribute("enterCode", new EnterCode());
         CustomerMicroService.setPhoneNumber(phoneNumber);
         try {
             CustomerMicroService.setIdCustomer(customerMicroService.getCustomerIdByPhoneNumber());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return "redirect:/start";
         }
         //отправить код

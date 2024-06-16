@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mts.annotation.Logging;
 import ru.mts.entity.Customer;
 import ru.mts.exception.NotFoundException;
+import ru.mts.exception.ValidationException;
 import ru.mts.service.BankAccountCustomerService;
 import ru.mts.service.CustomerService;
 import ru.mts.service.EnterCodeServiceImpl;
@@ -63,8 +64,8 @@ public class CustomerController {
         Integer id;
         try {
             id = customerService.getIdByPhoneNumber(phoneNumber);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (RuntimeException  e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
