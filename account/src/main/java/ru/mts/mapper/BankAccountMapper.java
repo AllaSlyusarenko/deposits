@@ -6,6 +6,9 @@ import ru.mts.entity.BankAccount;
 
 @UtilityClass
 public class BankAccountMapper {
+    /**
+     * Метод - для преобразования bankAccount в BankAccountOutDto
+     */
     public BankAccountOutDto bankAccountToDto(BankAccount bankAccount) {
         BankAccountOutDto bankAccountDto = new BankAccountOutDto();
         bankAccountDto.setIdBankAccounts(bankAccount.getIdBankAccounts());

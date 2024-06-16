@@ -2,6 +2,7 @@ package ru.mts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mts.annotation.Logging;
 import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
 import ru.mts.exception.NotFoundException;
@@ -12,7 +13,6 @@ import ru.mts.repository.BankAccountRepository;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -24,7 +24,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         this.bankAccountRepository = bankAccountRepository;
     }
 
-    // проверить есть ли на счету необходимая сумма
+    /**
+     * Метод - для проверки есть ли на счету необходимая сумма
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
         BankAccount bankAccount =
@@ -36,7 +39,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccount.getAmount().subtract(depositAmount).compareTo(BigDecimal.ZERO) >= 0;
     }
 
-    //получить BankAccount по номеру р/сч
+    /**
+     * Метод - для получения BankAccount по номеру счета
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount getBankAccountByNumBankAccounts(BigDecimal numBankAccounts) {
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
@@ -46,12 +52,13 @@ public class BankAccountServiceImpl implements BankAccountService {
                 bankAccountOut = bankAccount;
             }
         }
-//        return bankAccountRepository.findByNumBankAccounts(numBankAccounts).orElseThrow(()
-//                -> new NotFoundException("Банковский счет с р/с " + numBankAccounts + " не найден"));
         return bankAccountOut;
     }
 
-    //уменьшить баланс р/сч с NumBankAccounts на сумму depositAmount, проверка, вернуть уменьшившийся итоговый баланс
+    /**
+     * Метод - для уменьшения суммы счета по номеру счета depositDebitingAccountId на сумму depositAmount
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount reduceBalanceByNumBankAccounts(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
         BankAccount bankAccount = getBankAccountByNumBankAccounts(depositDebitingAccountId);
@@ -63,7 +70,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountRepository.save(bankAccount);
     }
 
-    //получить сумму на активном счете, если счет неактивный, то вернуть ноль
+    /**
+     * Метод - для получения суммы на активном счете, если счет неактивный, то вернуть ноль
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BigDecimal amountByIdBankAccounts(Integer idBankAccounts) {
         BigDecimal amount;
@@ -77,7 +87,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return amount;
     }
 
-    //закрыть для операций счет вклада и вернуть сумму на основной счет
+    /**
+     * Метод - при закрытии вклада => счет вклада сделать неактивным, сумму перевести на основной счет
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public Boolean closeDeposit(BigDecimal depositAccountId, BigDecimal depositRefundAccountId, BigDecimal depositAmount) {
         //счет вклада
@@ -86,7 +99,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         bankAccountDeposit.setIsActive(false);
         bankAccountRepository.save(bankAccountDeposit);
         //основной счет
-        BankAccount bankAccount  = getBankAccountByNumBankAccounts(depositRefundAccountId);
+        BankAccount bankAccount = getBankAccountByNumBankAccounts(depositRefundAccountId);
         bankAccount.setAmount(bankAccount.getAmount().add(depositAmount));
         bankAccountRepository.save(bankAccount);
 
@@ -94,7 +107,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
 
-    //создать банковский счет вклада с нужной суммой, эту сумму списать с основного счета
+    /**
+     * Метод - для создания нового активного счета вклада и сразу перечислить туда сумму со счета depositDebitingAccountId
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     @Transactional
     public BankAccountOutDto createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
@@ -105,7 +121,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountOutDto;
     }
 
-    //создается вклад с передаваемой суммой
+    /**
+     * Метод - для создания вклад с передаваемой суммой
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount createBankAccount(BigDecimal amount) {
         checkAmount(amount);
@@ -116,6 +135,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountRepository.save(bankAccountIn);
     }
 
+    /**
+     * Метод - для получения BankAccount по id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount getBankAccountById(Integer id) {
         checkId(id);
@@ -123,7 +146,10 @@ public class BankAccountServiceImpl implements BankAccountService {
                 -> new NotFoundException("Банковский счет с id " + id + " не найден"));
     }
 
-    //уменьшить баланс р/сч с id на сумму redAmount, проверка, вернуть уменьшившийся итоговый баланс
+    /**
+     * Метод - для уменьшения суммы по id счета на сумму redAmount, проверка суммы, вернуть уменьшившийся итоговый баланс
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount reduceBalance(Integer id, BigDecimal redAmount) {
         checkId(id);
@@ -138,7 +164,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
 
-    //получить по idAccount - активный банковский счет по idAccount и возвращает номер счета
+    /**
+     * Метод - для получения по idAccount - активный банковский счет по idAccount и возвращает номер счета
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BigDecimal getBankAccountByIdAccount(Integer id) {
         checkId(id);
@@ -151,8 +180,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
     }
 
-    //отдавать урезанную дто : номер и String счет, isActive
-    //получить по id - активные счета и их номер счета
+    /**
+     * Метод - для получения по id - активные счета и их номер счета, отдает урезанную дто: номер и String счет, isActive
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccountOutDto getBankAccountOutDtoByIdAccount(Integer id) {
         checkId(id);
@@ -161,7 +192,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return BankAccountMapper.bankAccountToDto(bankAccount);
     }
 
-
+    /**
+     * Метод - для получения суммы по id счета
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BigDecimal getBalance(Integer id) {
         checkId(id);
@@ -169,7 +203,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccount.getAmount();
     }
 
-    //увеличить баланс р/сч с id на сумму incAmount, вернуть увеличившийся итоговый баланс
+    /**
+     * Метод - для увеличения суммы по id счета на сумму incAmount
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount increaseBalance(Integer id, BigDecimal incAmount) {
         checkId(id);
@@ -181,7 +218,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
 
-    //перевести с 1 на 2 сумму transferAmount, проверка, вернуть уменьшившийся итоговый баланс
+    /**
+     * Метод - для перевода суммы transferAmount по id со счета from на to
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     @Transactional
     @Override
     public BankAccount[] transferBalance(Integer from, Integer to, BigDecimal transferAmount) {
@@ -193,18 +233,25 @@ public class BankAccountServiceImpl implements BankAccountService {
         return new BankAccount[]{bankAccountFrom, bankAccountTo};
     }
 
-    // получить новый рандомный номер счета
+    /**
+     * Метод - для получения нового рандомного номера счета
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private BigDecimal randomNumBankAccount() {
         BigDecimal numBankAccount;
+        BigDecimal min = new BigDecimal("10000000000000000000");
+        BigDecimal max = new BigDecimal("99999999999999999999");
         do {
-            BigDecimal randFromDouble = new BigDecimal(Math.random());
-            BigDecimal randToDouble = new BigDecimal("99999999999999999988");
-            numBankAccount = randFromDouble.multiply(randToDouble).setScale(0, BigDecimal.ROUND_HALF_UP);
+            BigDecimal randomBigDecimal = min.add(new BigDecimal(Math.random()).multiply(max.subtract(min)));
+            numBankAccount = randomBigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP);
         } while (bankAccountRepository.findByNumBankAccounts(numBankAccount).isPresent());
         return numBankAccount;
     }
 
-    //проверка суммы списание/пополнение
+    /**
+     * Метод - для проверки суммы
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkAmount(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new ValidationException("Сумма должна быть больше нуля");
@@ -212,6 +259,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         return true;
     }
 
+    /**
+     * Метод - для проверки id
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
     private boolean checkId(Integer id) {
         if (id <= 0) {
             throw new ValidationException("Неверный id " + id);
