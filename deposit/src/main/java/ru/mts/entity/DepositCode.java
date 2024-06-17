@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 @Data
-@EqualsAndHashCode(exclude = "idRequestCode")
+@EqualsAndHashCode(exclude = "idDepositCode")
 @Entity
 @Table(name = "deposit_code", schema = "deposit")
 public class DepositCode { //2.18

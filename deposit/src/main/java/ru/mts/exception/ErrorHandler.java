@@ -15,36 +15,26 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice(annotations = RestController.class)
 public class ErrorHandler {
 
-    @ExceptionHandler({ValidationException.class})
-    public ResponseEntity<String> handleDataException(final RuntimeException e) {
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleDataException(ValidationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Неверные входные данные: " + e.getMessage());
     }
 
-    @ExceptionHandler({NotFoundException.class})
-    public ResponseEntity<String> handleNotFoundException(final RuntimeException e) {
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Ресурс не найден: " + e.getMessage());
     }
 
-    @ExceptionHandler({MissingPathVariableException.class})
-    public ResponseEntity<String> handleMissingPathVariableException(final Exception e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Проверьте правильность ссылки на требуемый ресурс ");
-    }
 
-    @ExceptionHandler({NoHandlerFoundException.class, ResourceNotFoundException.class})
-    public ResponseEntity<String> handleNoHandlerFoundException(final Exception e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Ресурс не найден: " + e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleError404(HttpServletRequest request, Exception e)   {
-        ModelAndView mav = new ModelAndView("/404");
-        mav.addObject("exception", e);
-        mav.addObject("errorcode", "404");
-        return mav;
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleUnexpectedException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Неверные данные: " + e.getMessage());
     }
 
     @ExceptionHandler

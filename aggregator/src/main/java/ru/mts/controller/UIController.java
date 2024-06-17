@@ -3,11 +3,7 @@ package ru.mts.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.mts.annotation.Logging;
+import org.springframework.web.bind.annotation.*;
 import ru.mts.entity.*;
 import ru.mts.exception.UnexpectedException;
 import ru.mts.mapper.RequestMapper;
@@ -34,21 +30,16 @@ public class UIController {
     /**
      * Метод - для отображения стартовой страницы
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping("/start")
     public String start(Model model) {
         PhoneNumber phoneNumber = new PhoneNumber();
         model.addAttribute("phoneNumber", phoneNumber);
-        if (phoneNumber.getPhoneNumber().isBlank()) {
-            return "redirect:/start";
-        }
         return "start";
     }
 
     /**
      * Метод - для отправления кода для входа
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/start", params = "action=Отправить код для входа")
     public String entercodeparam(Model model,
                                  @RequestParam(name = "phoneNumber") String phoneNumber) {
@@ -77,7 +68,6 @@ public class UIController {
     /**
      * Метод - для подтверждения кода для входа
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/entercode", params = "action=Подтвердить код")
     public String entercode(Model model,
                             @RequestParam(name = "code") String code) {
@@ -94,7 +84,6 @@ public class UIController {
     /**
      * Метод - для отображения страницы deposit
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping("/deposit")
     public String deposit(Model model) {
         //суммарно на активных счетах
@@ -112,7 +101,6 @@ public class UIController {
     /**
      * Метод - для отображения deposit по id
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/showdeposit/{id}")
     public String showFullDeposit(Model model, @PathVariable("id") Integer id) {
         DepositFull deposit = depositMicroService.showFullDeposit(id);
@@ -123,7 +111,6 @@ public class UIController {
     /**
      * Метод - для подтверждения закрытия deposit по id
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/agreedepositoff/{id}", params = "action=Подтвердить закрытие вклада")
     public String agreeDepositOff(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("depositCode", new DepositCode());
@@ -137,7 +124,6 @@ public class UIController {
     /**
      * Метод - для проверки кода при закрытии deposit по id
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/depositcodeclose", params = "action=Подтвердить код")
     public String agreeDepositOff(Model model, @RequestParam(name = "id") Integer id, @RequestParam(name = "code") String code) {
         if (code == null || code.isEmpty()) {
@@ -154,7 +140,6 @@ public class UIController {
     /**
      * Метод - для закрытия deposit по id
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/closedeposit/{id}")
     public String closeDeposit(Model model, @PathVariable("id") Integer id) {
         //данные из сервиса deposit для account
@@ -167,7 +152,6 @@ public class UIController {
     /**
      * Метод - для возвращения к списку вкладов
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/deposit", params = "action=Вернуться к списку вкладов")
     public String toDeposits(Model model) {
         return "redirect:/deposit";
@@ -176,7 +160,6 @@ public class UIController {
     /**
      * Метод - для удаления заявки на депозит по id
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/deleterequest/{id}")
     public String deleteRequest(@PathVariable("id") Integer id) {
         depositMicroService.deleteRequest(id);
@@ -186,7 +169,6 @@ public class UIController {
     /**
      * Метод - для заполнения заявки
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping("/request")
     public String request(Model model) {
         model.addAttribute("requestin", new RequestIn());
@@ -207,7 +189,6 @@ public class UIController {
     /**
      * Метод - для отмены заполнения заявки
      */
-    @Logging(entering = true, exiting = true)
     @PostMapping(value = "/request", params = "action=Назад")
     public String cancelRequest(Model model) {
         return "redirect:/deposit";
@@ -225,7 +206,6 @@ public class UIController {
     /**
      * Метод - для сохранения заявки и отправки смс
      */
-    @Logging(entering = true, exiting = true)
     @PostMapping(value = "/request", params = "action=Принять условия")
     public String saveRequest(Model model, RequestIn requestin) {
         //проверить заполнены ли все поля и правильность их заполнения(да/нет), сумма>=10000
@@ -243,7 +223,6 @@ public class UIController {
     /**
      * Метод - для ввода смс подтверждения заявки
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping("/requestcode")
     public String requestCode(Model model) {
         model.addAttribute("requestCode", new RequestCode());
@@ -253,7 +232,6 @@ public class UIController {
     /**
      * Метод - для подтверждения кода смс заявки
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/requestcode", params = "action=Подтвердить код")
     public String checkRequestCode(Model model,
                                    @RequestParam(name = "code") String code) {
@@ -289,7 +267,6 @@ public class UIController {
     /**
      * Метод - для выхода из аккаунта
      */
-    @Logging(entering = true, exiting = true)
     @GetMapping(value = "/logout")
     public String logout(Model model) {
         return "redirect:/start";

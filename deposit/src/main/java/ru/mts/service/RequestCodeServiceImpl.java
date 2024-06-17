@@ -65,7 +65,7 @@ public class RequestCodeServiceImpl {
     /**
      * Метод - сгенерить 4-значный код
      */
-    @Logging(entering = true, exiting = true, logArgs = true)
+    @Logging(entering = true, exiting = true)
     private int createCode() {
         int maximum = 9999;
         int minimum = 1000;

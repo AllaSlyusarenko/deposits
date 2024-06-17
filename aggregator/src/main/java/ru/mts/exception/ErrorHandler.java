@@ -2,11 +2,10 @@ package ru.mts.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@ControllerAdvice
+@ControllerAdvice(annotations = Controller.class)
 public class ErrorHandler {
 
     @ExceptionHandler(ValidationException.class)
@@ -24,20 +23,14 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(UnexpectedException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleUnexpectedException(UnexpectedException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Неверные данные: " + e.getMessage());
     }
 
-//    @ExceptionHandler({MissingPathVariableException.class})
-//    public ResponseEntity<String> handleMissingPathVariableException(final Throwable e) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .body("Проверьте правильность ссылки на требуемый ресурс ");
-//    }
-
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleUnexpectedException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Неверные данные: " + e.getMessage());

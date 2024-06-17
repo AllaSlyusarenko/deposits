@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.mts.annotation.Logging;
 import ru.mts.dto.BankAccountOutDto;
 import ru.mts.entity.BankAccount;
 import ru.mts.service.BankAccountService;
@@ -27,7 +26,6 @@ public class BankAccountController {
     /**
      * Метод - для уменьшения суммы счета по номеру счета depositDebitingAccountId на сумму depositAmount
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/reduceBalance/{depositDebitingAccountId}/{depositAmount}")
     public ResponseEntity<BankAccount> reduceBalanceByNumBankAccounts(@PathVariable(value = "depositDebitingAccountId") BigDecimal depositDebitingAccountId,
                                                                       @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
@@ -42,7 +40,6 @@ public class BankAccountController {
     /**
      * Метод - для получения по idAccount - активный банковский счет по idAccount и возвращает номер счета
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/id/{id}")
     public ResponseEntity<BigDecimal> getBankAccountByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
         BigDecimal bankAccount = bankAccountService.getBankAccountByIdAccount(id);
@@ -52,7 +49,6 @@ public class BankAccountController {
     /**
      * Метод - для получения по id - активные счета и их номер счета, отдает урезанную дто: номер и String счет, isActive
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/id/dto/{id}")
     public ResponseEntity<BankAccountOutDto> getBankAccountOutDtoByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
         try {
@@ -66,7 +62,6 @@ public class BankAccountController {
     /**
      * Метод - для получения BankAccount по номеру счета
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/num/{num}")
     public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") @Positive BigDecimal num) {
         BankAccount bankAccount = bankAccountService.getBankAccountByNumBankAccounts(num);
@@ -76,7 +71,6 @@ public class BankAccountController {
     /**
      * Метод - для получения суммы по id счета
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/amount/{id}")
     public ResponseEntity<BigDecimal> getBalanceBankAccountById(@PathVariable(value = "id") @Positive Integer id) {
         BigDecimal amount = bankAccountService.getBalance(id);
@@ -86,7 +80,6 @@ public class BankAccountController {
     /**
      * Метод - для увеличения суммы по id счета на сумму incAmount
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @PatchMapping("/increase/{id}/{incAmount}")
     public ResponseEntity<BankAccount> increaseBalanceBankAccountById(@PathVariable(value = "id") @Positive Integer id,
                                                                       @PathVariable(value = "incAmount") @Positive BigDecimal incAmount) {
@@ -97,7 +90,6 @@ public class BankAccountController {
     /**
      * Метод - для уменьшения суммы по id счета на сумму incAmount
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @PatchMapping("/reduce/{id}/{redAmount}")
     public ResponseEntity<BankAccount> reduceBalanceBankAccountById(@PathVariable(value = "id") @Positive Integer id,
                                                                     @PathVariable(value = "redAmount") @Positive BigDecimal redAmount) {
@@ -108,7 +100,6 @@ public class BankAccountController {
     /**
      * Метод - для перевода суммы transferAmount по id со счета from на to
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @PatchMapping("/transfer/{from}/{transferAmount}/{to}")
     public ResponseEntity<BankAccount[]> transferBalanceBankAccountById(@PathVariable(value = "from") @Positive Integer from,
                                                                         @PathVariable(value = "transferAmount") @Positive BigDecimal transferAmount,
@@ -120,7 +111,6 @@ public class BankAccountController {
     /**
      * Метод - для проверки есть ли на счету необходимая сумма
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/checksum/{depositDebitingAccountId}/{depositAmount}")
     public ResponseEntity<Boolean> checkDataFromRequestSum(
             @PathVariable(value = "depositDebitingAccountId") @Positive BigDecimal depositDebitingAccountId,
@@ -136,7 +126,6 @@ public class BankAccountController {
     /**
      * Метод - для создания нового активного счета вклада и сразу перечислить туда сумму со счета depositDebitingAccountId
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/createdepaccount/{depositDebitingAccountId}/{depositAmount}")
     public ResponseEntity<BankAccountOutDto> createDepositAccount( //возвращает созданный номер вклада
                                                                    @PathVariable(value = "depositDebitingAccountId") BigDecimal depositDebitingAccountId,
@@ -152,7 +141,6 @@ public class BankAccountController {
     /**
      * Метод - для получения суммы на активном счете, если счет неактивный, то вернуть ноль
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/amountbyid/{idBankAccounts}")
     public ResponseEntity<BigDecimal> amountByIdBankAccounts(@PathVariable(value = "idBankAccounts") Integer idBankAccounts) {
         try {
@@ -166,7 +154,6 @@ public class BankAccountController {
     /**
      * Метод - при закрытии вклада => счет вклада сделать неактивным, сумму перевести на основной счет
      */
-    @Logging(entering = true, exiting = true, logResult = true)
     @GetMapping("/closedeposit/{depositAccountId}/{depositRefundAccountId}/{depositAmount}")
     public ResponseEntity<Boolean> closeDeposit(@PathVariable(value = "depositAccountId") BigDecimal depositAccountId,
                                                 @PathVariable(value = "depositRefundAccountId") BigDecimal depositRefundAccountId,
