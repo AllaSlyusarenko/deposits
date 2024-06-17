@@ -11,6 +11,7 @@ import ru.mts.mapper.DepositMapper;
 import ru.mts.repository.CurrentDepositStatusRepository;
 import ru.mts.repository.DepositRepository;
 import ru.mts.repository.DepositStatusRepository;
+import ru.mts.repository.DepositTermRepository;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -26,15 +27,17 @@ public class DepositServiceImpl {
     private final DepositStatusRepository depositStatusRepository;
     private final CurrentDepositStatusRepository currentDepositStatusRepository;
     private final DepositCodeServiceImpl depositCodeServiceImpl;
+    private final DepositTermRepository depositTermRepository;
 
     @Autowired
-    public DepositServiceImpl(DepositRepository depositRepository, RequestServiceImpl requestService, UtilityServiceImpl utilityService, DepositStatusRepository depositStatusRepository, CurrentDepositStatusRepository currentDepositStatusRepository, DepositCodeServiceImpl depositCodeServiceImpl) {
+    public DepositServiceImpl(DepositRepository depositRepository, RequestServiceImpl requestService, UtilityServiceImpl utilityService, DepositStatusRepository depositStatusRepository, CurrentDepositStatusRepository currentDepositStatusRepository, DepositCodeServiceImpl depositCodeServiceImpl, DepositTermRepository depositTermRepository) {
         this.depositRepository = depositRepository;
         this.requestService = requestService;
         this.utilityService = utilityService;
         this.depositStatusRepository = depositStatusRepository;
         this.currentDepositStatusRepository = currentDepositStatusRepository;
         this.depositCodeServiceImpl = depositCodeServiceImpl;
+        this.depositTermRepository = depositTermRepository;
     }
 
     /**
@@ -199,6 +202,18 @@ public class DepositServiceImpl {
             }
         }
         return depositRate;
+    }
+
+    /**
+     * Метод - для отображения процентной ставки от параметров: вид вклада, срок, сумма
+     */
+    @Logging(entering = true, exiting = true)
+    public BigDecimal getDepositRate(String isDepositRefill, String isReductionOfDeposit, String depositTerm, BigDecimal depositAmount) {
+        boolean isRefill = isDepositRefill.equalsIgnoreCase("да");
+        boolean isReduction = isReductionOfDeposit.equalsIgnoreCase("да");
+        DepositTerm term = depositTermRepository.findDepositTermByDepositTermName(depositTerm);
+        DepositRate depositRate = getDepositRateByParam(isRefill,isReduction,term,depositAmount);
+        return depositRate.getDepositRate();
     }
 
     /**

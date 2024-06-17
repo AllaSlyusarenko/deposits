@@ -12,6 +12,7 @@ import ru.mts.dto.CloseDepositDto;
 import ru.mts.dto.DepositOutFullDto;
 import ru.mts.dto.DepositOutShortDto;
 import ru.mts.dto.DepositOutSuccessDto;
+import ru.mts.entity.DepositRate;
 import ru.mts.entity.DepositTerm;
 import ru.mts.entity.TypesPercentPayment;
 import ru.mts.service.DepositServiceImpl;
@@ -109,5 +110,17 @@ public class DepositController {
 
         Boolean isOk = depositService.checkCodeCloseDeposit(idDeposit, phoneNumber, code);
         return new ResponseEntity<>(isOk, HttpStatus.OK);
+    }
+
+    /**
+     * Метод - определения ставки по вкладу
+     */
+    @GetMapping("/ratedeposit/{isDepositRefill}/{isReductionOfDeposit}/{depositTerm}/{depositAmount}")
+    public ResponseEntity<BigDecimal> getDepositRateByParam(@PathVariable("isDepositRefill") String isDepositRefill,
+                                                            @PathVariable("isReductionOfDeposit") String isReductionOfDeposit,
+                                                            @PathVariable("depositTerm") String depositTerm,
+                                                            @PathVariable("depositAmount") BigDecimal depositAmount) {
+        BigDecimal rate = depositService.getDepositRate(isDepositRefill, isReductionOfDeposit, depositTerm, depositAmount);
+        return new ResponseEntity<>(rate, HttpStatus.OK);
     }
 }

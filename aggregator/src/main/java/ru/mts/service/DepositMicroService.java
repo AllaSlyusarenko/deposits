@@ -323,4 +323,18 @@ public class DepositMicroService {
             throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }
     }
+
+    /**
+     * Метод - для отображения процентной ставки от параметров: вид вклада, срок, сумма и отображения
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
+    public BigDecimal getDepositRate(String isDepositRefill, String isReductionOfDeposit, String depositTerm, BigDecimal depositAmount) {
+        String url = "http://localhost:8082/deposit/ratedeposit/" + isDepositRefill + "/" + isReductionOfDeposit + "/" + depositTerm + "/" + depositAmount;
+        ResponseEntity<BigDecimal> code = restTemplate.getForEntity(url, BigDecimal.class);
+        if (code.getStatusCode().is2xxSuccessful()) {
+            return code.getBody();
+        } else {
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + code.getBody());
+        }
+    }
 }
