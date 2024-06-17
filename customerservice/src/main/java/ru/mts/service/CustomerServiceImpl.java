@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mts.annotation.Logging;
 import ru.mts.dto.EnterCodeIn;
-import ru.mts.entity.BankAccountCustomer;
 import ru.mts.entity.Customer;
 import ru.mts.entity.EnterCode;
 import ru.mts.exception.NotFoundException;

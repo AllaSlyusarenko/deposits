@@ -32,12 +32,9 @@ public class RequestController {
     @PostMapping("/{customerId}/save")
     public ResponseEntity<Integer> saveRequest(@PathVariable(value = "customerId") Integer customerId,
                                                @RequestBody RequestInDto requestDtoIn) {
-        try {
-            Integer idRequest = requestService.createRequest(customerId, requestDtoIn);
-            return new ResponseEntity<>(idRequest, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        Integer idRequest = requestService.createRequest(customerId, requestDtoIn);
+        return new ResponseEntity<>(idRequest, HttpStatus.OK);
     }
 
     /**
@@ -46,12 +43,9 @@ public class RequestController {
     @GetMapping("/sendcode/{idrequest}/{phoneNumber}")
     public ResponseEntity<Boolean> sendCode(@PathVariable(value = "idrequest") Integer idRequest,
                                             @PathVariable(value = "phoneNumber") String phoneNumber) {
-        try {
-            String message = requestService.sendRequestCode(idRequest, phoneNumber);
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        String message = requestService.sendRequestCode(idRequest, phoneNumber);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     /**
@@ -60,12 +54,9 @@ public class RequestController {
     @GetMapping("/checkcode/{code}/{customerId}")
     public ResponseEntity<Boolean> checkCode(@PathVariable(value = "customerId") Integer customerId,
                                              @PathVariable(value = "code") String code) {
-        try {
-            Boolean isOk = requestService.checkRequestCode(customerId, code);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        Boolean isOk = requestService.checkRequestCode(customerId, code);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 
     /**
@@ -73,12 +64,9 @@ public class RequestController {
      */
     @GetMapping("/requestdata/{customerId}")
     public ResponseEntity<RequestDataOut> getRequestData(@PathVariable(value = "customerId") Integer customerId) {
-        try {
-            RequestDataOut data = requestService.getRequestData(customerId);
-            return new ResponseEntity<>(data, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        RequestDataOut data = requestService.getRequestData(customerId);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     /**
@@ -86,12 +74,9 @@ public class RequestController {
      */
     @GetMapping("/changestatusok/{customerId}")
     public ResponseEntity<Boolean> changeStatusOk(@PathVariable(value = "customerId") Integer customerId) {
-        try {
-            Boolean isOk = requestService.changeStatusOk(customerId);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        Boolean isOk = requestService.changeStatusOk(customerId);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 
     /**
@@ -99,12 +84,8 @@ public class RequestController {
      */
     @GetMapping("/changestatusnotok/{customerId}")
     public ResponseEntity<Boolean> changeStatusNotOk(@PathVariable(value = "customerId") Integer customerId) {
-        try {
-            Boolean isOk = requestService.changeStatusNotOk(customerId);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Boolean isOk = requestService.changeStatusNotOk(customerId);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 
     /**
@@ -112,12 +93,9 @@ public class RequestController {
      */
     @GetMapping("/requestnotok/{customerId}")
     public ResponseEntity<List<RequestNotOkDto>> requestNotOk(@PathVariable(value = "customerId") Integer customerId) {
-        try {
-            List<RequestNotOkDto> requests = requestService.requestnotok(customerId);
-            return new ResponseEntity<>(requests, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        List<RequestNotOkDto> requests = requestService.requestnotok(customerId);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
     /**
@@ -125,11 +103,7 @@ public class RequestController {
      */
     @GetMapping("/deleterequest/{idRequest}")
     public ResponseEntity<Boolean> deleteRequest(@PathVariable(value = "idRequest") Integer idRequest) {
-        try {
-            Boolean isOk = requestService.deleteRequest(idRequest);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Boolean isOk = requestService.deleteRequest(idRequest);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 }

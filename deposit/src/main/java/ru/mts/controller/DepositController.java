@@ -56,13 +56,9 @@ public class DepositController {
     public ResponseEntity<DepositOutSuccessDto> createDepositByIdRequest(@PathVariable("idCustomer") Integer idCustomer,
                                                                          @PathVariable("idRequest") Integer idRequest,
                                                                          @PathVariable("numBankAccounts") BigDecimal numBankAccounts) {
-        try {
-            DepositOutSuccessDto depositOutSuccessDto =
-                    depositService.depositOutSuccess(depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts));
-            return new ResponseEntity<>(depositOutSuccessDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        DepositOutSuccessDto depositOutSuccessDto =
+                depositService.depositOutSuccess(depositService.createDepositByIdRequest(idCustomer, idRequest, numBankAccounts));
+        return new ResponseEntity<>(depositOutSuccessDto, HttpStatus.OK);
     }
 
     /**
@@ -70,12 +66,8 @@ public class DepositController {
      */
     @GetMapping("/allshortdepositsactive/{idCustomer}")
     public ResponseEntity<List<DepositOutShortDto>> allDepositsActive(@PathVariable("idCustomer") Integer idCustomer) {
-        try {
-            List<DepositOutShortDto> dtos = depositService.getAllDepositOutShortDtoActiveDeposits(idCustomer);
-            return new ResponseEntity<>(dtos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        List<DepositOutShortDto> dtos = depositService.getAllDepositOutShortDtoActiveDeposits(idCustomer);
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     /**
@@ -83,12 +75,8 @@ public class DepositController {
      */
     @GetMapping("/showfulldeposit/{idDeposit}")
     public ResponseEntity<DepositOutFullDto> showFullDeposit(@PathVariable("idDeposit") Integer idDeposit) {
-        try {
-            DepositOutFullDto dtos = depositService.showFullDeposit(idDeposit);
-            return new ResponseEntity<>(dtos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        DepositOutFullDto dtos = depositService.showFullDeposit(idDeposit);
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     /**
@@ -96,12 +84,8 @@ public class DepositController {
      */
     @GetMapping("/closedeposit/{idDeposit}")
     public ResponseEntity<CloseDepositDto> closeDeposit(@PathVariable("idDeposit") Integer idDeposit) {
-        try {
-            CloseDepositDto data = depositService.closeDeposit(idDeposit);
-            return new ResponseEntity<>(data, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        CloseDepositDto data = depositService.closeDeposit(idDeposit);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     /**
@@ -110,12 +94,9 @@ public class DepositController {
     @GetMapping("/codeclosedeposit/{phoneNumber}/{idDeposit}")
     public ResponseEntity<String> sendDepositCodeClose(@PathVariable("idDeposit") Integer idDeposit,
                                                        @PathVariable("phoneNumber") String phoneNumber) {
-        try {
-            String code = depositService.sendDepositCodeClose(idDeposit, phoneNumber);
-            return new ResponseEntity<>(code, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        String code = depositService.sendDepositCodeClose(idDeposit, phoneNumber);
+        return new ResponseEntity<>(code, HttpStatus.OK);
     }
 
     /**
@@ -125,11 +106,8 @@ public class DepositController {
     public ResponseEntity<Boolean> checkCodeCloseDeposit(@PathVariable("idDeposit") Integer idDeposit,
                                                          @PathVariable("phoneNumber") String phoneNumber,
                                                          @PathVariable("code") String code) {
-        try {
-            Boolean isOk = depositService.checkCodeCloseDeposit(idDeposit, phoneNumber, code);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        Boolean isOk = depositService.checkCodeCloseDeposit(idDeposit, phoneNumber, code);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 }
