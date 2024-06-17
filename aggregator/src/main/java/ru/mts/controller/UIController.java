@@ -3,9 +3,11 @@ package ru.mts.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.mts.entity.*;
-import ru.mts.exception.UnexpectedException;
 import ru.mts.mapper.RequestMapper;
 import ru.mts.service.AccountMicroService;
 import ru.mts.service.CustomerMicroService;
@@ -43,26 +45,19 @@ public class UIController {
     @GetMapping(value = "/start", params = "action=Отправить код для входа")
     public String entercodeparam(Model model,
                                  @RequestParam(name = "phoneNumber") String phoneNumber) {
-
         if (phoneNumber.isBlank()) {
             return "redirect:/start";
         }
         model.addAttribute("enterCode", new EnterCode());
         CustomerMicroService.setPhoneNumber(phoneNumber);
-        Integer id;
         try {
-            id = customerMicroService.getCustomerIdByPhoneNumber();
-            CustomerMicroService.setIdCustomer(id);
-        } catch (UnexpectedException e) {
+            CustomerMicroService.setIdCustomer(customerMicroService.getCustomerIdByPhoneNumber());
+        } catch (Exception e) {
             return "redirect:/start";
         }
-        if (id == null) {
-            return "redirect:/start";
-        } else {
-            //отправить код
-            customerMicroService.sendCode();
-            return "entercode";
-        }
+        //отправить код
+        customerMicroService.sendCode();
+        return "entercode";
     }
 
     /**
@@ -129,7 +124,6 @@ public class UIController {
         if (code == null || code.isEmpty()) {
             return "errordepositcode";
         }
-
         if (depositMicroService.checkcodeclosedeposit(id, code)) {
             model.addAttribute("id", id);
             return "redirect:/closedeposit/{id}";
