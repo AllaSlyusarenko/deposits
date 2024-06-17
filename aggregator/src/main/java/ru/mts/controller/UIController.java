@@ -197,7 +197,6 @@ public class UIController {
     //Показать проценты
     @PostMapping(value = "/request", params = "action=Показать проценты")
     public String depositRate(Model model, RequestIn requestin) {
-
         //в сервисе депозитов сделать логику по выбору процента, сделать ручку
         //сюда приносить это значение
         return "rate";

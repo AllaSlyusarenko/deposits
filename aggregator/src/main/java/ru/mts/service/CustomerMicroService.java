@@ -39,10 +39,8 @@ public class CustomerMicroService {
         ResponseEntity<Integer> id = restTemplate.getForEntity("http://localhost:8081/customer/phone/id/" + phoneNumber, Integer.class);
         if (id.getStatusCode().is2xxSuccessful()) {
             return id.getBody();
-        } else if (id.getStatusCode().is4xxClientError()) {
-            throw new UnexpectedException("Неверные данные" + phoneNumber);
         } else {
-            throw new RuntimeException("Что-то пошло не так");
+            throw new UnexpectedException("Service Customer, Неверные данные" + phoneNumber);
         }
     }
 
@@ -55,7 +53,7 @@ public class CustomerMicroService {
         if (code.getStatusCode().is2xxSuccessful()) {
             code.getBody();
         } else {
-            throw new UnexpectedException("Что-то пошло не так" + phoneNumber);
+            throw new UnexpectedException("Service Customer, Что-то пошло не так" + phoneNumber);
         }
     }
 
@@ -69,7 +67,7 @@ public class CustomerMicroService {
         if (id.getStatusCode().is2xxSuccessful()) {
             return id.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + phoneNumber);
+            throw new UnexpectedException("Service Customer, Неверные данные" + phoneNumber);
         }
     }
 
@@ -90,7 +88,7 @@ public class CustomerMicroService {
         if (ids.getStatusCode().is2xxSuccessful()) {
             idList = ids.getBody();
         } else {
-            throw new UnexpectedException("Что-то пошло не так" + phoneNumber);
+            throw new UnexpectedException("Service Customer, Что-то пошло не так" + phoneNumber);
         }
         List<BankAccount> accounts = new ArrayList<>();
         //получить по id - активные счета и их номер счета
@@ -108,7 +106,7 @@ public class CustomerMicroService {
                         accounts.add(response.getBody());
                     }
                 } else {
-                    throw new UnexpectedException("Что-то пошло не так" + phoneNumber);
+                    throw new UnexpectedException("Service Account, Что-то пошло не так" + phoneNumber);
                 }
             }
         }
@@ -123,7 +121,7 @@ public class CustomerMicroService {
         ResponseEntity<Void> id =
                 restTemplate.getForEntity("http://localhost:8081/customer/adddepositaccount/" + idCustomer + "/" + idDepositAccount, Void.class);
         if (!id.getStatusCode().is2xxSuccessful()) {
-            throw new UnexpectedException("Неверные данные" + idDepositAccount);
+            throw new UnexpectedException("Service Customer, Неверные данные" + idDepositAccount);
         }
 
     }
@@ -143,7 +141,7 @@ public class CustomerMicroService {
         if (ids.getStatusCode().is2xxSuccessful()) {
             return ids.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + idCustomer);
+            throw new UnexpectedException("Service Customer, Неверные данные" + idCustomer);
         }
     }
 }

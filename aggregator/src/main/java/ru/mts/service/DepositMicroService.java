@@ -37,7 +37,7 @@ public class DepositMicroService {
         if (depositTerms.getStatusCode().is2xxSuccessful()) {
             return depositTerms.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + depositTerms.getBody());
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + depositTerms.getBody());
         }
     }
 
@@ -56,7 +56,7 @@ public class DepositMicroService {
         if (typesPercentPayments.getStatusCode().is2xxSuccessful()) {
             return typesPercentPayments.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + typesPercentPayments.getBody());
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + typesPercentPayments.getBody());
         }
     }
 
@@ -124,7 +124,7 @@ public class DepositMicroService {
         if (idRequest.getStatusCode().is2xxSuccessful()) {
             return idRequest.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + idRequest.getBody());
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + idRequest.getBody());
         }
     }
 
@@ -138,7 +138,7 @@ public class DepositMicroService {
         if (code.getStatusCode().is2xxSuccessful()) {
             code.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }
     }
 
@@ -152,7 +152,7 @@ public class DepositMicroService {
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + code);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + code);
         }
     }
 
@@ -166,7 +166,7 @@ public class DepositMicroService {
         if (data.getStatusCode().is2xxSuccessful()) {
             return data.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + data);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + data);
         }
     }
 
@@ -180,7 +180,7 @@ public class DepositMicroService {
         if (data.getStatusCode().is2xxSuccessful()) {
             return data.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + data);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + data);
         }
     }
 
@@ -194,7 +194,7 @@ public class DepositMicroService {
         if (data.getStatusCode().is2xxSuccessful()) {
             return data.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + data);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + data);
         }
     }
 
@@ -209,7 +209,7 @@ public class DepositMicroService {
         if (data.getStatusCode().is2xxSuccessful()) {
             return data.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + data);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + data);
         }
     }
 
@@ -228,7 +228,7 @@ public class DepositMicroService {
         if (dtos.getStatusCode().is2xxSuccessful()) {
             return dtos.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + dtos);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + dtos);
         }
     }
 
@@ -242,7 +242,7 @@ public class DepositMicroService {
         if (dtoFull.getStatusCode().is2xxSuccessful()) {
             return dtoFull.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + dtoFull);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + dtoFull);
         }
     }
 
@@ -256,7 +256,7 @@ public class DepositMicroService {
         if (code.getStatusCode().is2xxSuccessful()) {
             code.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + idDeposit);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + idDeposit);
         }
     }
 
@@ -271,7 +271,7 @@ public class DepositMicroService {
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + code);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + code);
         }
     }
 
@@ -292,7 +292,7 @@ public class DepositMicroService {
         if (data.getStatusCode().is2xxSuccessful()) {
             return data.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + data);
+            throw new UnexpectedException("Service Deposit, Неверные данные" + data);
         }
     }
 
@@ -306,7 +306,7 @@ public class DepositMicroService {
         if (code.getStatusCode().is2xxSuccessful()) {
             code.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }
     }
 
@@ -320,7 +320,7 @@ public class DepositMicroService {
         if (code.getStatusCode().is2xxSuccessful()) {
             return code.getBody();
         } else {
-            throw new UnexpectedException("Ошибка при взаимодействии с сервисом deposit " + code.getBody());
+            throw new UnexpectedException("Service Deposit, Ошибка при взаимодействии с сервисом deposit " + code.getBody());
         }
     }
 }

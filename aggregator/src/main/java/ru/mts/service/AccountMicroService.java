@@ -32,7 +32,7 @@ public class AccountMicroService {
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + isOk);
+            throw new UnexpectedException("Service Account, Неверные данные" + isOk);
         }
     }
 
@@ -46,7 +46,7 @@ public class AccountMicroService {
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + isOk);
+            throw new UnexpectedException("Service Account, Неверные данные" + isOk);
         }
     }
 
@@ -62,7 +62,7 @@ public class AccountMicroService {
             if (sum.getStatusCode().is2xxSuccessful()) {
                 totalSum = totalSum.add(sum.getBody());
             } else {
-                throw new UnexpectedException("Неверные данные" + id);
+                throw new UnexpectedException("Service Account, Неверные данные" + id);
             }
         }
         return totalSum;
@@ -79,7 +79,7 @@ public class AccountMicroService {
         if (isOk.getStatusCode().is2xxSuccessful()) {
             return isOk.getBody();
         } else {
-            throw new UnexpectedException("Неверные данные" + isOk);
+            throw new UnexpectedException("Service Account, Неверные данные" + isOk);
         }
     }
 }

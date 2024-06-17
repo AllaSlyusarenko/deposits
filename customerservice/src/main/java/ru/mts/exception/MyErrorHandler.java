@@ -34,6 +34,6 @@ public class MyErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleThrowable(final Throwable e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Unhandled exception." + e.getMessage());
+                .body("Maintenance work is underway, please try again later");
     }
 }
