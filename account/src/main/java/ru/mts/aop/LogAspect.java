@@ -33,12 +33,8 @@ public class LogAspect {
         if (logging.logArgs()) {
             levelLogging(logging.level(), "Arguments in method: " + methodName + " args: " + objectMapper.writeValueAsString(args));
         }
-        Object result = null;
-        try {
-            result = joinPoint.proceed();
-        } catch (Throwable e) {
-            log.error("Error on method:{}", methodName, e);
-        }
+        Object result = joinPoint.proceed();
+
         if (logging.logResult()) {
             levelLogging(logging.level(), "Result in method: " + methodName + " result: " + objectMapper.writeValueAsString(result));
         }

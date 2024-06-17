@@ -29,12 +29,8 @@ public class BankAccountController {
     @GetMapping("/reduceBalance/{depositDebitingAccountId}/{depositAmount}")
     public ResponseEntity<BankAccount> reduceBalanceByNumBankAccounts(@PathVariable(value = "depositDebitingAccountId") BigDecimal depositDebitingAccountId,
                                                                       @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
-        try {
-            BankAccount amount = bankAccountService.reduceBalanceByNumBankAccounts(depositDebitingAccountId, depositAmount);
-            return new ResponseEntity<>(amount, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        BankAccount amount = bankAccountService.reduceBalanceByNumBankAccounts(depositDebitingAccountId, depositAmount);
+        return new ResponseEntity<>(amount, HttpStatus.OK);
     }
 
     /**
@@ -51,12 +47,9 @@ public class BankAccountController {
      */
     @GetMapping("/id/dto/{id}")
     public ResponseEntity<BankAccountOutDto> getBankAccountOutDtoByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
-        try {
-            BankAccountOutDto bankAccount = bankAccountService.getBankAccountOutDtoByIdAccount(id);
-            return new ResponseEntity<>(bankAccount, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        BankAccountOutDto bankAccount = bankAccountService.getBankAccountOutDtoByIdAccount(id);
+        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
 
     /**
@@ -65,9 +58,6 @@ public class BankAccountController {
     @GetMapping("/num/{num}")
     public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") @Positive BigDecimal num) {
         BankAccount bankAccount = bankAccountService.getBankAccountByNumBankAccounts(num);
-        if (bankAccount == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
 
@@ -118,12 +108,9 @@ public class BankAccountController {
     public ResponseEntity<Boolean> checkDataFromRequestSum(
             @PathVariable(value = "depositDebitingAccountId") @Positive BigDecimal depositDebitingAccountId,
             @PathVariable(value = "depositAmount") @Positive BigDecimal depositAmount) {
-        try {
-            Boolean isOk = bankAccountService.checkDataFromRequestSum(depositDebitingAccountId, depositAmount);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Boolean isOk = bankAccountService.checkDataFromRequestSum(depositDebitingAccountId, depositAmount);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
+
     }
 
     /**
@@ -133,12 +120,8 @@ public class BankAccountController {
     public ResponseEntity<BankAccountOutDto> createDepositAccount( //возвращает созданный номер вклада
                                                                    @PathVariable(value = "depositDebitingAccountId") BigDecimal depositDebitingAccountId,
                                                                    @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
-        try {
-            BankAccountOutDto account = bankAccountService.createDepositAccount(depositDebitingAccountId, depositAmount);
-            return new ResponseEntity<>(account, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        BankAccountOutDto account = bankAccountService.createDepositAccount(depositDebitingAccountId, depositAmount);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     /**
@@ -146,12 +129,8 @@ public class BankAccountController {
      */
     @GetMapping("/amountbyid/{idBankAccounts}")
     public ResponseEntity<BigDecimal> amountByIdBankAccounts(@PathVariable(value = "idBankAccounts") Integer idBankAccounts) {
-        try {
-            BigDecimal amount = bankAccountService.amountByIdBankAccounts(idBankAccounts);
-            return new ResponseEntity<>(amount, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        BigDecimal amount = bankAccountService.amountByIdBankAccounts(idBankAccounts);
+        return new ResponseEntity<>(amount, HttpStatus.OK);
     }
 
     /**
@@ -161,11 +140,8 @@ public class BankAccountController {
     public ResponseEntity<Boolean> closeDeposit(@PathVariable(value = "depositAccountId") BigDecimal depositAccountId,
                                                 @PathVariable(value = "depositRefundAccountId") BigDecimal depositRefundAccountId,
                                                 @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
-        try {
-            Boolean isOk = bankAccountService.closeDeposit(depositAccountId, depositRefundAccountId, depositAmount);
-            return new ResponseEntity<>(isOk, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        Boolean isOk = bankAccountService.closeDeposit(depositAccountId, depositRefundAccountId, depositAmount);
+        return new ResponseEntity<>(isOk, HttpStatus.OK);
     }
 }

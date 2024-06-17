@@ -12,8 +12,6 @@ import ru.mts.repository.BankAccountRepository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -31,6 +29,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public Boolean checkDataFromRequestSum(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        checkAmount(depositAmount);
         BankAccount bankAccount =
                 bankAccountRepository.findByNumBankAccounts(depositDebitingAccountId).orElseThrow(() -> new NotFoundException("Bank Account Not Found"));
         //проверить активен ли счет, у счета депозита есть момент, когда вклад закрыт и счет становится неактивен
@@ -46,16 +45,8 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount getBankAccountByNumBankAccounts(BigDecimal numBankAccounts) {
-//        List<BankAccount> bankAccounts = bankAccountRepository.findAll();
-//        BankAccount bankAccountOut = null;
-//        for (BankAccount bankAccount : bankAccounts) {
-//            if (numBankAccounts.equals(bankAccount.getNumBankAccounts())) {
-//                bankAccountOut = bankAccount;
-//            }
-//        }
-//        return bankAccountOut;
         BankAccount bankAccount = bankAccountRepository.findByNumBankAccounts(numBankAccounts)
-                .orElseThrow(()-> new NotFoundException("Bank Account Not Found"));
+                .orElseThrow(() -> new NotFoundException("Bank Account Not Found"));
         return bankAccount;
 
     }
@@ -66,6 +57,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount reduceBalanceByNumBankAccounts(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        checkAmount(depositAmount);
         BankAccount bankAccount = getBankAccountByNumBankAccounts(depositDebitingAccountId);
         BigDecimal balance = bankAccount.getAmount();
         if (balance.subtract(depositAmount).compareTo(BigDecimal.ZERO) < 0) {
@@ -119,6 +111,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     @Transactional
     public BankAccountOutDto createDepositAccount(BigDecimal depositDebitingAccountId, BigDecimal depositAmount) {
+        checkAmount(depositAmount);
         BankAccount bankAccountDeposit = createBankAccount(depositAmount);
         //списать сумму с основного счета
         BankAccount bankAccountCustomer = reduceBalanceByNumBankAccounts(depositDebitingAccountId, depositAmount);

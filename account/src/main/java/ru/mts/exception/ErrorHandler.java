@@ -1,41 +1,41 @@
 package ru.mts.exception;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingPathVariableException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
-@RestControllerAdvice(annotations = RestController.class)
+@ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ErrorHandler {
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleDataException(ValidationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Неверные входные данные: " + e.getMessage());
+                .body("Invalid input data: " + e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Ресурс не найден: " + e.getMessage());
+                .body("Resource is not found: " + e.getMessage());
     }
     @ExceptionHandler(NullException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleNullException(NullException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Ресурс не найден: " + e.getMessage());
+                .body("Resource is not found: " + e.getMessage());
     }
 
     @ExceptionHandler(MissingPathVariableException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleMissingPathVariableException(MissingPathVariableException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Проверьте правильность ссылки на требуемый ресурс ");
+                .body("Check that the link to the required resource is correct: ");
     }
 
     @ExceptionHandler

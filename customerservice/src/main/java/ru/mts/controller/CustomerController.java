@@ -56,9 +56,6 @@ public class CustomerController {
     @GetMapping("/phone/id/{phoneNumber}")
     public ResponseEntity<Integer> getIdByByPhoneNumber(@PathVariable(value = "phoneNumber") String phoneNumber) {
         Integer id = customerService.getIdByPhoneNumber(phoneNumber);
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
@@ -114,12 +111,8 @@ public class CustomerController {
     @GetMapping("/adddepositaccount/{idCustomer}/{idDepositAccount}")
     public ResponseEntity<Void> addDepositAccountByIdAccount(@PathVariable(value = "idCustomer") Integer idCustomer,
                                                              @PathVariable(value = "idDepositAccount") Integer idDepositAccount) {
-        try {
-            bankAccountCustomerService.addDepositAccountByIdAccount(idCustomer, idDepositAccount);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        bankAccountCustomerService.addDepositAccountByIdAccount(idCustomer, idDepositAccount);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -127,11 +120,7 @@ public class CustomerController {
      */
     @GetMapping("/allaccounts/{idCustomer}")
     public ResponseEntity<List<Integer>> getAllAccounts(@PathVariable(value = "idCustomer") Integer idCustomer) {
-        try {
-            List<Integer> accounts = bankAccountCustomerService.getAllAccounts(idCustomer);
-            return new ResponseEntity<>(accounts, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        List<Integer> accounts = bankAccountCustomerService.getAllAccounts(idCustomer);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 }
