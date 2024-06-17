@@ -13,6 +13,7 @@ import ru.mts.repository.BankAccountRepository;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -45,14 +46,18 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Logging(entering = true, exiting = true, logArgs = true)
     @Override
     public BankAccount getBankAccountByNumBankAccounts(BigDecimal numBankAccounts) {
-        List<BankAccount> bankAccounts = bankAccountRepository.findAll();
-        BankAccount bankAccountOut = null;
-        for (BankAccount bankAccount : bankAccounts) {
-            if (numBankAccounts.equals(bankAccount.getNumBankAccounts())) {
-                bankAccountOut = bankAccount;
-            }
-        }
-        return bankAccountOut;
+//        List<BankAccount> bankAccounts = bankAccountRepository.findAll();
+//        BankAccount bankAccountOut = null;
+//        for (BankAccount bankAccount : bankAccounts) {
+//            if (numBankAccounts.equals(bankAccount.getNumBankAccounts())) {
+//                bankAccountOut = bankAccount;
+//            }
+//        }
+//        return bankAccountOut;
+        BankAccount bankAccount = bankAccountRepository.findByNumBankAccounts(numBankAccounts)
+                .orElseThrow(()-> new NotFoundException("Bank Account Not Found"));
+        return bankAccount;
+
     }
 
     /**

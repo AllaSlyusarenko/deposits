@@ -24,6 +24,12 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Ресурс не найден: " + e.getMessage());
     }
+    @ExceptionHandler(NullException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleNullException(NullException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Ресурс не найден: " + e.getMessage());
+    }
 
     @ExceptionHandler(MissingPathVariableException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

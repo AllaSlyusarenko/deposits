@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    host: localhost
+    port: 5432
+    username: postgres
+    password: iamroot
+    url: jdbc:tc://localhost:5432/postgres
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  flyway:
+    default-schema: account

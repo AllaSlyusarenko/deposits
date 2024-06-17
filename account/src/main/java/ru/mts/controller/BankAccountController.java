@@ -65,6 +65,9 @@ public class BankAccountController {
     @GetMapping("/num/{num}")
     public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") @Positive BigDecimal num) {
         BankAccount bankAccount = bankAccountService.getBankAccountByNumBankAccounts(num);
+        if (bankAccount == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
 
