@@ -138,7 +138,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     /**
-     * Метод - для создания вклад с передаваемой суммой
+     * Метод - для создания вклада с передаваемой суммой
      */
     @Logging(entering = true, exiting = true, logArgs = true)
     @Override
