@@ -33,4 +33,6 @@ public interface BankAccountService {
     BigDecimal amountByIdBankAccounts(Integer idBankAccounts);
 
     Boolean closeDeposit(BigDecimal depositAccountId, BigDecimal depositRefundAccountId, BigDecimal depositAmount);
+    BankAccount closeAccountDeposit(BigDecimal depositAccountId, BigDecimal depositAmount);
+    BankAccount refundOfAmount(BigDecimal depositRefundAccountId, BigDecimal depositAmount);
 }

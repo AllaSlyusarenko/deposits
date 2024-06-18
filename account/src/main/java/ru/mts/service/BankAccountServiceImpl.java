@@ -91,18 +91,36 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public Boolean closeDeposit(BigDecimal depositAccountId, BigDecimal depositRefundAccountId, BigDecimal depositAmount) {
         //счет вклада
-        BankAccount bankAccountDeposit = getBankAccountByNumBankAccounts(depositAccountId);
-        bankAccountDeposit.setAmount(bankAccountDeposit.getAmount().subtract(depositAmount));
-        bankAccountDeposit.setIsActive(false);
-        bankAccountRepository.save(bankAccountDeposit);
+        closeAccountDeposit(depositAccountId, depositAmount);
         //основной счет
-        BankAccount bankAccount = getBankAccountByNumBankAccounts(depositRefundAccountId);
-        bankAccount.setAmount(bankAccount.getAmount().add(depositAmount));
-        bankAccountRepository.save(bankAccount);
-
+        refundOfAmount(depositRefundAccountId, depositAmount);
         return true;
     }
 
+    /**
+     * Метод - при закрытии вклада => счет вклада сделать неактивным, списать сумму
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
+    @Override
+    public BankAccount closeAccountDeposit(BigDecimal depositAccountId, BigDecimal depositAmount) {
+        //счет вклада
+        BankAccount bankAccountDeposit = getBankAccountByNumBankAccounts(depositAccountId);
+        bankAccountDeposit.setAmount(bankAccountDeposit.getAmount().subtract(depositAmount));
+        bankAccountDeposit.setIsActive(false);
+        return bankAccountRepository.save(bankAccountDeposit);
+    }
+
+    /**
+     * Метод - при закрытии вклада => перевести сумму на счет для возврата суммы
+     */
+    @Logging(entering = true, exiting = true, logArgs = true)
+    @Override
+    public BankAccount refundOfAmount(BigDecimal depositRefundAccountId, BigDecimal depositAmount) {
+        //основной счет
+        BankAccount bankAccount = getBankAccountByNumBankAccounts(depositRefundAccountId);
+        bankAccount.setAmount(bankAccount.getAmount().add(depositAmount));
+        return bankAccountRepository.save(bankAccount);
+    }
 
     /**
      * Метод - для создания нового активного счета вклада и сразу перечислить туда сумму со счета depositDebitingAccountId
