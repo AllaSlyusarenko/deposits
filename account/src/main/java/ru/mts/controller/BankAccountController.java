@@ -38,9 +38,10 @@ public class BankAccountController {
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<BigDecimal> getBankAccountByIdAccount(@PathVariable(value = "id") @Positive Integer id) {
-        BigDecimal bankAccount = bankAccountService.getBankAccountByIdAccount(id);
-        return new ResponseEntity<>(bankAccount, HttpStatus.OK);
+        BigDecimal numBankAccount = bankAccountService.getBankAccountByIdAccount(id);
+        return new ResponseEntity<>(numBankAccount, HttpStatus.OK);
     }
+
 
     /**
      * Метод - для получения по id - активные счета и их номер счета, отдает урезанную дто: номер и String счет, isActive
@@ -56,7 +57,7 @@ public class BankAccountController {
      * Метод - для получения BankAccount по номеру счета
      */
     @GetMapping("/num/{num}")
-    public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") @Positive BigDecimal num) {
+    public ResponseEntity<BankAccount> getBankAccountByNum(@PathVariable(value = "num") BigDecimal num) {
         BankAccount bankAccount = bankAccountService.getBankAccountByNumBankAccounts(num);
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
@@ -75,7 +76,7 @@ public class BankAccountController {
      */
     @PatchMapping("/increase/{id}/{incAmount}")
     public ResponseEntity<BankAccount> increaseBalanceBankAccountById(@PathVariable(value = "id") @Positive Integer id,
-                                                                      @PathVariable(value = "incAmount") @Positive BigDecimal incAmount) {
+                                                                      @PathVariable(value = "incAmount") BigDecimal incAmount) {
         BankAccount bankAccount = bankAccountService.increaseBalance(id, incAmount);
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
@@ -85,7 +86,7 @@ public class BankAccountController {
      */
     @PatchMapping("/reduce/{id}/{redAmount}")
     public ResponseEntity<BankAccount> reduceBalanceBankAccountById(@PathVariable(value = "id") @Positive Integer id,
-                                                                    @PathVariable(value = "redAmount") @Positive BigDecimal redAmount) {
+                                                                    @PathVariable(value = "redAmount") BigDecimal redAmount) {
         BankAccount bankAccount = bankAccountService.reduceBalance(id, redAmount);
         return new ResponseEntity<>(bankAccount, HttpStatus.OK);
     }
@@ -95,7 +96,7 @@ public class BankAccountController {
      */
     @PatchMapping("/transfer/{from}/{transferAmount}/{to}")
     public ResponseEntity<BankAccount[]> transferBalanceBankAccountById(@PathVariable(value = "from") @Positive Integer from,
-                                                                        @PathVariable(value = "transferAmount") @Positive BigDecimal transferAmount,
+                                                                        @PathVariable(value = "transferAmount") BigDecimal transferAmount,
                                                                         @PathVariable(value = "to") @Positive Integer to) {
         BankAccount[] transfer = bankAccountService.transferBalance(from, to, transferAmount);
         return new ResponseEntity<>(transfer, HttpStatus.OK);
@@ -106,15 +107,15 @@ public class BankAccountController {
      */
     @GetMapping("/checksum/{depositDebitingAccountId}/{depositAmount}")
     public ResponseEntity<Boolean> checkDataFromRequestSum(
-            @PathVariable(value = "depositDebitingAccountId") @Positive BigDecimal depositDebitingAccountId,
-            @PathVariable(value = "depositAmount") @Positive BigDecimal depositAmount) {
+            @PathVariable(value = "depositDebitingAccountId") BigDecimal depositDebitingAccountId,
+            @PathVariable(value = "depositAmount") BigDecimal depositAmount) {
         Boolean isOk = bankAccountService.checkDataFromRequestSum(depositDebitingAccountId, depositAmount);
         return new ResponseEntity<>(isOk, HttpStatus.OK);
 
     }
 
     /**
-     * Метод - для создания нового активного счета вклада и сразу перечислить туда сумму со счета depositDebitingAccountId
+     * Метод - для создания нового активного счета вклада и перечислить на этот счет сумму со счета depositDebitingAccountId
      */
     @GetMapping("/createdepaccount/{depositDebitingAccountId}/{depositAmount}")
     public ResponseEntity<BankAccountOutDto> createDepositAccount( //возвращает созданный номер вклада
