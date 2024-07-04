@@ -43,21 +43,21 @@ public class LogAspect {
         return result;
     }
 
-    private void levelLogging(String level, String message) {
-        switch (level.toUpperCase()) {
-            case "TRACE":
+    private void levelLogging(LoggingLevel level, String message) {
+        switch (level) {
+            case TRACE:
                 log.trace(message);
                 break;
-            case "DEBUG":
+            case DEBUG:
                 log.debug(message);
                 break;
-            case "INFO":
+            case INFO:
                 log.info(message);
                 break;
-            case "WARN":
+            case WARN:
                 log.warn(message);
                 break;
-            case "ERROR":
+            case ERROR:
                 log.error(message);
                 break;
             default:
