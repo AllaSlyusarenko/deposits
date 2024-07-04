@@ -3,3 +3,4 @@ include("aggregator")
 include ("customerservice")
 include 'account'
 include 'deposit'
+include 'starter-logging'

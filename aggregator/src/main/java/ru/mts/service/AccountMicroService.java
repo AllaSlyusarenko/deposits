@@ -14,12 +14,10 @@ import java.util.List;
 @Service
 public class AccountMicroService {
     private final RestTemplate restTemplate;
-    private final CustomerMicroService customerMicroService;
 
     @Autowired
-    public AccountMicroService(RestTemplate restTemplate, CustomerMicroService customerMicroService) {
+    public AccountMicroService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.customerMicroService = customerMicroService;
     }
 
     /**

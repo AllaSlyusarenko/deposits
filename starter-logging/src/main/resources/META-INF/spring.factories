@@ -1,0 +1,1 @@
+com.springframework.boot.autoconfiguration.EnableAutoConfiguration=ru.mts.config.StarterConfiguration
