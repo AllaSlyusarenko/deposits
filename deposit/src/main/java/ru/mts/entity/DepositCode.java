@@ -30,14 +30,4 @@ public class DepositCode { //2.18
     protected void onDepositDateTime() {
         codeDateTime = OffsetDateTime.now();
     }
-
-    @Override
-    public String toString() {
-        return "DepositCode {" +
-                "idDepositCode=" + idDepositCode +
-                ", code='" + code + '\'' +
-                ", codeDateTime=" + codeDateTime +
-                ", idDeposit=" + idDeposit +
-                '}';
-    }
 }

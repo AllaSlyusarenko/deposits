@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 
 @Data
-@EqualsAndHashCode(exclude = "")
+@EqualsAndHashCode(exclude = "idBankAccountCustomer")
 @Entity
 @Table(name = "bank_account_customer", schema = "customer")
 public class BankAccountCustomer { //2.18

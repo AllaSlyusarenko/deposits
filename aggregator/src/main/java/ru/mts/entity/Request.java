@@ -14,12 +14,11 @@ public class Request implements Serializable {
     private BigDecimal depositAmount;
     private String typesPercentPayment; //выплата процентов
 
-    private String depositDebitingAccountId; //счет для списания суммы депозит
+    private String depositDebitingAccountId; //счет для списания суммы депозита
     private String percentPaymentAccountId; //счет для выплаты процентов
     private String depositRefundAccountId; //счет для возвращения вклада
 
 
     public Request() {
     }
-
 }

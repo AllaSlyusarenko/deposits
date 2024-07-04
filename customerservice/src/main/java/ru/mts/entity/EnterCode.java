@@ -29,16 +29,6 @@ public class EnterCode implements Serializable { //2.16
     public EnterCode() {
     }
 
-    @Override
-    public String toString() {
-        return "EnterCode {" +
-                "idEnterCode=" + idEnterCode +
-                ", code='" + code + '\'' +
-                ", codeDateTime=" + codeDateTime +
-                ", customer=" + idCustomer +
-                '}';
-    }
-
     @PrePersist
     protected void onCreate() {
         codeDateTime = OffsetDateTime.now();

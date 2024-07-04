@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
-//@EqualsAndHashCode(exclude = "idBankAccounts")
+@EqualsAndHashCode(exclude = "idBankAccounts")
 @Entity
 @Table(name = "bank_accounts", schema = "account")
 public class BankAccount { //2.1
@@ -26,16 +26,5 @@ public class BankAccount { //2.1
 
 
     public BankAccount() {
-    }
-
-    @Override
-    public String toString() {
-        return "BankAccount{" +
-                "idBankAccounts=" + idBankAccounts +
-                ", numBankAccounts=" + numBankAccounts +
-                ", amount=" + amount +
-                ", currency='" + currency + '\'' +
-                ", isActive=" + isActive +
-                '}';
     }
 }

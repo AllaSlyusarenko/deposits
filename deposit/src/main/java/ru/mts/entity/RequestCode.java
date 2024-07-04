@@ -32,13 +32,4 @@ public class RequestCode { //2.17
         codeDateTime = OffsetDateTime.now();
     }
 
-    @Override
-    public String toString() {
-        return "RequestCode {" +
-                "idRequestCode=" + idRequestCode +
-                ", code='" + code + '\'' +
-                ", codeDateTime=" + codeDateTime +
-                ", idRequest=" + idRequest +
-                '}';
-    }
 }

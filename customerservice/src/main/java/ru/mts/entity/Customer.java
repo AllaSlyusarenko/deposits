@@ -20,12 +20,4 @@ public class Customer implements Serializable { //2.2
 
     public Customer() {
     }
-
-    @Override
-    public String toString() {
-        return "Customer {" +
-                "idCustomers=" + idCustomers +
-                ", phoneNumber=" + phoneNumber +
-                '}';
-    }
 }

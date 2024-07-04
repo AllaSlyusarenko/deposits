@@ -13,6 +13,9 @@ import java.util.Random;
 @Service
 public class EnterCodeServiceImpl {
     private final EnterCodeRepository enterCodeRepository;
+    private final int MAXIMUM = 9999;
+    private final int MINIMUM = 1000;
+    Random rn = new Random();
 
     @Autowired
     public EnterCodeServiceImpl(EnterCodeRepository enterCodeRepository) {
@@ -67,10 +70,7 @@ public class EnterCodeServiceImpl {
      */
     @Logging(entering = true, exiting = true, logArgs = true)
     private int createCode() {
-        int maximum = 9999;
-        int minimum = 1000;
-        Random rn = new Random();
-        int randomNum = rn.nextInt(maximum - minimum + 1) + minimum;
+        int randomNum = rn.nextInt(MAXIMUM - MINIMUM + 1) + MINIMUM;
         return randomNum;
     }
 }
